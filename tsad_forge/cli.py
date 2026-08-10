@@ -38,10 +38,22 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="ALSO compute PA-F1 (inflated legacy metric; a warning is attached)",
     )
+    run.add_argument(
+        "--data-param",
+        action="append",
+        default=[],
+        metavar="KEY=VALUE",
+        help="loader kwarg, repeatable (e.g. --data-param machine=machine-1-1)",
+    )
 
-    dl = sub.add_parser("download", help="download a public dataset with checksum verification")
+    dl = sub.add_parser("download", help="download a public dataset with checksum manifest")
     dl.add_argument("dataset")
     dl.add_argument("--data-dir", default="data")
+    dl.add_argument(
+        "--subset",
+        default=None,
+        help="comma-separated subset (e.g. smd machines, skab groups, nab files)",
+    )
 
     ls = sub.add_parser("list", help="list registered models or datasets")
     ls.add_argument("what", choices=["models", "datasets"])
@@ -68,7 +80,8 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "download":
         from tsad_forge.data.download import download_dataset
 
-        download_dataset(args.dataset, data_dir=args.data_dir)
+        subset = args.subset.split(",") if args.subset else None
+        download_dataset(args.dataset, data_dir=args.data_dir, subset=subset)
         return 0
 
     if args.command == "run":
@@ -88,6 +101,12 @@ def main(argv: list[str] | None = None) -> int:
         )
         if args.threshold_q is not None:
             overrides["threshold"] = {"method": "quantile", "q": args.threshold_q}
+        if args.data_param:
+            dp = {}
+            for item in args.data_param:
+                key, _, val = item.partition("=")
+                dp[key] = int(val) if val.isdigit() else val
+            overrides["data_params"] = dp
         run_experiment(overrides, force=args.force)
         return 0
 

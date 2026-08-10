@@ -47,9 +47,7 @@ class TSADDataset:
         if self.labels.ndim != 1:
             raise ValueError("labels must be a 1-D array of shape [T_test]")
         if len(self.labels) != len(self.test):
-            raise ValueError(
-                f"labels length {len(self.labels)} != test length {len(self.test)}"
-            )
+            raise ValueError(f"labels length {len(self.labels)} != test length {len(self.test)}")
         unique = set(np.unique(self.labels).tolist())
         if not unique <= {0, 1}:
             raise ValueError(f"labels must be binary 0/1, got values {sorted(unique)}")

@@ -49,9 +49,7 @@ def load_file(path: str | Path, train_ratio: float = 0.3) -> TSADDataset:
         raise ValueError("no numeric columns found in file")
     if np.isnan(values).any():
         # 결측은 선형 보간 (문서화된 기본 동작)
-        values = (
-            pd.DataFrame(values).interpolate(limit_direction="both").to_numpy(dtype=np.float64)
-        )
+        values = pd.DataFrame(values).interpolate(limit_direction="both").to_numpy(dtype=np.float64)
 
     split = int(len(values) * train_ratio)
     if has_labels:

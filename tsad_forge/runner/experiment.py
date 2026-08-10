@@ -65,7 +65,17 @@ def run_experiment(
     )
     results_dir = Path(cfg["results_dir"])
     dataset_name = Path(str(cfg["data"])).stem if "." in str(cfg["data"]) else str(cfg["data"])
-    channel = cfg.get("data_params", {}).get("channel", "all")
+    dp = cfg.get("data_params", {})
+    # 데이터셋별 하위 단위 식별자 (smd: machine, smap/msl: channel, ucr: series ...)
+    channel = str(
+        dp.get("channel")
+        or dp.get("machine")
+        or dp.get("series")
+        or dp.get("experiment")
+        or dp.get("filename")
+        or dp.get("rel_path")
+        or "all"
+    ).replace("/", "_")
 
     if not force and res.result_exists(
         results_dir, cfg["model"], dataset_name, channel, cfg["seed"], cfg_hash

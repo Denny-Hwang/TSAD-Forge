@@ -1,0 +1,8 @@
+# SECOM (UCI) — 반도체 참고용
+
+- **출처**: https://archive.ics.uci.edu/dataset/179/secom (UCI ML Repository)
+- **성격**: **시계열이 아님** — 웨이퍼별 590개 공정 센서 요약 통계 + pass/fail 라벨의
+  정적 테이블. TSAD 벤치마크 매트릭스에는 포함하지 않는다.
+- **왜 문서화하나**: 반도체 FDC(Fault Detection & Classification) 도메인 참고 자료로,
+  학습 트랙 ch09(산업 적용 가이드)에서 "시계열 문제와 정적 분류 문제의 구분" 예시로 사용.
+- **접근**: UCI에서 자유 다운로드 (CC BY 4.0).
