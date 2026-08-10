@@ -1,0 +1,17 @@
+site_name: TSAD-Forge
+site_description: A Reproducible Benchmarking and Learning Ecosystem for Time-Series Anomaly Detection
+repo_url: https://github.com/Denny-Hwang/TSAD-Forge
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - content.code.copy
+nav:
+  - Home: index.md
+  - Learn: learn/index.md
+  - Leaderboard: leaderboard/index.md
+  - Datasets: datasets/index.md
+markdown_extensions:
+  - admonition
+  - pymdownx.superfences
+  - tables

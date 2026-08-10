@@ -1,0 +1,20 @@
+# TSAD-Forge conda 환경 — Python 3.11, PyTorch 2.6 (CUDA 12.4), 8GB VRAM 기준
+# 사용: conda env create -f environment.yml && conda activate tsad-forge
+name: tsad-forge
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pytorch=2.6
+  - pytorch-cuda=12.4
+  - numpy>=1.26
+  - pandas>=2.0
+  - scikit-learn>=1.4
+  - pyyaml>=6.0
+  - pyarrow>=15.0
+  - pytest>=8.0
+  - pip
+  - pip:
+      - -e .[dev]

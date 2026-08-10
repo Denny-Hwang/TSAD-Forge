@@ -1,0 +1,64 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tsad-forge"
+version = "0.1.0"
+description = "A reproducible benchmarking and learning ecosystem for time-series anomaly detection"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+authors = [{ name = "TSAD-Forge contributors" }]
+keywords = ["time-series", "anomaly-detection", "benchmark", "reproducibility"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "numpy>=1.26",
+    "pandas>=2.0",
+    "scikit-learn>=1.4",
+    "pyyaml>=6.0",
+    "pyarrow>=15.0",
+]
+
+[project.optional-dependencies]
+# Gen 3-5 딥러닝 모델용. 기본 config는 8GB VRAM (RTX A2000 Laptop) 기준.
+dl = ["torch>=2.6"]
+# Gen 5 파운데이션 모델 어댑터 (M5에서 라이선스 감사 후 확정)
+foundation = ["torch>=2.6"]
+docs = ["mkdocs>=1.6", "mkdocs-material>=9.5", "plotly>=5.20"]
+dev = ["pytest>=8.0", "ruff>=0.4", "black>=24.0", "pre-commit>=3.7"]
+
+[project.scripts]
+tsad-forge = "tsad_forge.cli:main"
+
+[project.urls]
+Repository = "https://github.com/Denny-Hwang/TSAD-Forge"
+
+[tool.setuptools.packages.find]
+include = ["tsad_forge*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+ignore = ["E501"]  # line length는 black이 관리
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = [
+    # PA-F1 경고는 의도된 동작이므로 테스트에서 에러로 승격하지 않음
+    "default::UserWarning",
+]

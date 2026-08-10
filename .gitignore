@@ -1,0 +1,40 @@
+# 데이터셋은 절대 커밋하지 않는다 (CLAUDE.md §10-3)
+data/
+datasets/
+*.h5
+*.hdf5
+
+# 벤치마크 결과는 선별 커밋 (로컬 실험 산출물 기본 제외)
+benchmarks/results/*
+!benchmarks/results/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.eggs/
+
+# 환경
+.venv/
+venv/
+.env
+
+# 도구
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# 에디터/OS
+.idea/
+.vscode/
+.DS_Store
+
+# MkDocs 빌드 산출물
+site/
+
+# Jupyter
+.ipynb_checkpoints/

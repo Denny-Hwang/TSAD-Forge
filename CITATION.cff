@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use TSAD-Forge, please cite it as below."
+title: "TSAD-Forge: A Reproducible Benchmarking and Learning Ecosystem for Time-Series Anomaly Detection"
+type: software
+authors:
+  - name: "TSAD-Forge contributors"
+repository-code: "https://github.com/Denny-Hwang/TSAD-Forge"
+license: Apache-2.0
+version: 0.1.0
+date-released: 2026-08-10

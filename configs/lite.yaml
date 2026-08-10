@@ -1,0 +1,14 @@
+# lite 프로파일 (CLAUDE.md §5): CI/노트북용 소규모, CPU 가능.
+# M0: 더미 모델 + 합성 데이터만. M1에서 UCR 일부 + SMD 3개 머신 + SMAP 3채널 추가.
+results_dir: benchmarks/results
+seeds: [0, 1, 2]
+defaults:
+  normalize: zscore
+  threshold: { method: quantile, q: 0.99 }
+models:
+  - dummy
+  - zscore
+datasets:
+  - synthetic
+  - data: synthetic
+    data_params: { n_dims: 5, n_events: 8 }

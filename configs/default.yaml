@@ -1,0 +1,11 @@
+# 단일 실행 기본 config — `tsad-forge run --config configs/default.yaml`
+# CLI 플래그가 이 파일보다 우선한다.
+model: dummy
+model_params: {}
+data: synthetic
+data_params: {}
+seed: 0
+normalize: zscore
+threshold: { method: quantile, q: 0.99 }
+legacy_pa: false
+results_dir: benchmarks/results
