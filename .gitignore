@@ -1,6 +1,6 @@
-# 데이터셋은 절대 커밋하지 않는다 (CLAUDE.md §10-3)
-data/
-datasets/
+# 데이터셋은 절대 커밋하지 않는다 (CLAUDE.md §10-3) — 루트 경로만
+/data/
+/datasets/
 *.h5
 *.hdf5
 
