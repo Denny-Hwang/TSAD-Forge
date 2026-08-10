@@ -46,6 +46,7 @@ include = ["tsad_forge*"]
 [tool.ruff]
 line-length = 100
 target-version = "py311"
+extend-exclude = ["tsad_forge/evaluation/_vendor"]  # vendored 코드 무수정 원칙
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "B"]
@@ -54,6 +55,7 @@ ignore = ["E501"]  # line length는 black이 관리
 [tool.black]
 line-length = 100
 target-version = ["py311"]
+extend-exclude = "tsad_forge/evaluation/_vendor"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -61,4 +63,7 @@ addopts = "-q"
 filterwarnings = [
     # PA-F1 경고는 의도된 동작이므로 테스트에서 에러로 승격하지 않음
     "default::UserWarning",
+    # vendored TSB-AD 코드의 docstring escape 경고 (원 코드 무수정 원칙)
+    "ignore:invalid escape sequence:DeprecationWarning",
+    "ignore:invalid escape sequence:SyntaxWarning",
 ]

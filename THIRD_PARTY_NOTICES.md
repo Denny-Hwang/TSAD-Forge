@@ -18,6 +18,8 @@
 | scikit-learn | https://github.com/scikit-learn/scikit-learn | pip (>=1.4) | BSD-3-Clause | pip 의존성 | |
 | PyYAML | https://github.com/yaml/pyyaml | pip (>=6.0) | MIT | pip 의존성 | |
 | PyArrow | https://github.com/apache/arrow | pip (>=15.0) | Apache-2.0 | pip 의존성 | |
+| TSB-AD (evaluation) | https://github.com/TheDatumOrg/TSB-AD | e0975a5f7d3e | Apache-2.0 (LICENSE 원문 확인) | vendored (`tsad_forge/evaluation/_vendor/tsb_ad/`) | 자체 지표 구현의 수치 일치 검증 기준 + affiliation-F1 계산. 원 코드 무수정 |
+| SPOT/DSPOT (Siffer et al., KDD 2017) | (참조 구현 GPL-3 — 코드 미사용) | — | — | 논문 수식 기반 자체 구현 (`evaluation/thresholding.py`) | GPL 코드 미참조·미복사 |
 
 (M3 이후 stumpy, statsmodels, PyTorch 등 추가 시 이 표를 갱신한다.)
 

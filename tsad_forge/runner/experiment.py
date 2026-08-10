@@ -14,7 +14,7 @@ from tsad_forge.data.registry import load_dataset
 from tsad_forge.data.schema import TSADDataset
 from tsad_forge.evaluation.metrics import compute_metrics
 from tsad_forge.evaluation.protocol import save_scores, set_seed, zscore_normalize
-from tsad_forge.evaluation.thresholding import apply_threshold
+from tsad_forge.evaluation.thresholding import NEEDS_CALIBRATION, apply_threshold
 from tsad_forge.models.registry import get_model
 from tsad_forge.runner import results as res
 
@@ -26,6 +26,7 @@ DEFAULT_CONFIG = {
     "seed": 0,
     "normalize": "zscore",
     "threshold": {"method": "quantile", "q": 0.99},
+    "sliding_window": 100,  # VUS buffer 최대 폭 (TSB-AD 기본과 동일)
     "legacy_pa": False,
     "results_dir": "benchmarks/results",
     "save_raw_scores": True,
@@ -103,7 +104,11 @@ def run_experiment(
 
     th_cfg = dict(cfg["threshold"])
     method = th_cfg.pop("method")
-    threshold, preds = apply_threshold(scores, method=method, **th_cfg)
+    train_scores = None
+    if method in NEEDS_CALIBRATION:
+        # 보정용 train(정상) 점수 — EVT/conformal 임계값의 기준 분포
+        train_scores = model.score(train)
+    threshold, preds = apply_threshold(scores, method=method, train_scores=train_scores, **th_cfg)
 
     _, peak_mem = tracemalloc.get_traced_memory()
     tracemalloc.stop()
@@ -111,7 +116,13 @@ def run_experiment(
 
     has_labels = ds.meta.get("has_labels", True) and ds.labels.sum() > 0
     metrics = (
-        compute_metrics(scores, ds.labels, threshold=threshold, legacy_pa=cfg["legacy_pa"])
+        compute_metrics(
+            scores,
+            ds.labels,
+            threshold=threshold,
+            legacy_pa=cfg["legacy_pa"],
+            sliding_window=cfg.get("sliding_window", 100),
+        )
         if has_labels
         else {}
     )
