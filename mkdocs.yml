@@ -35,6 +35,41 @@ nav:
       - Yahoo S5 (apply): datasets/yahoo_s5.md
       - SWaT/WADI (apply): datasets/swat_wadi.md
       - SECOM (reference): datasets/secom.md
+plugins:
+  - search
+  - i18n:
+      docs_structure: suffix
+      fallback_to_default: true
+      reconfigure_material: true
+      languages:
+        - locale: en
+          name: English
+          default: true
+          build: true
+        - locale: ko
+          name: 한국어
+          build: true
+          nav_translations:
+            Home: 홈
+            Learn: 학습 트랙
+            Overview: 개요
+            ch01 Problem definition: ch01 문제 정의
+            ch02 Gen1 Statistical: ch02 Gen1 통계
+            ch03 Gen2 Classical ML: ch03 Gen2 고전 ML
+            ch04 Gen3 Deep Learning: ch04 Gen3 딥러닝
+            ch05 Gen4 Graph/Transformer: ch05 Gen4 Graph/Transformer
+            ch06 Gen5 SSM/Foundation: ch06 Gen5 SSM/Foundation
+            ch07 Evaluation methodology: ch07 평가 방법론
+            ch08 Thresholding: ch08 임계값
+            ch09 Industrial practice: ch09 산업 적용
+            ch10 Reading benchmarks: ch10 벤치마크 읽는 법
+            Leaderboard: 리더보드
+            Charts: 차트
+            Lite table: lite 테이블
+            Datasets: 데이터셋
+            Yahoo S5 (apply): Yahoo S5 (신청)
+            SWaT/WADI (apply): SWaT/WADI (신청)
+            SECOM (reference): SECOM (참고)
 markdown_extensions:
   - admonition
   - pymdownx.superfences

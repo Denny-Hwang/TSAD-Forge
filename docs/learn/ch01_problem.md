@@ -1,41 +1,43 @@
-# ch01 — TSAD 문제 정의
+# ch01 — Defining the TSAD Problem
 
-> 대응 노트북: [`notebooks/ch01_problem.ipynb`](https://github.com/Denny-Hwang/TSAD-Forge/tree/main/notebooks)
+> Companion notebook: [`notebooks/ch01_problem.ipynb`](https://github.com/Denny-Hwang/TSAD-Forge/tree/main/notebooks)
 
-## 시계열 이상탐지(Time-Series Anomaly Detection)란
+## What is time-series anomaly detection?
 
-주어진 시계열 \(x_1, \dots, x_T\) (단변량 D=1 또는 다변량 D>1)에서 "정상 거동에서
-벗어난 구간"을 찾는 문제다. TSAD-Forge의 모든 모델은 **연속 이상 점수(anomaly score)**
-\(s_t \in \mathbb{R}\)를 출력하며, 이진 결정은 별도의 임계값 모듈이 담당한다 (ch08).
+Given a time series \(x_1, \dots, x_T\) (univariate D=1 or multivariate D>1), find the
+regions that "deviate from normal behavior". Every model in TSAD-Forge outputs a
+**continuous anomaly score** \(s_t \in \mathbb{R}\); the binary decision is the job of a
+separate thresholding module (ch08).
 
-## 이상의 유형 (anomaly taxonomy)
+## Anomaly taxonomy
 
-| 유형 | 정의 | 예시 |
+| Type | Definition | Example |
 |---|---|---|
-| **Point** | 개별 시점 값이 비정상 | 센서 스파이크 |
-| **Contextual** | 값 자체는 정상 범위지만 맥락(시각·주기 위상)상 비정상 | 새벽의 낮 수준 트래픽 |
-| **Collective** | 개별 값은 정상이나 부분수열 전체의 패턴이 비정상 | 파형 왜곡, 주기 붕괴 |
+| **Point** | an individual value is abnormal | a sensor spike |
+| **Contextual** | the value is in range, but abnormal for its context (time of day, phase) | daytime-level traffic at 4 a.m. |
+| **Collective** | individual values are normal, but the subsequence pattern is not | waveform distortion, period break |
 
-`tsad_forge/synthetic/injectors.py`가 이 유형들(spike / level_shift / pattern /
-frequency / contextual)을 합성 주입한다 — 노트북에서 직접 만들어 본다.
+`tsad_forge/synthetic/injectors.py` injects these types (spike / level_shift / pattern /
+frequency / contextual) — the notebook builds them by hand.
 
 ## Unsupervised vs normality-based
 
-문헌에서 "unsupervised TSAD"는 대부분 **normality-based**(semi-supervised) 설정이다:
-train 구간은 "대체로 정상"이라고 가정하고 정상 거동을 학습한 뒤, test에서 벗어남을
-점수화한다. 진짜 unsupervised(라벨·정상 가정 모두 없음)는 Matrix Profile discord처럼
-test 자체의 self-join으로 동작한다.
+Most of what the literature calls "unsupervised TSAD" is actually **normality-based**
+(semi-supervised): assume the train span is "mostly normal", learn normal behavior, and
+score deviations at test time. Truly unsupervised methods (no labels *and* no normality
+assumption) work by self-join on the test series itself — e.g. Matrix Profile discords.
 
-## Contamination (오염)
+## Contamination
 
-train에 이상이 섞여 있으면(예: NAB의 probationary 구간) 정상 모델이 이상까지 학습해
-탐지력이 떨어진다. `generate_synthetic(contamination=...)`으로 이 효과를 실험할 수 있다.
-산업 현장(ch09)에서는 "완전히 깨끗한 train"이 거의 존재하지 않으므로 중요한 축이다.
+If anomalies leak into train (e.g. NAB's probationary span), the normality model learns
+them too and detection degrades. Experiment with
+`generate_synthetic(contamination=...)`. In industrial settings (ch09) a perfectly
+clean train span rarely exists, which makes this axis important.
 
-## TSAD가 어려운 진짜 이유
+## Why TSAD is actually hard
 
-1. **라벨의 희소성과 모호성** — 이상 경계는 annotator마다 다르다 (Wu & Keogh, TKDE 2021).
-2. **평가 방법론의 함정** — point adjustment는 random score도 SOTA로 만든다 (ch07).
-3. **단순 baseline의 강력함** — Sub-PCA·IForest가 딥러닝을 자주 이긴다 (TSB-AD, NeurIPS 2024).
+1. **Sparse, ambiguous labels** — anomaly boundaries differ between annotators (Wu & Keogh, TKDE 2021).
+2. **Evaluation pitfalls** — point adjustment makes even random scores look SOTA (ch07).
+3. **Strong simple baselines** — Sub-PCA and IForest frequently beat deep models (TSB-AD, NeurIPS 2024).
 
-이 세 가지가 이 저장소의 설계 철학(CLAUDE.md §0)이다.
+These three facts are the design philosophy of this repository (CLAUDE.md §0).

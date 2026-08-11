@@ -1,25 +1,32 @@
-"""시각화 8종 (CLAUDE.md §6) — results parquet + 스코어 npz에서 Plotly HTML 생성.
+"""Visualization suite (CLAUDE.md §6) — 8 Plotly HTML charts from results parquet + score npz.
 
-1. generation_evolution: 세대별 VUS-PR 분포 (box) — "세대가 오르면 성능이 오르는가?"
-2. leaderboard_table: 지표 선택 드롭다운 정렬 테이블
-3. heatmap: 모델×데이터셋 VUS-PR
-4. critical_difference: 평균 순위 + Nemenyi CD (자체 구현)
-5. perf_vs_cost: VUS-PR vs 실행시간 산점도
-6. metric_divergence: PA-F1 vs VUS-PR — 저장된 원본 스코어에서 PA-F1을 재계산해
-   평가 부풀림을 시각적으로 증명 (기본 results에는 PA-F1이 없음 — 의도된 설계)
-7. case_viewer: 대표 시계열 + 세대별 스코어 오버레이 + 정답 음영
-8. dataset_cards: 이상 길이 분포·채널 통계
+1. generation_evolution: VUS-PR distribution per generation (box)
+2. leaderboard_table: sortable table with a metric dropdown
+3. heatmap: model x dataset VUS-PR
+4. critical_difference: mean ranks + Nemenyi CD (own implementation)
+5. perf_vs_cost: VUS-PR vs runtime scatter
+6. metric_divergence: PA-F1 (recomputed offline from saved raw scores) vs VUS-PR —
+   visual proof of PA inflation without polluting the default results
+7. case_viewer: representative series + per-generation score overlays (stacked
+   subplots — never a dual axis) with ground-truth shading
+8. dataset_cards: anomaly event length distributions + per-dataset stats table
+
+Layout rules applied everywhere: axis ranges padded so marks never touch the frame,
+automargin on tick labels, recessive grid, legend outside the plot area, explicit
+heights sized to content so labels cannot collide.
 """
 
 from __future__ import annotations
 
 import math
+import re
 import warnings
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 from tsad_forge.runner.results import load_all_results
 
@@ -32,17 +39,61 @@ GEN_LABEL = {
     "gen4": "Gen4 Graph/Transformer",
     "gen5": "Gen5 SSM/Foundation",
 }
+# Validated categorical palette (fixed slot order; gen0 baseline wears neutral ink)
+GEN_COLOR = {
+    "gen0": "#52514e",
+    "gen1": "#2a78d6",
+    "gen2": "#eb6834",
+    "gen3": "#1baf7a",
+    "gen4": "#eda100",
+    "gen5": "#e87ba4",
+}
 PRIMARY = "vus_pr"
+
+_GRID = "#e8e8e6"
+_INK = "#0b0b0b"
+_INK2 = "#52514e"
+
+
+def _base_layout(fig: go.Figure, title: str, height: int = 520) -> None:
+    fig.update_layout(
+        template="plotly_white",
+        title={"text": title, "font": {"size": 16, "color": _INK}, "x": 0.02, "xanchor": "left"},
+        font={"size": 12, "color": _INK},
+        height=height,
+        margin={"l": 70, "r": 40, "t": 64, "b": 64},
+        plot_bgcolor="#fcfcfb",
+        paper_bgcolor="#fcfcfb",
+    )
+    fig.update_xaxes(gridcolor=_GRID, zerolinecolor=_GRID, automargin=True)
+    fig.update_yaxes(gridcolor=_GRID, zerolinecolor=_GRID, automargin=True)
+
+
+def _padded_range(lo: float, hi: float, frac: float = 0.06) -> list[float]:
+    span = (hi - lo) or 1.0
+    return [lo - frac * span, hi + frac * span]
+
+
+def _short(label: str, limit: int = 26) -> str:
+    """Compact entity label for tick text (keep the dataset prefix, trim the rest)."""
+    tail = label.rsplit("/", 1)
+    name = tail[-1].removesuffix(".csv")
+    # NAB-style directory prefixes carry no identity once the dataset is named
+    name = re.sub(r"^(real|artificial)[A-Za-z]+_", "", name)
+    prefix = tail[0] + "/" if len(tail) > 1 else ""
+    out = prefix + name
+    return out if len(out) <= limit else out[: limit - 1] + "…"
 
 
 def _metric_frame(results_dir: str | Path) -> pd.DataFrame:
     df = load_all_results(results_dir)
     if df.empty:
         raise FileNotFoundError(f"no results under {results_dir}")
-    df = df[~df["dataset"].str.startswith("synthetic") | True]  # 전체 유지 (필터 훅)
+    df = df.copy()
     df["entity"] = np.where(
         df["channel"] == "all", df["dataset"], df["dataset"] + "/" + df["channel"]
     )
+    df["entity"] = df["entity"].map(_short)
     return df
 
 
@@ -62,12 +113,19 @@ def generation_evolution(df: pd.DataFrame, out_dir: Path) -> Path:
     for gen in GEN_ORDER:
         vals = m[m["generation"] == gen]["value"]
         if len(vals):
-            fig.add_trace(go.Box(y=vals, name=GEN_LABEL[gen], boxmean=True))
-    fig.update_layout(
-        title="VUS-PR by generation — does newer mean better?",
-        yaxis_title="VUS-PR (distribution over entities x seeds)",
-        showlegend=False,
-    )
+            fig.add_trace(
+                go.Box(
+                    y=vals,
+                    name=GEN_LABEL[gen],
+                    boxmean=True,
+                    marker_color=GEN_COLOR[gen],
+                    line={"width": 2},
+                )
+            )
+    _base_layout(fig, "VUS-PR by generation — does newer mean better?", height=520)
+    fig.update_yaxes(title_text="VUS-PR (entities × seeds)", range=[-0.05, 1.05])
+    fig.update_xaxes(tickangle=0)
+    fig.update_layout(showlegend=False)
     return _write(fig, out_dir, "generation_evolution")
 
 
@@ -77,10 +135,12 @@ def generation_evolution(df: pd.DataFrame, out_dir: Path) -> Path:
 def leaderboard_table(df: pd.DataFrame, out_dir: Path) -> Path:
     metrics = sorted(df["metric"].unique())
     metrics = [m for m in metrics if m not in ("threshold", "n_predicted_anomalies")]
+    if PRIMARY in metrics:  # primary metric first in the dropdown
+        metrics = [PRIMARY] + [m for m in metrics if m != PRIMARY]
     pivots = {
         met: df[df["metric"] == met]
         .pivot_table(index=["generation", "model"], columns="entity", values="value")
-        .round(4)
+        .round(3)
         for met in metrics
     }
 
@@ -88,9 +148,31 @@ def leaderboard_table(df: pd.DataFrame, out_dir: Path) -> Path:
         p = p.reset_index()
         return [p[c] for c in p.columns], list(p.columns)
 
-    default = PRIMARY if PRIMARY in pivots else metrics[0]
-    cells, header = _cells(pivots[default])
-    fig = go.Figure(go.Table(header={"values": header}, cells={"values": cells}))
+    cells, header = _cells(pivots[metrics[0]])
+    n_cols = len(header)
+    n_rows = len(cells[0])
+    # Explicit width per column: the iframe scrolls horizontally instead of
+    # squeezing 15+ columns into unreadable slivers.
+    col_w = [150, 170] + [96] * (n_cols - 2)
+    fig = go.Figure(
+        go.Table(
+            columnwidth=col_w,
+            header={
+                "values": [f"<b>{h}</b>" for h in header],
+                "fill_color": "#eef2f7",
+                "align": "left",
+                "font": {"size": 11, "color": _INK},
+                "height": 46,
+            },
+            cells={
+                "values": cells,
+                "align": "left",
+                "font": {"size": 11, "color": _INK2},
+                "height": 26,
+                "fill_color": [["#fcfcfb", "#f4f4f2"] * (n_rows // 2 + 1)],
+            },
+        )
+    )
     buttons = []
     for met in metrics:
         c, h = _cells(pivots[met])
@@ -98,12 +180,31 @@ def leaderboard_table(df: pd.DataFrame, out_dir: Path) -> Path:
             {
                 "label": met,
                 "method": "restyle",
-                "args": [{"header": [{"values": h}], "cells": [{"values": c}]}],
+                "args": [{"header.values": [[f"<b>{x}</b>" for x in h]], "cells.values": [c]}],
             }
         )
     fig.update_layout(
-        title="Leaderboard (metric dropdown) — primary metric: VUS-PR",
-        updatemenus=[{"buttons": buttons, "x": 1.0, "y": 1.15}],
+        template="plotly_white",
+        title={
+            "text": "Leaderboard — pick a metric (primary: VUS-PR)",
+            "font": {"size": 16},
+            "x": 0.02,
+            "xanchor": "left",
+        },
+        width=max(980, sum(col_w) + 60),
+        height=140 + 26 * n_rows,
+        margin={"l": 20, "r": 20, "t": 96, "b": 20},
+        updatemenus=[
+            {
+                "buttons": buttons,
+                "x": 0.0,
+                "xanchor": "left",
+                "y": 1.06,
+                "yanchor": "bottom",
+                "direction": "down",
+            }
+        ],
+        paper_bgcolor="#fcfcfb",
     )
     return _write(fig, out_dir, "leaderboard_table")
 
@@ -114,19 +215,26 @@ def leaderboard_table(df: pd.DataFrame, out_dir: Path) -> Path:
 def heatmap(df: pd.DataFrame, out_dir: Path) -> Path:
     m = df[df["metric"] == PRIMARY]
     pivot = m.pivot_table(index="model", columns="entity", values="value")
-    order = pivot.mean(axis=1).sort_values(ascending=False).index
+    order = pivot.mean(axis=1).sort_values(ascending=True).index  # best on top
     pivot = pivot.loc[order]
     fig = go.Figure(
         go.Heatmap(
             z=pivot.values,
             x=list(pivot.columns),
             y=list(pivot.index),
-            colorscale="Viridis",
-            colorbar_title="VUS-PR",
+            colorscale="Blues",  # sequential = one hue, light -> dark
+            colorbar={"title": {"text": "VUS-PR", "side": "right"}, "thickness": 14},
             zmin=0,
+            zmax=1,
+            xgap=2,
+            ygap=2,
+            hovertemplate="model=%{y}<br>entity=%{x}<br>VUS-PR=%{z:.3f}<extra></extra>",
         )
     )
-    fig.update_layout(title="Model x dataset VUS-PR heatmap", xaxis_tickangle=45)
+    _base_layout(fig, "Model × dataset VUS-PR heatmap", height=180 + 26 * len(pivot))
+    fig.update_xaxes(tickangle=40, tickfont={"size": 11})
+    fig.update_yaxes(tickfont={"size": 11})
+    fig.update_layout(margin={"l": 130, "r": 60, "t": 64, "b": 130})
     return _write(fig, out_dir, "heatmap")
 
 
@@ -134,40 +242,66 @@ def heatmap(df: pd.DataFrame, out_dir: Path) -> Path:
 
 
 def critical_difference(df: pd.DataFrame, out_dir: Path, alpha: float = 0.05) -> Path:
-    """평균 순위 기반 CD 다이어그램 (Demšar 2006, Nemenyi) — 자체 구현."""
+    """Mean-rank critical-difference view (Demšar 2006, Nemenyi) — own implementation."""
     m = df[df["metric"] == PRIMARY]
     pivot = m.pivot_table(index="model", columns="entity", values="value")
-    pivot = pivot.dropna(axis=1, how="any")  # 공통 entity만 (순위 비교 조건)
+    # Shared-coverage selection: keep the entities covered by (almost) every model,
+    # then the models that cover all of them — maximizes N for the rank test instead
+    # of letting one sparse model shrink the shared set to nothing.
+    coverage = pivot.notna().sum(axis=0)
+    wide = coverage[coverage >= 0.9 * len(pivot)].index
+    pivot = pivot[wide].dropna(axis=0, how="any") if len(wide) >= 2 else pivot
+    pivot = pivot.dropna(axis=1, how="any")  # rank comparability
     if pivot.shape[1] < 2:
         warnings.warn("not enough shared entities for a CD diagram", stacklevel=2)
         pivot = m.pivot_table(index="model", columns="entity", values="value").fillna(0)
     ranks = pivot.rank(ascending=False, axis=0).mean(axis=1).sort_values()
     k, n = len(ranks), pivot.shape[1]
-    # Nemenyi 임계 차이: q_alpha(k) * sqrt(k(k+1)/(6N)) — q값 근사(정규 기반 Tukey 근사)
-    q_alpha = 2.343 + 0.407 * math.log(max(k - 1, 1))  # 근사식 (k<=20 오차 ~2%)
+    # Nemenyi critical difference: q_alpha(k) * sqrt(k(k+1)/(6N)) (Tukey-based approx)
+    q_alpha = 2.343 + 0.407 * math.log(max(k - 1, 1))  # ~2% error for k<=20
     cd = q_alpha * math.sqrt(k * (k + 1) / (6 * n))
+    gen_map = df.drop_duplicates("model").set_index("model")["generation"].to_dict()
+
     fig = go.Figure()
-    fig.add_trace(
-        go.Scatter(
-            x=ranks.values,
-            y=list(ranks.index),
-            mode="markers+text",
-            text=[f"{v:.2f}" for v in ranks.values],
-            textposition="middle right",
-        )
-    )
-    best = ranks.iloc[0]
+    best = float(ranks.iloc[0])
     fig.add_vrect(
         x0=best,
         x1=best + cd,
-        fillcolor="rgba(0,120,0,0.1)",
+        fillcolor="rgba(42,120,214,0.08)",
         line_width=0,
-        annotation_text=f"CD={cd:.2f} (α={alpha})",
+    )
+    for gen in GEN_ORDER:  # one trace per generation -> legend carries identity
+        sel = [mname for mname in ranks.index if gen_map.get(mname, "gen0") == gen]
+        if not sel:
+            continue
+        fig.add_trace(
+            go.Scatter(
+                x=[ranks[mname] for mname in sel],
+                y=sel,
+                mode="markers",
+                name=GEN_LABEL[gen],
+                marker={"size": 10, "color": GEN_COLOR[gen]},
+                hovertemplate="%{y}: mean rank %{x:.2f}<extra></extra>",
+            )
+        )
+    _base_layout(
+        fig,
+        f"Critical difference — mean ranks over {n} shared entities "
+        f"(shaded band = statistically tied with best, CD={cd:.2f}, α={alpha})",
+        height=170 + 26 * k,
+    )
+    fig.update_xaxes(
+        title_text="mean rank (lower is better)",
+        range=_padded_range(float(ranks.min()), max(float(ranks.max()), best + cd), 0.08),
+    )
+    fig.update_yaxes(
+        categoryorder="array",
+        categoryarray=list(ranks.index[::-1]),  # best on top
+        tickfont={"size": 11},
     )
     fig.update_layout(
-        title=f"Critical difference — mean ranks over {n} shared entities",
-        xaxis_title="mean rank (lower is better)",
-        yaxis=dict(autorange="reversed"),
+        margin={"l": 150, "r": 40, "t": 84, "b": 64},
+        legend={"orientation": "h", "y": -0.10, "yanchor": "top", "x": 0},
     )
     return _write(fig, out_dir, "critical_difference")
 
@@ -182,26 +316,49 @@ def perf_vs_cost(df: pd.DataFrame, out_dir: Path) -> Path:
         .agg(vus_pr=("value", "mean"), runtime=("runtime_s", "mean"), mem=("peak_vram_mb", "mean"))
         .reset_index()
     )
+    # Direct-label only the best model per generation; everything else is hover-only
+    # (labelling all ~30 points is exactly the collision mess we're avoiding).
+    top = set(agg.loc[agg.groupby("generation")["vus_pr"].idxmax(), "model"])
     fig = go.Figure()
     for gen in GEN_ORDER:
         g = agg[agg["generation"] == gen]
-        if len(g):
-            fig.add_trace(
-                go.Scatter(
-                    x=g["runtime"],
-                    y=g["vus_pr"],
-                    mode="markers+text",
-                    text=g["model"],
-                    textposition="top center",
-                    name=GEN_LABEL[gen],
-                    marker={"size": 8 + 4 * np.log1p(g["mem"].fillna(0))},
-                )
+        if not len(g):
+            continue
+        fig.add_trace(
+            go.Scatter(
+                x=g["runtime"],
+                y=g["vus_pr"],
+                mode="markers+text",
+                text=[name if name in top else "" for name in g["model"]],
+                textposition="top center",
+                textfont={"size": 11, "color": _INK2},
+                name=GEN_LABEL[gen],
+                marker={
+                    "size": 9 + 3 * np.log1p(g["mem"].fillna(0)),
+                    "color": GEN_COLOR[gen],
+                    "line": {"width": 2, "color": "#fcfcfb"},
+                },
+                customdata=g["model"],
+                hovertemplate="%{customdata}<br>runtime=%{x:.2f}s<br>VUS-PR=%{y:.3f}<extra></extra>",
             )
-    fig.update_layout(
-        title="Performance vs cost — VUS-PR vs mean runtime (marker size ~ memory)",
-        xaxis={"title": "runtime (s, log)", "type": "log"},
-        yaxis_title="mean VUS-PR",
+        )
+    _base_layout(
+        fig, "Performance vs cost — VUS-PR vs mean runtime (marker size ~ memory)", height=560
     )
+    lo, hi = float(agg["runtime"].min()), float(agg["runtime"].max())
+    log_lo, log_hi = math.log10(max(lo, 1e-3)), math.log10(max(hi, 1e-3))
+    pad = 0.08 * (log_hi - log_lo or 1.0)
+    fig.update_xaxes(
+        title_text="mean runtime (s, log scale)",
+        type="log",
+        range=[log_lo - pad, log_hi + pad],
+        dtick=1,  # decade ticks only — minor log labels collide at this density
+    )
+    fig.update_yaxes(
+        title_text="mean VUS-PR",
+        range=_padded_range(float(agg["vus_pr"].min()), float(agg["vus_pr"].max()), 0.12),
+    )
+    fig.update_layout(legend={"orientation": "h", "y": -0.15, "yanchor": "top", "x": 0})
     return _write(fig, out_dir, "perf_vs_cost")
 
 
@@ -209,9 +366,9 @@ def perf_vs_cost(df: pd.DataFrame, out_dir: Path) -> Path:
 
 
 def metric_divergence(results_dir: str | Path, df: pd.DataFrame, out_dir: Path) -> Path:
-    """PA-F1 vs VUS-PR: 저장된 스코어 npz에서 PA-F1(oracle 임계값)만 재계산.
+    """PA-F1 vs VUS-PR: recompute only PA-F1 (oracle threshold) from saved score npz.
 
-    VUS-PR은 results parquet의 기존 값을 재사용한다 (재계산 없음 — run_id로 조인).
+    VUS-PR is reused from the results parquet (joined by run_id, no recompute).
     """
     from sklearn.metrics import f1_score
 
@@ -244,8 +401,7 @@ def metric_divergence(results_dir: str | Path, df: pd.DataFrame, out_dir: Path) 
             continue
         if labels.sum() == 0 or labels.sum() == len(labels):
             continue
-        # PA-F1: oracle threshold sweep (문헌 최상 관행 재현 — 그래서 더 부풀려짐)
-        best_pa = 0.0
+        best_pa = 0.0  # oracle threshold sweep — the literature's best practice, hence inflated
         for q in np.linspace(0.80, 0.999, 30):
             pred = (scores >= np.quantile(scores, q)).astype(int)
             with warnings.catch_warnings():
@@ -254,6 +410,16 @@ def metric_divergence(results_dir: str | Path, df: pd.DataFrame, out_dir: Path) 
         rows.append({"model": model, "vus_pr": vus_pr, "pa_f1": best_pa, "run": npz.stem})
     d = pd.DataFrame(rows)
     fig = go.Figure()
+    fig.add_shape(
+        type="line", x0=0, y0=0, x1=1, y1=1, line={"dash": "dot", "color": _INK2, "width": 1}
+    )
+    fig.add_annotation(  # placed in the (empty) below-diagonal half
+        x=0.78,
+        y=0.10,
+        text="above the diagonal = PA inflation",
+        showarrow=False,
+        font={"size": 11, "color": _INK2},
+    )
     if len(d):
         gen_map = df.drop_duplicates("model").set_index("model")["generation"].to_dict()
         d["generation"] = d["model"].map(gen_map).fillna("gen0")
@@ -266,15 +432,19 @@ def metric_divergence(results_dir: str | Path, df: pd.DataFrame, out_dir: Path) 
                         y=g["pa_f1"],
                         mode="markers",
                         name=GEN_LABEL[gen],
-                        hovertext=g["run"],
+                        marker={
+                            "size": 8,
+                            "color": GEN_COLOR[gen],
+                            "line": {"width": 1.5, "color": "#fcfcfb"},
+                        },
+                        customdata=g["run"],
+                        hovertemplate="%{customdata}<br>VUS-PR=%{x:.3f}<br>PA-F1=%{y:.3f}<extra></extra>",
                     )
                 )
-    fig.add_shape(type="line", x0=0, y0=0, x1=1, y1=1, line={"dash": "dot", "color": "gray"})
-    fig.update_layout(
-        title="Evidence of evaluation inflation: PA-F1 (oracle) vs VUS-PR — above the diagonal = inflated",
-        xaxis={"title": "VUS-PR (primary metric)", "range": [0, 1]},
-        yaxis={"title": "PA-F1 (legacy, oracle threshold)", "range": [0, 1]},
-    )
+    _base_layout(fig, "Evidence of evaluation inflation: PA-F1 (oracle) vs VUS-PR", height=560)
+    fig.update_xaxes(title_text="VUS-PR (primary metric)", range=[-0.04, 1.04])
+    fig.update_yaxes(title_text="PA-F1 (legacy, oracle threshold)", range=[-0.04, 1.04])
+    fig.update_layout(legend={"orientation": "h", "y": -0.15, "yanchor": "top", "x": 0})
     return _write(fig, out_dir, "metric_divergence")
 
 
@@ -282,36 +452,75 @@ def metric_divergence(results_dir: str | Path, df: pd.DataFrame, out_dir: Path) 
 
 
 def case_viewer(results_dir: str | Path, df: pd.DataFrame, out_dir: Path) -> Path:
-    """대표 케이스: synthetic(seed 0) 시계열 + 세대별 대표 모델 스코어 오버레이."""
+    """Representative case: series on top, per-generation scores below (no dual axis)."""
     from tsad_forge.data.schema import label_events
     from tsad_forge.evaluation.protocol import load_scores
     from tsad_forge.synthetic.generator import generate_synthetic
 
     ds = generate_synthetic(seed=0)
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(y=ds.test[:, 0], name="series", line={"color": "black", "width": 1}))
+    fig = make_subplots(
+        rows=2,
+        cols=1,
+        shared_xaxes=True,
+        row_heights=[0.35, 0.65],
+        vertical_spacing=0.06,
+        subplot_titles=(
+            "series (red shading = ground-truth anomalies)",
+            "anomaly scores (min-max scaled per model)",
+        ),
+    )
+    fig.add_trace(
+        go.Scatter(
+            y=ds.test[:, 0], name="series", line={"color": _INK, "width": 1}, showlegend=False
+        ),
+        row=1,
+        col=1,
+    )
     for s, e in label_events(ds.labels):
-        fig.add_vrect(x0=s, x1=e, fillcolor="rgba(255,0,0,0.15)", line_width=0)
+        fig.add_vrect(x0=s, x1=e, fillcolor="rgba(208,59,59,0.15)", line_width=0, row=1, col=1)
+        fig.add_vrect(x0=s, x1=e, fillcolor="rgba(208,59,59,0.08)", line_width=0, row=2, col=1)
 
-    gen_map = df.drop_duplicates("model").set_index("model")["generation"].to_dict()
-    seen_gens: set[str] = set()
-    for npz in sorted(Path(results_dir).glob("scores/*__synthetic__all__seed0__*.npz")):
-        model = npz.stem.split("__")[0]
-        gen = gen_map.get(model)
-        if gen is None or gen in seen_gens:
+    # Representative = the BEST model per generation on this entity (by VUS-PR),
+    # not the first file found — a random baseline as "representative" is noise.
+    m = df[(df["metric"] == PRIMARY) & (df["dataset"] == "synthetic") & (df["seed"] == 0)]
+    best = (
+        m.sort_values("value", ascending=False)
+        .drop_duplicates("generation")
+        .set_index("generation")["model"]
+        .to_dict()
+    )
+    npz_by_model = {
+        p.stem.split("__")[0]: p
+        for p in sorted(Path(results_dir).glob("scores/*__synthetic__all__seed0__*.npz"))
+    }
+    for gen in GEN_ORDER:
+        if gen == "gen0":
+            continue  # the uninformed baseline is pure noise here — skip for legibility
+        model = best.get(gen)
+        npz = npz_by_model.get(model)
+        if npz is None:
             continue
-        seen_gens.add(gen)
         scores, _ = load_scores(npz)
         if len(scores) != len(ds.test):
             continue
         norm = (scores - scores.min()) / (np.ptp(scores) + 1e-12)
         fig.add_trace(
-            go.Scatter(y=norm, name=f"{GEN_LABEL.get(gen, gen)}: {model}", opacity=0.7, yaxis="y2")
+            go.Scatter(
+                y=norm,
+                name=f"{GEN_LABEL[gen]}: {model}",
+                line={"color": GEN_COLOR[gen], "width": 1.8},
+                opacity=0.9,
+            ),
+            row=2,
+            col=1,
         )
+    _base_layout(fig, "Case viewer — synthetic (seed 0)", height=640)
+    fig.update_yaxes(title_text="value", row=1, col=1)
+    fig.update_yaxes(title_text="score (0–1)", range=[-0.06, 1.06], row=2, col=1)
+    fig.update_xaxes(title_text="time step", row=2, col=1)
     fig.update_layout(
-        title="Case viewer — synthetic (seed 0); red shading = ground-truth anomalies",
-        yaxis={"title": "value"},
-        yaxis2={"title": "score (min-max)", "overlaying": "y", "side": "right"},
+        legend={"orientation": "h", "y": -0.12, "yanchor": "top", "x": 0},
+        margin={"l": 70, "r": 40, "t": 64, "b": 96},
     )
     return _write(fig, out_dir, "case_viewer")
 
@@ -320,8 +529,9 @@ def case_viewer(results_dir: str | Path, df: pd.DataFrame, out_dir: Path) -> Pat
 
 
 def dataset_cards(out_dir: Path, data_dir: str | Path = "data") -> Path:
-    """이상 이벤트 길이 분포 + 기본 통계 (로컬에 있는 데이터셋만)."""
+    """Event-length distributions (box) + a separate stats table — no overlapping text."""
     from tsad_forge.data.registry import load_dataset
+    from tsad_forge.data.schema import label_events
 
     candidates = [
         ("synthetic", {}),
@@ -333,51 +543,76 @@ def dataset_cards(out_dir: Path, data_dir: str | Path = "data") -> Path:
             {"rel_path": "realAWSCloudwatch/ec2_cpu_utilization_24ae8d.csv", "data_dir": data_dir},
         ),
     ]
-    fig = go.Figure()
+    boxes = []
     stats_rows = []
     for name, kw in candidates:
         try:
             ds = load_dataset(name, **kw)
         except (FileNotFoundError, KeyError):
             continue
-        from tsad_forge.data.schema import label_events
-
         lengths = [e - s for s, e in label_events(ds.labels)]
         if lengths:
-            fig.add_trace(go.Box(y=lengths, name=ds.meta.get("name", name), boxpoints="all"))
+            boxes.append((ds.meta.get("name", name), lengths))
         stats_rows.append(
             {
                 "dataset": ds.meta.get("name", name),
-                "D": ds.n_dims,
-                "T_test": len(ds.test),
-                "anomaly_rate": round(ds.anomaly_rate, 4),
-                "n_events": len(lengths),
+                "dims": ds.n_dims,
+                "test length": len(ds.test),
+                "anomaly rate": round(ds.anomaly_rate, 4),
+                "events": len(lengths),
             }
         )
-    fig.update_layout(
-        title="Dataset cards — anomaly event length distributions (log scale)",
-        yaxis={"title": "event length (steps)", "type": "log"},
-        annotations=[
-            {
-                "text": "<br>".join(
-                    f"{r['dataset']}: D={r['D']}, T={r['T_test']}, "
-                    f"rate={r['anomaly_rate']}, events={r['n_events']}"
-                    for r in stats_rows
-                ),
-                "xref": "paper",
-                "yref": "paper",
-                "x": 1.0,
-                "y": 1.0,
-                "showarrow": False,
-                "align": "left",
-                "font": {"size": 10},
-            }
-        ],
+    fig = make_subplots(
+        rows=2,
+        cols=1,
+        row_heights=[0.62, 0.38],
+        vertical_spacing=0.12,
+        specs=[[{"type": "box"}], [{"type": "table"}]],
+        subplot_titles=("anomaly event length (steps, log scale)", ""),
     )
+    for i, (name, lengths) in enumerate(boxes):
+        fig.add_trace(
+            go.Box(
+                y=lengths,
+                name=name,
+                boxpoints="all",
+                jitter=0.4,
+                pointpos=0,
+                marker={"size": 5, "color": list(GEN_COLOR.values())[1:][i % 5]},
+                showlegend=False,
+            ),
+            row=1,
+            col=1,
+        )
+    if stats_rows:
+        sdf = pd.DataFrame(stats_rows)
+        fig.add_trace(
+            go.Table(
+                columnwidth=[220, 70, 110, 120, 80],
+                header={
+                    "values": [f"<b>{c}</b>" for c in sdf.columns],
+                    "fill_color": "#eef2f7",
+                    "align": "left",
+                    "font": {"size": 12},
+                    "height": 40,
+                },
+                cells={
+                    "values": [sdf[c] for c in sdf.columns],
+                    "align": "left",
+                    "font": {"size": 12, "color": _INK2},
+                    "height": 26,
+                },
+            ),
+            row=2,
+            col=1,
+        )
+    _base_layout(fig, "Dataset cards — event lengths and basic statistics", height=680)
+    fig.update_yaxes(type="log", row=1, col=1)
+    fig.update_xaxes(tickangle=15, row=1, col=1)
     return _write(fig, out_dir, "dataset_cards")
 
 
-# 통합 ------------------------------------------------------------------------
+# aggregate -------------------------------------------------------------------
 
 
 def generate_all(
