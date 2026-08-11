@@ -14,7 +14,8 @@ them under a single, honest protocol:
 - **Everything is reproducible**: fixed seeds, config-hash-tracked runs, raw scores stored so
   metrics can be recomputed.
 
-> 한국어 학습 자료는 [docs/learn/](docs/learn/)에서 제공됩니다.
+> A learning track (theory chapters ch01–ch10 with companion notebooks) is available
+> under [docs/learn/](docs/learn/) and on the project site.
 
 ## Quickstart
 
@@ -39,7 +40,7 @@ you get scores + threshold decisions; with labels you get the full metric suite.
 
 ## Repository layout
 
-See [CLAUDE.md](CLAUDE.md) for the full specification (Korean). In short:
+See [CLAUDE.md](CLAUDE.md) for the full project specification. In short:
 
 | Path | Purpose |
 |---|---|

@@ -66,19 +66,19 @@ def leaderboard_markdown(results_dir: str | Path, metric: str = PRIMARY_METRIC) 
     lines = [
         f"# Leaderboard — {metric.upper().replace('_', '-')}",
         "",
-        "주지표: **VUS-PR** (Paparrizos et al., VLDB 2022). 값은 시드 평균."
-        " PA-F1은 표시하지 않는다 (CLAUDE.md §4).",
+        "Primary metric: **VUS-PR** (Paparrizos et al., VLDB 2022). Values are seed"
+        " averages. PA-F1 is intentionally not shown (CLAUDE.md §4).",
         "",
-        "## 모델 요약 (평균 순위 순)",
+        "## Model summary (sorted by mean rank)",
         "",
         summary.reset_index().to_markdown(index=False),
         "",
-        "## 모델 × 데이터셋",
+        "## Model × dataset",
         "",
         pivot.reset_index().to_markdown(index=False),
         "",
-        "재현: `python benchmarks/run_all.py --profile configs/lite.yaml`"
-        " — 각 행의 config_hash는 results JSON에서 전체 설정으로 역참조 가능.",
+        "Reproduce with `python benchmarks/run_all.py --profile configs/lite.yaml`"
+        " — each row's config_hash resolves to its full configuration in the results JSON.",
     ]
     return "\n".join(lines)
 

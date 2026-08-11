@@ -1,14 +1,17 @@
 # SKAB (Skoltech Anomaly Benchmark)
 
-- **출처**: https://github.com/waico/SKAB (Katser & Kozitsin, 2020)
-- **구성**: 물 순환 테스트베드 8센서, 실험 35개(valve1/valve2/other) + 정상 실험 1개, 1초 샘플링
-- **라이선스**: 저장소는 AGPL-3.0 — **코드는 절대 복사하지 않는다**. 데이터 csv만 사용
-  (원 저자들이 데이터 자유 이용을 명시; 인용 필수).
-- **다운로드**: `tsad-forge download skab` 또는 `--subset valve1`
-- **로더**: `load_skab(experiment="valve1/0")` — train은 `anomaly-free.csv`
+- **Source**: https://github.com/waico/SKAB (Katser & Kozitsin, 2020)
+- **Contents**: water-circulation testbed with 8 sensors; 35 experiments
+  (valve1/valve2/other) plus one anomaly-free run, 1-second sampling
+- **License**: the repository is AGPL-3.0 — **code is never copied**. Only the data
+  CSVs are used (the authors state the data is free to use; citation required).
+- **Download**: `tsad-forge download skab` or `--subset valve1`
+- **Loader**: `load_skab(experiment="valve1/0")` — train comes from `anomaly-free.csv`
 
-## 알려진 결함
+## Known flaws
 
-- **실험별 짧은 길이**(~1천 스텝) — 딥러닝 모델에는 데이터 부족.
-- **changepoint 열 별도**: 본 로더는 anomaly 라벨만 사용, changepoint는 미사용.
-- train(anomaly-free)과 test 실험의 운전 조건이 달라 covariate shift 존재.
+- **Short experiments** (~1k steps each) — too little data for most deep models.
+- **Separate changepoint column**: this loader uses only the anomaly labels;
+  changepoints are ignored.
+- Operating conditions differ between the anomaly-free (train) run and the test
+  experiments — a covariate shift exists by construction.

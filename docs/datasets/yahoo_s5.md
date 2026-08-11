@@ -1,29 +1,32 @@
-# Yahoo S5 — 신청 안내 (재배포 금지)
+# Yahoo S5 — application guide (no redistribution)
 
-Yahoo S5는 **재배포가 금지**되어 있어 이 저장소는 다운로드 스크립트를 제공하지 않습니다.
-로컬 배치 시 로더만 제공합니다 (CLAUDE.md §2).
+Yahoo S5 **may not be redistributed**, so this repository provides no download script —
+only a loader for locally placed files (CLAUDE.md §2).
 
-## 신청 방법
+## How to apply
 
-1. https://webscope.sandbox.yahoo.com/catalog.php?datatype=s 접속
+1. Visit https://webscope.sandbox.yahoo.com/catalog.php?datatype=s
    ("S5 - A Labeled Anomaly Detection Dataset")
-2. Yahoo 계정으로 로그인 후 연구 목적 신청서 제출 (학술 이메일 권장)
-3. 승인 메일의 링크로 `ydata-labeled-time-series-anomalies-v1_0.tgz` 다운로드
+2. Sign in with a Yahoo account and submit the research-purpose request form
+   (an academic email address is recommended)
+3. Download `ydata-labeled-time-series-anomalies-v1_0.tgz` from the approval email
 
-## 로컬 배치
+## Local placement
 
 ```
 data/yahoo_s5/
-├── A1Benchmark/real_1.csv ...      # 실제 트래픽 (67개)
-├── A2Benchmark/synthetic_1.csv ... # 합성 (100개)
-├── A3Benchmark/ ...                # 합성 + 추세/계절 (100개)
-└── A4Benchmark/ ...                # 합성 + changepoint (100개)
+├── A1Benchmark/real_1.csv ...      # real traffic (67 series)
+├── A2Benchmark/synthetic_1.csv ... # synthetic (100)
+├── A3Benchmark/ ...                # synthetic + trend/seasonality (100)
+└── A4Benchmark/ ...                # synthetic + changepoints (100)
 ```
 
-로더: `load_yahoo(benchmark="A1Benchmark", series="real_1.csv")`
+Loader: `load_yahoo(benchmark="A1Benchmark", series="real_1.csv")`
 
-## 알려진 결함
+## Known flaws
 
-- A2–A4는 합성 — 실데이터 일반화 주장에 사용 금지.
-- 공식 train/test 분할이 없어 본 로더는 앞 50%를 train으로 사용(라벨 미사용).
-- point 이상 위주 — 긴 collective 이상 평가에는 부적합.
+- A2–A4 are synthetic — do not use them to support claims about real-world
+  generalization.
+- There is no official train/test split; the loader uses the first 50% as train
+  (train labels are discarded, keeping the unsupervised assumption).
+- Mostly point anomalies — poorly suited for evaluating long collective anomalies.

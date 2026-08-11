@@ -64,8 +64,8 @@ def generation_evolution(df: pd.DataFrame, out_dir: Path) -> Path:
         if len(vals):
             fig.add_trace(go.Box(y=vals, name=GEN_LABEL[gen], boxmean=True))
     fig.update_layout(
-        title="세대별 VUS-PR 분포 — 세대가 올라간다고 성능이 오르는가?",
-        yaxis_title="VUS-PR (entity×seed 분포)",
+        title="VUS-PR by generation — does newer mean better?",
+        yaxis_title="VUS-PR (distribution over entities x seeds)",
         showlegend=False,
     )
     return _write(fig, out_dir, "generation_evolution")
@@ -102,7 +102,7 @@ def leaderboard_table(df: pd.DataFrame, out_dir: Path) -> Path:
             }
         )
     fig.update_layout(
-        title="리더보드 (지표 선택 드롭다운) — 주지표 VUS-PR",
+        title="Leaderboard (metric dropdown) — primary metric: VUS-PR",
         updatemenus=[{"buttons": buttons, "x": 1.0, "y": 1.15}],
     )
     return _write(fig, out_dir, "leaderboard_table")
@@ -126,7 +126,7 @@ def heatmap(df: pd.DataFrame, out_dir: Path) -> Path:
             zmin=0,
         )
     )
-    fig.update_layout(title="모델 × 데이터셋 VUS-PR 히트맵", xaxis_tickangle=45)
+    fig.update_layout(title="Model x dataset VUS-PR heatmap", xaxis_tickangle=45)
     return _write(fig, out_dir, "heatmap")
 
 
@@ -139,7 +139,7 @@ def critical_difference(df: pd.DataFrame, out_dir: Path, alpha: float = 0.05) ->
     pivot = m.pivot_table(index="model", columns="entity", values="value")
     pivot = pivot.dropna(axis=1, how="any")  # 공통 entity만 (순위 비교 조건)
     if pivot.shape[1] < 2:
-        warnings.warn("공통 entity가 부족해 CD 다이어그램 생략", stacklevel=2)
+        warnings.warn("not enough shared entities for a CD diagram", stacklevel=2)
         pivot = m.pivot_table(index="model", columns="entity", values="value").fillna(0)
     ranks = pivot.rank(ascending=False, axis=0).mean(axis=1).sort_values()
     k, n = len(ranks), pivot.shape[1]
@@ -165,8 +165,8 @@ def critical_difference(df: pd.DataFrame, out_dir: Path, alpha: float = 0.05) ->
         annotation_text=f"CD={cd:.2f} (α={alpha})",
     )
     fig.update_layout(
-        title=f"Critical Difference — 평균 순위 (공통 entity {n}개 기준)",
-        xaxis_title="평균 순위 (낮을수록 좋음)",
+        title=f"Critical difference — mean ranks over {n} shared entities",
+        xaxis_title="mean rank (lower is better)",
         yaxis=dict(autorange="reversed"),
     )
     return _write(fig, out_dir, "critical_difference")
@@ -198,9 +198,9 @@ def perf_vs_cost(df: pd.DataFrame, out_dir: Path) -> Path:
                 )
             )
     fig.update_layout(
-        title="성능 vs 비용 — VUS-PR vs 평균 실행시간 (마커 크기 ∝ 메모리)",
-        xaxis={"title": "실행시간 (s, log)", "type": "log"},
-        yaxis_title="평균 VUS-PR",
+        title="Performance vs cost — VUS-PR vs mean runtime (marker size ~ memory)",
+        xaxis={"title": "runtime (s, log)", "type": "log"},
+        yaxis_title="mean VUS-PR",
     )
     return _write(fig, out_dir, "perf_vs_cost")
 
@@ -271,8 +271,8 @@ def metric_divergence(results_dir: str | Path, df: pd.DataFrame, out_dir: Path) 
                 )
     fig.add_shape(type="line", x0=0, y0=0, x1=1, y1=1, line={"dash": "dot", "color": "gray"})
     fig.update_layout(
-        title="평가 부풀림의 증거: PA-F1 (oracle) vs VUS-PR — 대각선 위쪽일수록 부풀림",
-        xaxis={"title": "VUS-PR (주지표)", "range": [0, 1]},
+        title="Evidence of evaluation inflation: PA-F1 (oracle) vs VUS-PR — above the diagonal = inflated",
+        xaxis={"title": "VUS-PR (primary metric)", "range": [0, 1]},
         yaxis={"title": "PA-F1 (legacy, oracle threshold)", "range": [0, 1]},
     )
     return _write(fig, out_dir, "metric_divergence")
@@ -309,7 +309,7 @@ def case_viewer(results_dir: str | Path, df: pd.DataFrame, out_dir: Path) -> Pat
             go.Scatter(y=norm, name=f"{GEN_LABEL.get(gen, gen)}: {model}", opacity=0.7, yaxis="y2")
         )
     fig.update_layout(
-        title="사례 뷰어 — synthetic(seed 0), 붉은 음영=정답 이상 구간",
+        title="Case viewer — synthetic (seed 0); red shading = ground-truth anomalies",
         yaxis={"title": "value"},
         yaxis2={"title": "score (min-max)", "overlaying": "y", "side": "right"},
     )
@@ -355,8 +355,8 @@ def dataset_cards(out_dir: Path, data_dir: str | Path = "data") -> Path:
             }
         )
     fig.update_layout(
-        title="데이터셋 카드 — 이상 이벤트 길이 분포 (로그 스케일)",
-        yaxis={"title": "이벤트 길이 (스텝)", "type": "log"},
+        title="Dataset cards — anomaly event length distributions (log scale)",
+        yaxis={"title": "event length (steps)", "type": "log"},
         annotations=[
             {
                 "text": "<br>".join(

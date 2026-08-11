@@ -1,3 +1,6 @@
 # Scripts
 
-운영 보조 스크립트 (결과 마이그레이션, Pages 빌드 보조 등)가 이후 마일스톤에서 추가됩니다.
+Operational helper scripts.
+
+- `make_notebooks.py` — regenerates the learning-track notebooks (ch01–ch10) under
+  `notebooks/`.

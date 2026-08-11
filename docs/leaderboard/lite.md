@@ -1,8 +1,8 @@
 # Leaderboard — VUS-PR
 
-주지표: **VUS-PR** (Paparrizos et al., VLDB 2022). 값은 시드 평균. PA-F1은 표시하지 않는다 (CLAUDE.md §4).
+Primary metric: **VUS-PR** (Paparrizos et al., VLDB 2022). Values are seed averages. PA-F1 is intentionally not shown (CLAUDE.md §4).
 
-## 모델 요약 (평균 순위 순)
+## Model summary (sorted by mean rank)
 
 | generation   | model               |   mean_vus_pr |   mean_rank |   n_entities |   mean_runtime_s | config_hash                            |
 |:-------------|:--------------------|--------------:|------------:|-------------:|-----------------:|:---------------------------------------|
@@ -37,7 +37,7 @@
 | gen5         | mamba_tsad_fixed    |        0.4945 |     25      |            2 |          10.5639 | 215aa2aa8d10,23900b50eb7b,2af65c4b9934 |
 | gen3         | dagmm               |        0.2911 |     25.3333 |            3 |           3.1417 | 12266f472566,28d2c35f954a,82b3ba79e80a |
 
-## 모델 × 데이터셋
+## Model × dataset
 
 | generation   | model               |   nab/realAWSCloudwatch_ec2_cpu_utilization_24ae8d.csv |   nab/realKnownCause_machine_temperature_system_failure.csv |      psm |   skab/valve1_0 |   smd/machine-1-1 |   synthetic |
 |:-------------|:--------------------|-------------------------------------------------------:|------------------------------------------------------------:|---------:|----------------:|------------------:|------------:|
@@ -72,4 +72,4 @@
 | gen5         | mamba_tsad_faithful |                                               nan      |                                                    nan      | nan      |          0.5587 |          nan      |      0.4143 |
 | gen5         | mamba_tsad_fixed    |                                               nan      |                                                    nan      | nan      |          0.3784 |          nan      |      0.6106 |
 
-재현: `python benchmarks/run_all.py --profile configs/lite.yaml` — 각 행의 config_hash는 results JSON에서 전체 설정으로 역참조 가능.
+Reproduce with `python benchmarks/run_all.py --profile configs/lite.yaml` — each row's config_hash resolves to its full configuration in the results JSON.

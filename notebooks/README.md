@@ -1,4 +1,6 @@
 # Notebooks
 
-학습 트랙(ch01–ch10) 대응 튜토리얼 노트북이 M7에서 작성됩니다.
-CI에서는 실행하지 않으며, lite 프로파일 데이터만 사용합니다.
+Companion tutorial notebooks for the learning track (ch01–ch10). They run without any
+dataset downloads (synthetic-based); some cells automatically switch to real data when
+a local `data/` directory is present. Regenerate with `python scripts/make_notebooks.py`.
+Notebooks are not executed in CI.

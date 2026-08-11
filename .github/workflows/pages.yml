@@ -27,6 +27,9 @@ jobs:
           cache: pip
       - run: pip install mkdocs mkdocs-material
       - run: mkdocs build --strict
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true  # 첫 실행 시 Pages 사이트 자동 활성화
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
