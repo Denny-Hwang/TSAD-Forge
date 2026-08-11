@@ -100,31 +100,49 @@ def vus(
     preds = scores[None, :] >= score_sorted[thr_idx][:, None]  # [n_thr, T]
     n_pred = preds.sum(axis=1)
 
+    # 성능 최적화 (수치 불변): TP/existence 집계는 big_events 합집합 안에서만 일어나므로
+    # 해당 구간만 이어붙인 부분 배열로 계산한다. 전역 [s,e]를 부분 좌표로 매핑.
+    idx = (
+        np.concatenate([np.arange(s, e + 1) for s, e in big_events]) if big_events else np.arange(0)
+    )
+    offsets: list[tuple[int, int, int]] = []  # (global_start, global_end, concat_offset)
+    off = 0
+    for s, e in big_events:
+        offsets.append((s, e, off))
+        off += e - s + 1
+
+    def _to_sub(s: int, e: int) -> tuple[int, int]:
+        for gs, ge, o in offsets:
+            if gs <= s <= ge:
+                return o + s - gs, o + e - gs
+        raise RuntimeError("interval outside merged events")  # pragma: no cover
+
+    preds_sub = preds[:, idx]  # [n_thr, m]
+    seq_sub = [_to_sub(s, e) for s, e in seq]
+
     windows = [window_max] if _single else list(range(window_max + 1))
     aucs, aps = [], []
     for w in windows:
-        ext = _extend_labels(labels, w)
+        ext_sub = _extend_labels(labels, w)[idx]
         events_w = _merged_events(labels, w)
+        events_w_sub = [_to_sub(s, e) for s, e in events_w]
         tpr_list = np.zeros(n_thresholds + 2)
         fpr_list = np.zeros(n_thresholds + 2)
         prec_list = np.ones(n_thresholds + 1)
 
         for j in range(n_thresholds):
-            pred = preds[j]
-            lab = ext.copy()
+            pred = preds_sub[j]
+            lab = ext_sub.copy()
             existence = 0
-            for s, e in events_w:
-                lab[s : e + 1] = ext[s : e + 1] * pred[s : e + 1]
+            for s, e in events_w_sub:
+                lab[s : e + 1] = ext_sub[s : e + 1] * pred[s : e + 1]
                 if pred[s : e + 1].any():
                     existence += 1
-            for s, e in seq:
+            for s, e in seq_sub:
                 lab[s : e + 1] = 1
 
-            tp = 0.0
-            n_labels = 0.0
-            for s, e in big_events:
-                tp += float(np.dot(lab[s : e + 1], pred[s : e + 1]))
-                n_labels += float(lab[s : e + 1].sum())
+            tp = float(np.dot(lab, pred))
+            n_labels = float(lab.sum())
 
             fp = n_pred[j] - tp
             p_new = (P + n_labels) / 2

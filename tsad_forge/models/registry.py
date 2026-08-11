@@ -50,3 +50,13 @@ def _ensure_builtin() -> None:
         return
     _BUILTIN_LOADED = True
     import tsad_forge.models.dummy  # noqa: F401  (등록 부수효과)
+    import tsad_forge.models.gen1_statistical  # noqa: F401
+    import tsad_forge.models.gen2_classical_ml  # noqa: F401
+
+    # Gen3-5 (torch 필요)는 선택적: 미설치 환경에서도 Gen1-2는 동작해야 한다
+    try:
+        import tsad_forge.models.gen3_dl_recon  # noqa: F401
+        import tsad_forge.models.gen4_graph_transformer  # noqa: F401
+        import tsad_forge.models.gen5_ssm_foundation  # noqa: F401
+    except ImportError:
+        pass

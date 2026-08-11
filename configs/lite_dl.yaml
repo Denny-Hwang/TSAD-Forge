@@ -1,0 +1,30 @@
+# DL(Gen3-4) lite 프로파일 — CPU에서도 완주 가능한 소형 config.
+# 스펙 §4: 딥러닝은 시드 3개 이상 (전 모델 stochastic 처리).
+# GPU(8GB)에서는 defaults의 epochs를 10 이상으로 올려 사용 권장.
+results_dir: benchmarks/results
+seeds: [0, 1, 2]
+defaults:
+  normalize: zscore
+  threshold: { method: quantile, q: 0.99 }
+  sliding_window: 100
+
+models:
+  - { model: ae, stochastic: true, model_params: { epochs: 5, window: 32 } }
+  - { model: lstm_ad, stochastic: true, model_params: { epochs: 3, window: 32, hidden: 32 } }
+  - { model: lstm_p, stochastic: true, model_params: { epochs: 3, window: 32, hidden: 32 } }
+  - { model: vae_donut, stochastic: true, model_params: { epochs: 5, window: 32 } }
+  - { model: dagmm, stochastic: true, model_params: { epochs: 5, window: 32 } }
+  - { model: omni_anomaly, stochastic: true, model_params: { epochs: 3, window: 32, hidden: 32 } }
+  - { model: usad, stochastic: true, model_params: { epochs: 5, window: 32 } }
+  - { model: gdn, stochastic: true, model_params: { epochs: 5, window: 32 } }
+  - { model: mtad_gat, stochastic: true, model_params: { epochs: 3, window: 32 } }
+  - { model: anomaly_transformer, stochastic: true, model_params: { epochs: 3, window: 32 } }
+  - { model: tranad, stochastic: true, model_params: { epochs: 5, window: 32 } }
+  - { model: dcdetector, stochastic: true, model_params: { epochs: 5, window: 32, patch: 8 } }
+  - { model: timesnet, stochastic: true, model_params: { epochs: 5, window: 32 } }
+
+datasets:
+  - synthetic
+  - { data: synthetic, data_params: { n_dims: 5, n_events: 8 } }
+  - { data: smd, data_params: { machine: machine-1-1 } }
+  - { data: skab, data_params: { experiment: valve1/0 } }

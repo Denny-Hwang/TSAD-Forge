@@ -20,6 +20,32 @@
 | PyArrow | https://github.com/apache/arrow | pip (>=15.0) | Apache-2.0 | pip 의존성 | |
 | TSB-AD (evaluation) | https://github.com/TheDatumOrg/TSB-AD | e0975a5f7d3e | Apache-2.0 (LICENSE 원문 확인) | vendored (`tsad_forge/evaluation/_vendor/tsb_ad/`) | 자체 지표 구현의 수치 일치 검증 기준 + affiliation-F1 계산. 원 코드 무수정 |
 | SPOT/DSPOT (Siffer et al., KDD 2017) | (참조 구현 GPL-3 — 코드 미사용) | — | — | 논문 수식 기반 자체 구현 (`evaluation/thresholding.py`) | GPL 코드 미참조·미복사 |
+| stumpy | https://github.com/TDAmeritrade/stumpy | pip (>=1.12) | BSD-3-Clause | pip 의존성 | Matrix Profile |
+| statsmodels | https://github.com/statsmodels/statsmodels | pip (>=0.14) | BSD-3-Clause | pip 의존성 | STL |
+| PyTorch | https://github.com/pytorch/pytorch | pip (extras: dl) | BSD-style | pip 의존성 | Gen3-5 |
+| tabulate | https://github.com/astanin/python-tabulate | pip (>=0.9) | MIT | pip 의존성 | 리더보드 |
+
+## Gen3–4 모델 라이선스 감사 기록 (M4)
+
+원 저장소 코드는 일절 복사하지 않고 **전부 논문 기반 자체 재구현**했다
+(원 논문과의 차이는 각 모듈 docstring에 명시). 감사 결과:
+
+| 모델 | 원 저장소 | 라이선스 확인 결과 | 처리 |
+|---|---|---|---|
+| AE | (일반 기법) | — | 재구현 |
+| LSTM-AD (Malhotra 2015) | 공식 구현 미공개 | — | 재구현 |
+| LSTM-P (Telemanom, khundman/telemanom) | 자체 커스텀 라이선스 ("NASA open source") | 비표준 라이선스 | 재구현 (코드 미사용, 라벨 데이터만 사용) |
+| Donut VAE (NetManAIOps/donut) | 저장소 라이선스 파일 없음 | 불명 → 복사 금지 | 재구현 |
+| DAGMM | 공식 구현 미공개 (비공식 다수) | 불명 → 복사 금지 | 재구현 |
+| OmniAnomaly (NetManAIOps/OmniAnomaly) | MIT (단, TF1 의존) | MIT | 재구현 선택 (단순화; docstring 명시) |
+| USAD | 공식 구현 비공개(BSD 비공식) | 불명 → 복사 금지 | 재구현 |
+| GDN (d-ailin/GDN) | MIT | MIT | 재구현 선택 |
+| MTAD-GAT | 공식 구현 미공개 (MS 비공식 MIT) | — | 재구현 |
+| Anomaly Transformer (thuml) | MIT | MIT | 재구현 선택 (minimax 단순화) |
+| TranAD (imperial-qore/TranAD) | BSD-3-Clause | BSD-3 | 재구현 선택 |
+| DCdetector (DAMO-DI-ML) | 라이선스 파일 확인 필요 | 불명 → 복사 금지 | 재구현 |
+| TimesNet (thuml/Time-Series-Library) | MIT | MIT | 재구현 선택 (TimesBlock 축소) |
+| MERLIN | 공개 참조 구현 라이선스 불명 | 불명 → 복사 금지 | **도입 보류** (Gen2 목록에서 제외) |
 
 (M3 이후 stumpy, statsmodels, PyTorch 등 추가 시 이 표를 갱신한다.)
 
