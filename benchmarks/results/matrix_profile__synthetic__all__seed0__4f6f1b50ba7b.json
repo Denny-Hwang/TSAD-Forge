@@ -1,0 +1,42 @@
+{
+  "run_id": "matrix_profile__synthetic__all__seed0__4f6f1b50ba7b",
+  "model": "matrix_profile",
+  "generation": "gen2",
+  "dataset": "synthetic",
+  "channel": "all",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.8970618775451237,
+    "auc_pr": 0.1953058393524956,
+    "vus_roc": 0.9107792024210176,
+    "vus_pr": 0.5522219181062097,
+    "best_f1": 0.35668789808917195,
+    "standard_f1": 0.35668789808917195,
+    "event_f1": 0.3294117647058819,
+    "range_f1": 0.20740740740740743,
+    "affiliation_f1": 0.5104610199687728,
+    "threshold": 8.376692836129694,
+    "n_predicted_anomalies": 100.0
+  },
+  "runtime_s": 100.2475,
+  "peak_vram_mb": 82.34,
+  "commit_hash": "c8af8c463111",
+  "config_hash": "4f6f1b50ba7b",
+  "config": {
+    "model": "matrix_profile",
+    "model_params": {},
+    "data": "synthetic",
+    "data_params": {},
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-11T05:31:00+00:00"
+}

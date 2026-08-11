@@ -1,0 +1,44 @@
+{
+  "run_id": "iforest__nab__realAWSCloudwatch_ec2_cpu_utilization_24ae8d.csv__seed2__10d0843c4bcf",
+  "model": "iforest",
+  "generation": "gen2",
+  "dataset": "nab",
+  "channel": "realAWSCloudwatch_ec2_cpu_utilization_24ae8d.csv",
+  "seed": 2,
+  "metrics": {
+    "auc_roc": 0.5032520806410774,
+    "auc_pr": 0.13745692160166312,
+    "vus_roc": 0.575513771552921,
+    "vus_pr": 0.17115458126483005,
+    "best_f1": 0.20992167101827677,
+    "standard_f1": 0.02745995423340961,
+    "event_f1": 0.2553191489361698,
+    "range_f1": 0.15914996288047514,
+    "affiliation_f1": 0.5568146573342496,
+    "threshold": 0.5406610005147163,
+    "n_predicted_anomalies": 35.0
+  },
+  "runtime_s": 1.1309,
+  "peak_vram_mb": 0.73,
+  "commit_hash": "c8af8c463111",
+  "config_hash": "10d0843c4bcf",
+  "config": {
+    "model": "iforest",
+    "model_params": {},
+    "data": "nab",
+    "data_params": {
+      "rel_path": "realAWSCloudwatch/ec2_cpu_utilization_24ae8d.csv"
+    },
+    "seed": 2,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-11T05:25:20+00:00"
+}

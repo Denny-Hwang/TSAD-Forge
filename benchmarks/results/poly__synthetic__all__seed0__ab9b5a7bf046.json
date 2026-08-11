@@ -1,0 +1,42 @@
+{
+  "run_id": "poly__synthetic__all__seed0__ab9b5a7bf046",
+  "model": "poly",
+  "generation": "gen1",
+  "dataset": "synthetic",
+  "channel": "all",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.9276755966086085,
+    "auc_pr": 0.5167445429613565,
+    "vus_roc": 0.9950643702933684,
+    "vus_pr": 0.9051526647904139,
+    "best_f1": 0.5595238095238095,
+    "standard_f1": 0.3116883116883117,
+    "event_f1": 0.6857142857142852,
+    "range_f1": 0.33656241350678107,
+    "affiliation_f1": 0.8667868623214683,
+    "threshold": 3.4973089395470596,
+    "n_predicted_anomalies": 20.0
+  },
+  "runtime_s": 0.0072,
+  "peak_vram_mb": 0.12,
+  "commit_hash": "b5445f763f08",
+  "config_hash": "ab9b5a7bf046",
+  "config": {
+    "model": "poly",
+    "model_params": {},
+    "data": "synthetic",
+    "data_params": {},
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-11T05:20:18+00:00"
+}

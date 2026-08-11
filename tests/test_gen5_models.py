@@ -3,11 +3,13 @@
 import numpy as np
 import pytest
 
-from tsad_forge.models.gen5_ssm_foundation.mamba_tsad import (
+pytest.importorskip("torch", reason="Gen5 모델은 torch 필요 (extras: dl)")
+
+from tsad_forge.models.gen5_ssm_foundation.mamba_tsad import (  # noqa: E402
     ama_smooth,
     hp_filter,
 )
-from tsad_forge.models.registry import get_model, list_models
+from tsad_forge.models.registry import get_model, list_models  # noqa: E402
 
 RNG = np.random.default_rng(5)
 T_TR, T_TE = 400, 200

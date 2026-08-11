@@ -8,10 +8,38 @@ theme:
     - content.code.copy
 nav:
   - Home: index.md
-  - Learn: learn/index.md
-  - Leaderboard: leaderboard/index.md
-  - Datasets: datasets/index.md
+  - Learn:
+      - 개요: learn/index.md
+      - ch01 문제 정의: learn/ch01_problem.md
+      - ch02 Gen1 통계: learn/ch02_gen1_statistical.md
+      - ch03 Gen2 고전 ML: learn/ch03_gen2_classical_ml.md
+      - ch04 Gen3 DL: learn/ch04_gen3_dl.md
+      - ch05 Gen4 Graph/Transformer: learn/ch05_gen4_graph_transformer.md
+      - ch06 Gen5 SSM/Foundation: learn/ch06_gen5_ssm_foundation.md
+      - ch07 평가 방법론: learn/ch07_evaluation.md
+      - ch08 임계값: learn/ch08_thresholding.md
+      - ch09 산업 적용: learn/ch09_industrial.md
+      - ch10 벤치마크 읽는 법: learn/ch10_reading_benchmarks.md
+  - Leaderboard:
+      - 차트: leaderboard/index.md
+      - lite 테이블: leaderboard/lite.md
+  - Datasets:
+      - 개요: datasets/index.md
+      - SMAP/MSL: datasets/smap_msl.md
+      - SMD: datasets/smd.md
+      - UCR: datasets/ucr.md
+      - TSB-AD: datasets/tsb_ad.md
+      - NAB: datasets/nab.md
+      - PSM: datasets/psm.md
+      - SKAB: datasets/skab.md
+      - Yahoo S5 (신청): datasets/yahoo_s5.md
+      - SWaT/WADI (신청): datasets/swat_wadi.md
+      - SECOM (참고): datasets/secom.md
 markdown_extensions:
   - admonition
   - pymdownx.superfences
+  - pymdownx.arithmatex:
+      generic: true
   - tables
+extra_javascript:
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js

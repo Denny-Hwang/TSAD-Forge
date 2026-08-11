@@ -1,0 +1,42 @@
+{
+  "run_id": "stl_residual__psm__all__seed0__13f77ab717d1",
+  "model": "stl_residual",
+  "generation": "gen1",
+  "dataset": "psm",
+  "channel": "all",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.585009966208646,
+    "auc_pr": 0.37600955475070147,
+    "vus_roc": 0.6389649070411898,
+    "vus_pr": 0.44438648935565495,
+    "best_f1": 0.4357226073836399,
+    "standard_f1": 0.04338875692794933,
+    "event_f1": 0.6172118978139554,
+    "range_f1": 0.39700856647903915,
+    "affiliation_f1": 0.7362377836747026,
+    "threshold": 15.11465716611394,
+    "n_predicted_anomalies": 879.0
+  },
+  "runtime_s": 892.7688,
+  "peak_vram_mb": 97.13,
+  "commit_hash": "b5445f763f08",
+  "config_hash": "13f77ab717d1",
+  "config": {
+    "model": "stl_residual",
+    "model_params": {},
+    "data": "psm",
+    "data_params": {},
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-11T05:20:15+00:00"
+}

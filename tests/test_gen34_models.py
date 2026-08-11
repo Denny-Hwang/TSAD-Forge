@@ -3,7 +3,9 @@
 import numpy as np
 import pytest
 
-from tsad_forge.models.registry import get_model, list_models
+pytest.importorskip("torch", reason="Gen3-4 모델은 torch 필요 (extras: dl)")
+
+from tsad_forge.models.registry import get_model, list_models  # noqa: E402
 
 GEN3 = ["ae", "lstm_ad", "lstm_p", "vae_donut", "dagmm", "omni_anomaly", "usad"]
 GEN4 = ["gdn", "mtad_gat", "anomaly_transformer", "tranad", "dcdetector", "timesnet"]

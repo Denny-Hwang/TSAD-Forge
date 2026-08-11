@@ -1,0 +1,44 @@
+{
+  "run_id": "iforest__smd__machine-1-1__seed0__c6a147962822",
+  "model": "iforest",
+  "generation": "gen2",
+  "dataset": "smd",
+  "channel": "machine-1-1",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.8330123145841224,
+    "auc_pr": 0.37346964828615326,
+    "vus_roc": 0.767064275276771,
+    "vus_pr": 0.3228084151143931,
+    "best_f1": 0.3537743441171737,
+    "standard_f1": 0.17119838872104734,
+    "event_f1": 0.6415094339622636,
+    "range_f1": 0.18984840098928815,
+    "affiliation_f1": 0.6103690711720748,
+    "threshold": 0.7313138788153161,
+    "n_predicted_anomalies": 285.0
+  },
+  "runtime_s": 1.7576,
+  "peak_vram_mb": 110.09,
+  "commit_hash": "c8af8c463111",
+  "config_hash": "c6a147962822",
+  "config": {
+    "model": "iforest",
+    "model_params": {},
+    "data": "smd",
+    "data_params": {
+      "machine": "machine-1-1"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-11T05:25:02+00:00"
+}

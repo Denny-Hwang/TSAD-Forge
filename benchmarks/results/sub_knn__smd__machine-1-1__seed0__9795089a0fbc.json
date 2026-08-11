@@ -1,0 +1,44 @@
+{
+  "run_id": "sub_knn__smd__machine-1-1__seed0__9795089a0fbc",
+  "model": "sub_knn",
+  "generation": "gen2",
+  "dataset": "smd",
+  "channel": "machine-1-1",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.9437306007835047,
+    "auc_pr": 0.6967306952800101,
+    "vus_roc": 0.9578302185761917,
+    "vus_pr": 0.744429262467884,
+    "best_f1": 0.6913802411373043,
+    "standard_f1": 0.13763007720711648,
+    "event_f1": 0.49298597194388727,
+    "range_f1": 0.1958678965876471,
+    "affiliation_f1": 0.5125067066113156,
+    "threshold": 966.8161791200895,
+    "n_predicted_anomalies": 285.0
+  },
+  "runtime_s": 15.1833,
+  "peak_vram_mb": 756.12,
+  "commit_hash": "c8af8c463111",
+  "config_hash": "9795089a0fbc",
+  "config": {
+    "model": "sub_knn",
+    "model_params": {},
+    "data": "smd",
+    "data_params": {
+      "machine": "machine-1-1"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-11T05:28:12+00:00"
+}

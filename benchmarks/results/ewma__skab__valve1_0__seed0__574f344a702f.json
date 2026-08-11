@@ -1,0 +1,44 @@
+{
+  "run_id": "ewma__skab__valve1_0__seed0__574f344a702f",
+  "model": "ewma",
+  "generation": "gen1",
+  "dataset": "skab",
+  "channel": "valve1_0",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.9352322945986241,
+    "auc_pr": 0.8937787330946855,
+    "vus_roc": 0.9622414309414314,
+    "vus_pr": 0.9329469307074986,
+    "best_f1": 0.8473372781065088,
+    "standard_f1": 0.05811138014527845,
+    "event_f1": 0.9999999999999996,
+    "range_f1": 0.3416046319272126,
+    "affiliation_f1": 0.8279705213361013,
+    "threshold": 175.43528165303604,
+    "n_predicted_anomalies": 12.0
+  },
+  "runtime_s": 0.0408,
+  "peak_vram_mb": 1.28,
+  "commit_hash": "64fe1069382f",
+  "config_hash": "574f344a702f",
+  "config": {
+    "model": "ewma",
+    "model_params": {},
+    "data": "skab",
+    "data_params": {
+      "experiment": "valve1/0"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-11T04:51:20+00:00"
+}
