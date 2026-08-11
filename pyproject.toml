@@ -51,7 +51,8 @@ include = ["tsad_forge*"]
 [tool.ruff]
 line-length = 100
 target-version = "py311"
-extend-exclude = ["tsad_forge/evaluation/_vendor"]  # vendored 코드 무수정 원칙
+# vendored 코드 무수정 원칙 + 노트북은 교육용 스타일 허용
+extend-exclude = ["tsad_forge/evaluation/_vendor", "notebooks"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "B"]
