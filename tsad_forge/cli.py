@@ -58,6 +58,12 @@ def build_parser() -> argparse.ArgumentParser:
     ls = sub.add_parser("list", help="list registered models or datasets")
     ls.add_argument("what", choices=["models", "datasets"])
 
+    viz = sub.add_parser("viz", help="generate all charts + leaderboard from results")
+    viz.add_argument("--results-dir", default="benchmarks/results")
+    viz.add_argument("--out-dir", default="docs/assets/charts")
+    viz.add_argument("--data-dir", default="data")
+    viz.add_argument("--leaderboard-out", default="docs/leaderboard/lite.md")
+
     return p
 
 
@@ -82,6 +88,15 @@ def main(argv: list[str] | None = None) -> int:
 
         subset = args.subset.split(",") if args.subset else None
         download_dataset(args.dataset, data_dir=args.data_dir, subset=subset)
+        return 0
+
+    if args.command == "viz":
+        from tsad_forge.viz.charts import generate_all
+        from tsad_forge.viz.leaderboard import save_leaderboard
+
+        generate_all(args.results_dir, args.out_dir, args.data_dir)
+        lb = save_leaderboard(args.results_dir, args.leaderboard_out)
+        print(f"leaderboard: {lb}")
         return 0
 
     if args.command == "run":
