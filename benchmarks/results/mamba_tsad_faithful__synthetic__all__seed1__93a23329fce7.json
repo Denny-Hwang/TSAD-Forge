@@ -1,0 +1,45 @@
+{
+  "run_id": "mamba_tsad_faithful__synthetic__all__seed1__93a23329fce7",
+  "model": "mamba_tsad_faithful",
+  "generation": "gen5",
+  "dataset": "synthetic",
+  "channel": "all",
+  "seed": 1,
+  "metrics": {
+    "auc_roc": 0.41206773840053323,
+    "auc_pr": 0.05622046221526,
+    "vus_roc": 0.6402922726595539,
+    "vus_pr": 0.12783193860293574,
+    "best_f1": 0.13606089438629876,
+    "standard_f1": 0.0,
+    "event_f1": 0.0,
+    "range_f1": 0.0,
+    "affiliation_f1": 0.06967842353551522,
+    "threshold": 0.19412696555256845,
+    "n_predicted_anomalies": 20.0
+  },
+  "runtime_s": 4.0588,
+  "peak_vram_mb": 0.63,
+  "commit_hash": "83081dba6b60",
+  "config_hash": "93a23329fce7",
+  "config": {
+    "model": "mamba_tsad_faithful",
+    "model_params": {
+      "epochs": 3,
+      "window": 32
+    },
+    "data": "synthetic",
+    "data_params": {},
+    "seed": 1,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-11T05:59:30+00:00"
+}

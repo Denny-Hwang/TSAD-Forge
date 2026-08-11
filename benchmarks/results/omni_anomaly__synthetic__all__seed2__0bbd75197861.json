@@ -1,0 +1,46 @@
+{
+  "run_id": "omni_anomaly__synthetic__all__seed2__0bbd75197861",
+  "model": "omni_anomaly",
+  "generation": "gen3",
+  "dataset": "synthetic",
+  "channel": "all",
+  "seed": 2,
+  "metrics": {
+    "auc_roc": 0.7647236765561373,
+    "auc_pr": 0.29519676094914704,
+    "vus_roc": 0.9022905577292206,
+    "vus_pr": 0.374721140996835,
+    "best_f1": 0.29850746268656714,
+    "standard_f1": 0.23636363636363636,
+    "event_f1": 0.696428571428571,
+    "range_f1": 0.455026455026455,
+    "affiliation_f1": 0.8843378921022741,
+    "threshold": 2.146539947986602,
+    "n_predicted_anomalies": 20.0
+  },
+  "runtime_s": 2.5376,
+  "peak_vram_mb": 0.57,
+  "commit_hash": "83081dba6b60",
+  "config_hash": "0bbd75197861",
+  "config": {
+    "model": "omni_anomaly",
+    "model_params": {
+      "epochs": 3,
+      "window": 32,
+      "hidden": 32
+    },
+    "data": "synthetic",
+    "data_params": {},
+    "seed": 2,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-11T05:44:17+00:00"
+}

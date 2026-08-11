@@ -1,0 +1,45 @@
+{
+  "run_id": "timesnet__synthetic__all__seed1__047d78f5691c",
+  "model": "timesnet",
+  "generation": "gen4",
+  "dataset": "synthetic",
+  "channel": "all",
+  "seed": 1,
+  "metrics": {
+    "auc_roc": 0.839966710726,
+    "auc_pr": 0.5107470113941122,
+    "vus_roc": 0.9734172098012372,
+    "vus_pr": 0.8434464022780634,
+    "best_f1": 0.5659340659340659,
+    "standard_f1": 0.19631901840490798,
+    "event_f1": 0.31999999999999973,
+    "range_f1": 0.18407079646017702,
+    "affiliation_f1": 0.3000568404854991,
+    "threshold": 2.1703553605079646,
+    "n_predicted_anomalies": 20.0
+  },
+  "runtime_s": 0.8442,
+  "peak_vram_mb": 0.57,
+  "commit_hash": "83081dba6b60",
+  "config_hash": "047d78f5691c",
+  "config": {
+    "model": "timesnet",
+    "model_params": {
+      "epochs": 5,
+      "window": 32
+    },
+    "data": "synthetic",
+    "data_params": {},
+    "seed": 1,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-11T05:58:07+00:00"
+}
