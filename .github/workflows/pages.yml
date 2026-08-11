@@ -1,4 +1,8 @@
-# GitHub Pages 배포 (CLAUDE.md §6): docs/ → mkdocs build → Pages
+# GitHub Pages deployment (CLAUDE.md section 6): docs/ -> mkdocs -> gh-pages branch.
+# Deploys by pushing the built site to the gh-pages branch (Pages source: gh-pages).
+# Note: the workflow-based deploy (actions/deploy-pages) requires the Pages site to be
+# created with admin rights, which the default GITHUB_TOKEN cannot do — the gh-pages
+# branch flow avoids that.
 name: Deploy Pages
 
 on:
@@ -8,16 +12,14 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: pages
   cancel-in-progress: true
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,18 +29,8 @@ jobs:
           cache: pip
       - run: pip install mkdocs mkdocs-material
       - run: mkdocs build --strict
-      - uses: actions/configure-pages@v5
-        with:
-          enablement: true  # 첫 실행 시 Pages 사이트 자동 활성화
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Deploy to gh-pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          mkdocs gh-deploy --force --no-history
