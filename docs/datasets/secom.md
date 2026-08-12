@@ -1,5 +1,7 @@
 # SECOM (UCI) — semiconductor reference only
 
+**What is this data?** Per-wafer summary statistics (590 sensors) from a semiconductor line with pass/fail labels — a static table, **not** a time series; kept as an FDC domain reference only.
+
 - **Source**: https://archive.ics.uci.edu/dataset/179/secom (UCI ML Repository)
 - **Nature**: **not a time series** — a static table of 590 per-wafer process-sensor
   summary statistics with pass/fail labels. It is *not* part of the TSAD benchmark

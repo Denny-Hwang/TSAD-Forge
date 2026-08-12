@@ -1,5 +1,7 @@
 # SWaT / WADI — application guide (no redistribution)
 
+**What is this data?** Sensor/actuator logs from two physical water-plant testbeds at SUTD (SWaT: treatment, 51 channels; WADI: distribution, 123 channels), 1 Hz. Anomalies are *staged cyber-physical attacks* on the control system. The reference benchmark for ICS security — application required.
+
 SWaT (Secure Water Treatment) and WADI (Water Distribution) are owned by SUTD iTrust
 (Singapore) and **may not be redistributed**. This repository provides loaders only,
 no download script.

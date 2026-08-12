@@ -1,5 +1,7 @@
 # TSB-AD-U / TSB-AD-M
 
+**What is this data?** A mega-benchmark: 1,070 univariate and 200 multivariate series curated and relabeled from 40 public datasets (web traffic, medicine, industry, ...) by the TSB-AD project, with a fixed train/test protocol. The closest thing TSAD has to a *standardized exam*.
+
 - **Source**: TheDatumOrg/TSB-AD (Liu & Paparrizos, NeurIPS 2024)
 - **Contents**: 1070 univariate (U) / 200 multivariate (M) series curated from 40
   datasets. Train length is encoded in the filename: `..._tr_<N>_1st_<firstAnomaly>.csv`

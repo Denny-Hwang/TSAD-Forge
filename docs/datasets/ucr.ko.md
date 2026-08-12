@@ -1,5 +1,7 @@
 # UCR Anomaly Archive (2021)
 
+**어떤 데이터인가?** UCR 그룹이 ECG, 곤충 EPG, 보행, 산업 센서 등에서 손수 선별한 단변량 250개 — 시계열당 확인된 이상 정확히 1개. 구형 벤치마크의 결함을 고치기 위해 설계된 *단변량 discord 발견*의 기준 셋.
+
 - **출처**: Wu & Keogh (TKDE 2021) — https://www.cs.ucr.edu/~eamonn/time_series_data_2018/
 - **구성**: 250개 단변량 시계열. 파일명에 train 경계와 이상 구간이 인코딩:
   `NNN_UCR_Anomaly_<name>_<trainEnd>_<anomStart>_<anomEnd>.txt`

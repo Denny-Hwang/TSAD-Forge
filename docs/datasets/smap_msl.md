@@ -1,5 +1,7 @@
 # NASA SMAP / MSL
 
+**What is this data?** Real spacecraft telemetry from two NASA missions — the SMAP satellite (soil moisture) and the MSL Curiosity rover. Each channel pairs one telemetry value with 24 one-hot command flags; anomalies are incidents from NASA's ISA reports. The canonical *aerospace telemetry* benchmark.
+
 - **Source**: NASA telemanom (Hundman et al., KDD 2018) — https://github.com/khundman/telemanom
 - **Contents**: 55 SMAP channels and 27 MSL channels; per-channel train/test npy arrays
   (25 dims: 1 telemetry value + 24 command features)

@@ -1,5 +1,7 @@
 # Yahoo S5 — application guide (no redistribution)
 
+**What is this data?** Production traffic metrics from Yahoo services (A1: real, A2–A4: synthetic with controlled trend/seasonality/changepoints), univariate, hourly. A classic *web-metrics* benchmark — access requires a research application.
+
 Yahoo S5 **may not be redistributed**, so this repository provides no download script —
 only a loader for locally placed files (CLAUDE.md §2).
 

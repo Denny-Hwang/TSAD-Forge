@@ -1,5 +1,7 @@
 # NASA SMAP / MSL
 
+**어떤 데이터인가?** NASA 두 미션의 실제 우주선 텔레메트리 — SMAP 위성(토양 수분)과 MSL 큐리오시티 로버. 채널마다 텔레메트리 1개 + 명령 플래그 24개로 구성되고, 이상은 NASA ISA 보고서의 실제 사건이다. *항공우주 텔레메트리* 표준 벤치마크.
+
 - **출처**: NASA telemanom (Hundman et al., KDD 2018) — https://github.com/khundman/telemanom
 - **구성**: SMAP 55채널ㆍMSL 27채널, 채널별 train/test npy (25차원: 텔레메트리 1 + command 24)
 - **라이선스**: NASA 공개 데이터. telemanom 코드는 사용하지 않음(라벨 csv만 사용).

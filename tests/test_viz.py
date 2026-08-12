@@ -57,9 +57,9 @@ def test_leaderboard_build_and_save(results, tmp_path):
 
     out = save_leaderboard(results, tmp_path / "lb" / "lite.md")
     text = out.read_text()
-    assert "VUS-PR" in text and "config_hash" in text
-    # PA-F1이 지표 컬럼으로 표에 등장하면 안 됨 (안내 문구 제외)
-    assert "mean_pa_f1" not in text and "| pa_f1" not in text
+    assert "VUS-PR" in text and "config" in text
+    assert "<table" in text and "Gen " in text  # 세대 배지가 있는 HTML 테이블
+    assert "pa_f1" not in text  # PA는 리더보드에 절대 등장하지 않는다
 
 
 def test_leaderboard_missing_results_raises(tmp_path):

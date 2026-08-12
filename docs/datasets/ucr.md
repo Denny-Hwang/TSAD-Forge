@@ -1,5 +1,7 @@
 # UCR Anomaly Archive (2021)
 
+**What is this data?** 250 univariate series hand-curated by the UCR group from domains like ECG, EPG (insect probing), gait, and industrial sensors — each with exactly one confirmed anomaly. Built specifically to fix the flaws of older benchmarks; the reference set for *univariate discord discovery*.
+
 - **Source**: Wu & Keogh (TKDE 2021) — https://www.cs.ucr.edu/~eamonn/time_series_data_2018/
 - **Contents**: 250 univariate series. The filename encodes the metadata:
   `NNN_UCR_Anomaly_<name>_<trainEnd>_<anomStart>_<anomEnd>.txt`

@@ -92,9 +92,11 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "viz":
         from tsad_forge.viz.charts import generate_all
+        from tsad_forge.viz.eda import generate_eda
         from tsad_forge.viz.leaderboard import save_leaderboard
 
         generate_all(args.results_dir, args.out_dir, args.data_dir)
+        generate_eda(Path(args.out_dir).parent / "eda", args.data_dir)
         lb = save_leaderboard(args.results_dir, args.leaderboard_out)
         print(f"leaderboard: {lb}")
         return 0

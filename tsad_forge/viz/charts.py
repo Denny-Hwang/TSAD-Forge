@@ -39,6 +39,15 @@ GEN_LABEL = {
     "gen4": "Gen4 Graph/Transformer",
     "gen5": "Gen5 SSM/Foundation",
 }
+# Two-line variants for category tick labels (6 long names collide on one line)
+GEN_LABEL_2L = {
+    "gen0": "Gen0<br>baseline",
+    "gen1": "Gen1<br>Statistical",
+    "gen2": "Gen2<br>Classical ML",
+    "gen3": "Gen3<br>DL Recon",
+    "gen4": "Gen4<br>Graph/Transformer",
+    "gen5": "Gen5<br>SSM/Foundation",
+}
 # Validated categorical palette (fixed slot order; gen0 baseline wears neutral ink)
 GEN_COLOR = {
     "gen0": "#52514e",
@@ -116,16 +125,16 @@ def generation_evolution(df: pd.DataFrame, out_dir: Path) -> Path:
             fig.add_trace(
                 go.Box(
                     y=vals,
-                    name=GEN_LABEL[gen],
+                    name=GEN_LABEL_2L[gen],
                     boxmean=True,
                     marker_color=GEN_COLOR[gen],
                     line={"width": 2},
                 )
             )
-    _base_layout(fig, "VUS-PR by generation — does newer mean better?", height=520)
+    _base_layout(fig, "VUS-PR by generation — does newer mean better?", height=540)
     fig.update_yaxes(title_text="VUS-PR (entities × seeds)", range=[-0.05, 1.05])
-    fig.update_xaxes(tickangle=0)
-    fig.update_layout(showlegend=False)
+    fig.update_xaxes(tickangle=0, tickfont={"size": 11})
+    fig.update_layout(showlegend=False, margin={"l": 70, "r": 40, "t": 64, "b": 84})
     return _write(fig, out_dir, "generation_evolution")
 
 
@@ -148,21 +157,25 @@ def leaderboard_table(df: pd.DataFrame, out_dir: Path) -> Path:
         p = p.reset_index()
         return [p[c] for c in p.columns], list(p.columns)
 
+    def _wrap_header(h: str) -> str:
+        # long entity names break onto two lines at the dataset separator
+        return h.replace("/", "/<br>") if len(h) > 14 and "/" in h else h
+
     cells, header = _cells(pivots[metrics[0]])
     n_cols = len(header)
     n_rows = len(cells[0])
     # Explicit width per column: the iframe scrolls horizontally instead of
     # squeezing 15+ columns into unreadable slivers.
-    col_w = [150, 170] + [96] * (n_cols - 2)
+    col_w = [110, 170] + [134] * (n_cols - 2)
     fig = go.Figure(
         go.Table(
             columnwidth=col_w,
             header={
-                "values": [f"<b>{h}</b>" for h in header],
+                "values": [f"<b>{_wrap_header(h)}</b>" for h in header],
                 "fill_color": "#eef2f7",
                 "align": "left",
                 "font": {"size": 11, "color": _INK},
-                "height": 46,
+                "height": 48,
             },
             cells={
                 "values": cells,
@@ -180,7 +193,12 @@ def leaderboard_table(df: pd.DataFrame, out_dir: Path) -> Path:
             {
                 "label": met,
                 "method": "restyle",
-                "args": [{"header.values": [[f"<b>{x}</b>" for x in h]], "cells.values": [c]}],
+                "args": [
+                    {
+                        "header.values": [[f"<b>{_wrap_header(x)}</b>" for x in h]],
+                        "cells.values": [c],
+                    }
+                ],
             }
         )
     fig.update_layout(
@@ -195,11 +213,11 @@ def leaderboard_table(df: pd.DataFrame, out_dir: Path) -> Path:
         height=140 + 26 * n_rows,
         margin={"l": 20, "r": 20, "t": 96, "b": 20},
         updatemenus=[
-            {
+            {  # top-right so it never covers the title
                 "buttons": buttons,
-                "x": 0.0,
-                "xanchor": "left",
-                "y": 1.06,
+                "x": 1.0,
+                "xanchor": "right",
+                "y": 1.04,
                 "yanchor": "bottom",
                 "direction": "down",
             }
@@ -514,13 +532,13 @@ def case_viewer(results_dir: str | Path, df: pd.DataFrame, out_dir: Path) -> Pat
             row=2,
             col=1,
         )
-    _base_layout(fig, "Case viewer — synthetic (seed 0)", height=640)
-    fig.update_yaxes(title_text="value", row=1, col=1)
+    _base_layout(fig, "Case viewer — synthetic (seed 0)", height=700)
+    fig.update_yaxes(title_text="value", automargin=True, row=1, col=1)
     fig.update_yaxes(title_text="score (0–1)", range=[-0.06, 1.06], row=2, col=1)
-    fig.update_xaxes(title_text="time step", row=2, col=1)
-    fig.update_layout(
-        legend={"orientation": "h", "y": -0.12, "yanchor": "top", "x": 0},
-        margin={"l": 70, "r": 40, "t": 64, "b": 96},
+    fig.update_xaxes(title_text="time step", title_standoff=8, row=2, col=1)
+    fig.update_layout(  # legend well below the x title — no overlap at any width
+        legend={"orientation": "h", "y": -0.16, "yanchor": "top", "x": 0},
+        margin={"l": 80, "r": 40, "t": 64, "b": 150},
     )
     return _write(fig, out_dir, "case_viewer")
 
