@@ -20,6 +20,10 @@ models:
   - sub_pca
   - stl_residual
   - poly
+  - sesd
+  # Gen2 (production-proven additions)
+  - spectral_residual
+  - hbos
   # Gen2
   - lof
   - ocsvm
@@ -27,6 +31,8 @@ models:
   - knn
   - sub_knn
   - matrix_profile
+  # Gen0 proposed consensus baseline
+  - ensemble_simple
 
 datasets:
   # 합성 (항상 가능)
@@ -48,3 +54,7 @@ datasets:
   - { data: nab, data_params: { rel_path: realKnownCause/machine_temperature_system_failure.csv } }
   - { data: psm }
   - { data: skab, data_params: { experiment: valve1/0 } }
+  # MGAB (CC0) / MBA (BSD-3 repo; PhysioNet ODC-BY)
+  - { data: mgab, data_params: { series: 1 } }
+  - { data: mgab, data_params: { series: 2 } }
+  - { data: mba }

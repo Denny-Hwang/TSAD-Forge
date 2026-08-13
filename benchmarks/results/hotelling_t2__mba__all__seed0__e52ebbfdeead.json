@@ -1,0 +1,42 @@
+{
+  "run_id": "hotelling_t2__mba__all__seed0__e52ebbfdeead",
+  "model": "hotelling_t2",
+  "generation": "gen1",
+  "dataset": "mba",
+  "channel": "all",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.586525590551181,
+    "auc_pr": 0.4777142870949542,
+    "vus_roc": 0.8496041907566719,
+    "vus_pr": 0.7705429452354953,
+    "best_f1": 0.5238626226583407,
+    "standard_f1": 0.057527082555098995,
+    "event_f1": 0.6458333333333328,
+    "range_f1": 0.21158343651121198,
+    "affiliation_f1": 0.5728376517321085,
+    "threshold": 25.859693417593043,
+    "n_predicted_anomalies": 77.0
+  },
+  "runtime_s": 0.0025,
+  "peak_vram_mb": 0.43,
+  "commit_hash": "39d9eedb7513",
+  "config_hash": "e52ebbfdeead",
+  "config": {
+    "model": "hotelling_t2",
+    "model_params": {},
+    "data": "mba",
+    "data_params": {},
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-13T00:27:34+00:00"
+}

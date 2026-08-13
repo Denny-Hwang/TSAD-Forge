@@ -50,6 +50,7 @@ def _ensure_builtin() -> None:
         return
     _BUILTIN_LOADED = True
     import tsad_forge.models.dummy  # noqa: F401  (등록 부수효과)
+    import tsad_forge.models.ensemble  # noqa: F401
     import tsad_forge.models.gen1_statistical  # noqa: F401
     import tsad_forge.models.gen2_classical_ml  # noqa: F401
 

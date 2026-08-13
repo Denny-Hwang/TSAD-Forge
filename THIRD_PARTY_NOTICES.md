@@ -45,6 +45,12 @@
 | TranAD (imperial-qore/TranAD) | BSD-3-Clause | BSD-3 | 재구현 선택 |
 | DCdetector (DAMO-DI-ML) | 라이선스 파일 확인 필요 | 불명 → 복사 금지 | 재구현 |
 | TimesNet (thuml/Time-Series-Library) | MIT | MIT | 재구현 선택 (TimesBlock 축소) |
+| S-H-ESD (Twitter AnomalyDetection) | R 패키지 GPL-3 — 코드 미사용 | — | GPL-3 | 논문 수식 기반 자체 구현 (`gen1_statistical/sesd.py`) | Hochenbaum et al. 2017 |
+| Spectral Residual (Ren et al., KDD 2019) | (MS 저장소 참조 안 함) | — | — | 논문 수식 기반 자체 구현 (`gen2_classical_ml/spectral_residual.py`) | Azure 프로덕션 알고리즘 |
+| HBOS | (참조 구현 미사용) | — | — | 논문 기반 자체 구현 | Goldstein & Dengel 2012 |
+| rrcf (pip) | https://github.com/kLabUM/rrcf | — | MIT | **도입 보류** — 유지보수 중단(pkg_resources 비호환), 재구현 예정 (roadmap) | |
+| MGAB 데이터 | https://github.com/MarkusThill/MGAB | master | CC0 1.0 | 다운로드 스크립트 (데이터 미커밋) | |
+| MBA 데이터 | https://github.com/imperial-qore/TranAD (data/MBA) | main | 저장소 BSD-3; PhysioNet ODC-BY | 다운로드 스크립트 (데이터 미커밋) | |
 | MERLIN | 공개 참조 구현 라이선스 불명 | 불명 → 복사 금지 | **도입 보류** (Gen2 목록에서 제외) |
 
 (M3 이후 stumpy, statsmodels, PyTorch 등 추가 시 이 표를 갱신한다.)

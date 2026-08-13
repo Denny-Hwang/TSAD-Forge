@@ -13,6 +13,8 @@
 | NAB | `tsad-forge download nab` | [nab.md](nab.md) |
 | PSM | `tsad-forge download psm` | [psm.md](psm.md) |
 | SKAB | `tsad-forge download skab` | [skab.md](skab.md) |
+| MGAB | `tsad-forge download mgab` | [mgab.md](mgab.md) |
+| MBA (심전도) | `tsad-forge download mba` | [mba.md](mba.md) |
 | Yahoo S5 | **신청 필요 (재배포 금지)** | [yahoo_s5.md](yahoo_s5.md) |
 | SWaT / WADI | **신청 필요 (재배포 금지)** | [swat_wadi.md](swat_wadi.md) |
 | SECOM | 참고용 (시계열 아님) | [secom.md](secom.md) |

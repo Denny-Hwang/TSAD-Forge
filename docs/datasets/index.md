@@ -14,6 +14,8 @@ in a `MANIFEST.json`.
 | NAB | `tsad-forge download nab` | [nab.md](nab.md) |
 | PSM | `tsad-forge download psm` | [psm.md](psm.md) |
 | SKAB | `tsad-forge download skab` | [skab.md](skab.md) |
+| MGAB | `tsad-forge download mgab` | [mgab.md](mgab.md) |
+| MBA (ECG) | `tsad-forge download mba` | [mba.md](mba.md) |
 | Yahoo S5 | **application required (no redistribution)** | [yahoo_s5.md](yahoo_s5.md) |
 | SWaT / WADI | **application required (no redistribution)** | [swat_wadi.md](swat_wadi.md) |
 | SECOM | reference only (not a time series) | [secom.md](secom.md) |

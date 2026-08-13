@@ -16,9 +16,11 @@ from tsad_forge.models.gen1_statistical.pca import (
     PCAT2SPEDetector,
     SubPCADetector,
 )
+from tsad_forge.models.gen1_statistical.sesd import SESDDetector
 
 __all__ = [
     "CUSUMDetector",
+    "SESDDetector",
     "EWMADetector",
     "HotellingT2Detector",
     "PCAT2SPEDetector",

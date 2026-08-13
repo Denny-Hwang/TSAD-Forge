@@ -4,6 +4,7 @@ LOF, OC-SVM, IForest, KNN, Sub-KNN, Matrix Profile.
 MERLIN은 공개 참조 구현의 라이선스가 불명확해 도입 보류 (THIRD_PARTY_NOTICES 참조).
 """
 
+from tsad_forge.models.gen2_classical_ml.hbos import HBOSDetector
 from tsad_forge.models.gen2_classical_ml.matrix_profile import MatrixProfileDetector
 from tsad_forge.models.gen2_classical_ml.sklearn_detectors import (
     IForestDetector,
@@ -12,8 +13,11 @@ from tsad_forge.models.gen2_classical_ml.sklearn_detectors import (
     OCSVMDetector,
     SubKNNDetector,
 )
+from tsad_forge.models.gen2_classical_ml.spectral_residual import SpectralResidualDetector
 
 __all__ = [
+    "HBOSDetector",
+    "SpectralResidualDetector",
     "IForestDetector",
     "KNNDetector",
     "LOFDetector",

@@ -64,6 +64,8 @@ def _ensure_builtin() -> None:
         return
     _BUILTIN_LOADED = True
 
+    from tsad_forge.data.loaders.mba import load_mba
+    from tsad_forge.data.loaders.mgab import load_mgab
     from tsad_forge.data.loaders.nab import load_nab
     from tsad_forge.data.loaders.psm import load_psm
     from tsad_forge.data.loaders.skab import load_skab
@@ -170,6 +172,27 @@ def _ensure_builtin() -> None:
             source_url="https://github.com/waico/SKAB",
             license="repo AGPL — 데이터 파일만 사용, 코드 미사용",
             citation="Katser & Kozitsin, 2020",
+        )
+    )
+
+    register_dataset(
+        DatasetEntry(
+            name="mgab",
+            loader=load_mgab,
+            source_url="https://github.com/MarkusThill/MGAB",
+            license="CC0 1.0 (public domain)",
+            citation="Thill et al., 2020",
+            notes="chaotic Mackey-Glass series — anomalies invisible to the naked eye",
+        )
+    )
+    register_dataset(
+        DatasetEntry(
+            name="mba",
+            loader=load_mba,
+            source_url="https://github.com/imperial-qore/TranAD",
+            license="repo BSD-3; PhysioNet MIT-BIH: ODC-BY",
+            citation="Moody & Mark; split from Tuli et al. (TranAD), VLDB 2022",
+            notes="2-lead ECG; near-periodic — window methods excel",
         )
     )
     register_dataset(

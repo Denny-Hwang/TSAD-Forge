@@ -30,6 +30,8 @@ EDA_TARGETS: dict[str, dict] = {
     "psm": {},
     "skab": {"experiment": "valve1/0"},
     "nab": {"rel_path": "realAWSCloudwatch/ec2_cpu_utilization_24ae8d.csv"},
+    "mgab": {"series": 1},
+    "mba": {},
 }
 
 

@@ -102,3 +102,42 @@ def test_window_utils():
     assert pts[0] == pts[1] == pts[2] == 0.0  # 앞쪽 패딩
     with pytest.raises(ValueError):
         embed_windows(X, 100)
+
+
+NEW_PRACTICAL = ["sesd", "spectral_residual", "hbos", "ensemble_simple"]
+
+
+@pytest.mark.parametrize("name", NEW_PRACTICAL)
+def test_practical_models_contract(name):
+    scores = get_model(name, seed=0).fit(TRAIN).score(TEST)
+    assert scores.shape == (400,)
+    assert np.isfinite(scores).all()
+
+
+@pytest.mark.parametrize("name", ["sesd", "hbos", "ensemble_simple"])
+def test_practical_models_detect_spike(name):
+    scores = get_model(name, seed=0).fit(TRAIN).score(TEST)
+    window = getattr(get_model(name), "window", 0) or 0
+    assert 195 <= int(np.argmax(scores)) <= 215 + window, name
+
+
+def test_spectral_residual_on_spike():
+    """SR의 본령(Azure KPI 시나리오): 주기+노이즈 신호 속 스파이크 saliency."""
+    t = np.arange(2000)
+    x = np.sin(2 * np.pi * t / 50) + np.random.default_rng(0).normal(scale=0.05, size=2000)
+    x[1200] += 4.0
+    scores = get_model("spectral_residual").fit(x[:500]).score(x)
+    assert 1195 <= int(np.argmax(scores)) <= 1205
+
+
+def test_ensemble_beats_worst_member_on_synthetic():
+    from tsad_forge.evaluation.metrics import compute_metrics
+    from tsad_forge.synthetic.generator import generate_synthetic
+
+    ds = generate_synthetic(seed=11)
+    vals = {}
+    for name in ["ensemble_simple", "sub_pca", "sub_knn", "iforest", "spectral_residual"]:
+        s = get_model(name, seed=0).fit(ds.train).score(ds.test)
+        vals[name] = compute_metrics(s, ds.labels)["vus_pr"]
+    members = [v for k, v in vals.items() if k != "ensemble_simple"]
+    assert vals["ensemble_simple"] >= min(members)  # 최소한 최악 멤버보다는 나아야

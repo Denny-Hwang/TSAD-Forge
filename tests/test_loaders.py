@@ -213,3 +213,47 @@ def test_missing_data_message_points_to_download(tmp_path):
         load_smd("machine-1-1", data_dir=tmp_path)
     with pytest.raises(FileNotFoundError, match="yahoo_s5.md"):
         load_yahoo(data_dir=tmp_path)
+
+
+def test_mgab_loader(tmp_path):
+    root = tmp_path / "mgab"
+    root.mkdir()
+    n = 1000
+    labels = np.zeros(n, dtype=int)
+    labels[500:510] = 1
+    pd.DataFrame(
+        {"value": RNG.normal(size=n), "is_anomaly": labels, "is_ignored": np.zeros(n, dtype=int)}
+    ).to_csv(root / "1.csv")
+
+    from tsad_forge.data.loaders.mgab import load_mgab
+
+    ds = load_mgab(series=1, data_dir=tmp_path)
+    assert ds.n_dims == 1
+    assert len(ds.train) == 300  # min(첫 이상=500, 30%=300)
+    assert ds.labels.sum() == 10
+
+
+def test_mba_loader(tmp_path):
+    root = tmp_path / "mba"
+    root.mkdir()
+    n = 200
+
+    def _xlsx(path, with_units=True):
+        df = pd.DataFrame({"ECG1": RNG.normal(size=n), "ECG2": RNG.normal(size=n)})
+        df.index.name = "sample"
+        if with_units:
+            units = pd.DataFrame({"ECG1": ["(mV)"], "ECG2": ["(mV)"]}, index=[None])
+            df = pd.concat([units, df])
+        df.to_excel(path, engine="openpyxl")
+
+    _xlsx(root / "train.xlsx")
+    _xlsx(root / "test.xlsx")
+    pd.DataFrame({"Time": ["0"] * 3, "Sample": [50, 100, 150], "Type": ["N", "V", "F"]}).to_excel(
+        root / "labels.xlsx", index=False, engine="openpyxl"
+    )
+
+    from tsad_forge.data.loaders.mba import load_mba
+
+    ds = load_mba(data_dir=tmp_path)
+    assert ds.train.shape == (n, 2)
+    assert ds.labels.sum() == 80  # V, F 주변 ±20씩

@@ -29,6 +29,7 @@ dependencies = [
     "statsmodels>=0.14",  # STL (BSD-3-Clause)
     "tabulate>=0.9",      # 리더보드 마크다운
     "plotly>=5.20",       # 시각화 8종 (MIT)
+    "openpyxl>=3.1",      # MBA(xlsx) 로더 (MIT)
 ]
 
 [project.optional-dependencies]

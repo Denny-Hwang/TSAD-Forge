@@ -20,6 +20,7 @@ nav:
       - ch08 Thresholding: learn/ch08_thresholding.md
       - ch09 Industrial practice: learn/ch09_industrial.md
       - ch10 Reading benchmarks: learn/ch10_reading_benchmarks.md
+  - Roadmap: roadmap.md
   - Leaderboard:
       - Charts: leaderboard/index.md
       - Lite table: leaderboard/lite.md
@@ -32,6 +33,8 @@ nav:
       - NAB: datasets/nab.md
       - PSM: datasets/psm.md
       - SKAB: datasets/skab.md
+      - MGAB: datasets/mgab.md
+      - MBA (ECG): datasets/mba.md
       - Yahoo S5 (apply): datasets/yahoo_s5.md
       - SWaT/WADI (apply): datasets/swat_wadi.md
       - SECOM (reference): datasets/secom.md
@@ -64,6 +67,8 @@ plugins:
             ch09 Industrial practice: ch09 산업 적용
             ch10 Reading benchmarks: ch10 벤치마크 읽는 법
             Leaderboard: 리더보드
+            Roadmap: 로드맵
+            'MBA (ECG)': MBA (심전도)
             Charts: 차트
             Lite table: lite 테이블
             Datasets: 데이터셋

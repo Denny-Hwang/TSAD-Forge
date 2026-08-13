@@ -252,3 +252,31 @@ def download_dataset(
         raise KeyError(f"unknown dataset '{name}'. Available: {sorted(_DOWNLOADERS)} + tsb_ad_u/m")
     _DOWNLOADERS[name](data_dir, subset=subset)
     print(f"done: {name} → {data_dir / name}")
+
+
+def download_mgab(data_dir: Path, subset: list[str] | None = None) -> None:
+    """MGAB (Mackey-Glass Anomaly Benchmark, Thill et al.) — CC0 1.0 (public domain).
+
+    10 univariate chaotic series (1..10.csv) fetched from the MarkusThill/MGAB repo.
+    """
+    root = data_dir / "mgab"
+    series = subset or [str(i) for i in range(1, 11)]
+    base = "https://raw.githubusercontent.com/MarkusThill/MGAB/master"
+    for s in series:
+        _fetch(f"{base}/{int(s)}.csv", root / f"{int(s)}.csv")
+    _write_manifest(root)
+
+
+def download_mba(data_dir: Path, subset: list[str] | None = None) -> None:
+    """MBA (MIT-BIH Supraventricular Arrhythmia, 2-lead ECG) — processed copy from the
+    TranAD repository (BSD-3-Clause); underlying PhysioNet data is ODC-BY (open).
+    """
+    root = data_dir / "mba"
+    base = "https://raw.githubusercontent.com/imperial-qore/TranAD/main/data/MBA"
+    for name in ("train.xlsx", "test.xlsx", "labels.xlsx"):
+        _fetch(f"{base}/{name}", root / name)
+    _write_manifest(root)
+
+
+_DOWNLOADERS["mgab"] = download_mgab
+_DOWNLOADERS["mba"] = download_mba
