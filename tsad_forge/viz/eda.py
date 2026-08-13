@@ -80,7 +80,22 @@ def dataset_eda(ds: TSADDataset, out_dir: Path, name: str) -> Path:
                 row=d + 1,
                 col=1,
             )
-    if len(lengths) >= 5:
+    if len(lengths) >= 5 and len(set(lengths)) == 1:
+        # all events share one length — a histogram degenerates into a single
+        # full-width block with fractional ticks; a count bar reads better
+        fig.add_trace(
+            go.Bar(
+                x=[f"{lengths[0]} steps"],
+                y=[len(lengths)],
+                marker={"color": "#2a78d6"},
+                showlegend=False,
+                width=0.3,
+            ),
+            row=n_channels + 1,
+            col=1,
+        )
+        fig.update_yaxes(title_text="event count", row=n_channels + 1, col=1)
+    elif len(lengths) >= 5:
         fig.add_trace(
             go.Histogram(
                 x=lengths,

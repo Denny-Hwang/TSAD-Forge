@@ -1,0 +1,44 @@
+{
+  "run_id": "hbos__mgab__2__seed0__0ac2775a90c3",
+  "model": "hbos",
+  "generation": "gen2",
+  "dataset": "mgab",
+  "channel": "2",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.5007506748358683,
+    "auc_pr": 0.057907921470506725,
+    "vus_roc": 0.5343369789542606,
+    "vus_pr": 0.06336707971997894,
+    "best_f1": 0.10836373463045534,
+    "standard_f1": 0.01905165114309907,
+    "event_f1": 0.11563876651982363,
+    "range_f1": 0.08736756556529623,
+    "affiliation_f1": 0.6541108934126731,
+    "threshold": 4.231598368998585,
+    "n_predicted_anomalies": 714.0
+  },
+  "runtime_s": 0.0264,
+  "peak_vram_mb": 3.05,
+  "commit_hash": "1a5185bb634b",
+  "config_hash": "0ac2775a90c3",
+  "config": {
+    "model": "hbos",
+    "model_params": {},
+    "data": "mgab",
+    "data_params": {
+      "series": 2
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-13T01:00:47+00:00"
+}

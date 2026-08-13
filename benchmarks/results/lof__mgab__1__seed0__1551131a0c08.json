@@ -1,0 +1,44 @@
+{
+  "run_id": "lof__mgab__1__seed0__1551131a0c08",
+  "model": "lof",
+  "generation": "gen2",
+  "dataset": "mgab",
+  "channel": "1",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.46090295174323626,
+    "auc_pr": 0.05298928070124915,
+    "vus_roc": 0.48849750103819883,
+    "vus_pr": 0.05695542958468341,
+    "best_f1": 0.10836373463045534,
+    "standard_f1": 0.01613588110403397,
+    "event_f1": 0.09956331877729242,
+    "range_f1": 0.07732304289353975,
+    "affiliation_f1": 0.683676056500967,
+    "threshold": 1.4122031336174263,
+    "n_predicted_anomalies": 700.0
+  },
+  "runtime_s": 1.5091,
+  "peak_vram_mb": 56.7,
+  "commit_hash": "1a5185bb634b",
+  "config_hash": "1551131a0c08",
+  "config": {
+    "model": "lof",
+    "model_params": {},
+    "data": "mgab",
+    "data_params": {
+      "series": 1
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-13T01:01:05+00:00"
+}

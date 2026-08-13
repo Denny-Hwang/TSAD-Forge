@@ -1,0 +1,42 @@
+{
+  "run_id": "ensemble_simple__synthetic__all__seed0__50d44c63db2c",
+  "model": "ensemble_simple",
+  "generation": "gen0",
+  "dataset": "synthetic",
+  "channel": "all",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.9308132657944398,
+    "auc_pr": 0.2956072092990492,
+    "vus_roc": 0.9853626769712739,
+    "vus_pr": 0.6935619814843372,
+    "best_f1": 0.33653846153846156,
+    "standard_f1": 0.2077922077922078,
+    "event_f1": 0.5333333333333329,
+    "range_f1": 0.28440366972477066,
+    "affiliation_f1": 0.7899113041136432,
+    "threshold": 0.888216608304152,
+    "n_predicted_anomalies": 20.0
+  },
+  "runtime_s": 1.4842,
+  "peak_vram_mb": 3.7,
+  "commit_hash": "1a5185bb634b",
+  "config_hash": "50d44c63db2c",
+  "config": {
+    "model": "ensemble_simple",
+    "model_params": {},
+    "data": "synthetic",
+    "data_params": {},
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-13T01:07:15+00:00"
+}

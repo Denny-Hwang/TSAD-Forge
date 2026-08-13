@@ -1,0 +1,44 @@
+{
+  "run_id": "spectral_residual__skab__valve1_0__seed0__9058a8cbdf20",
+  "model": "spectral_residual",
+  "generation": "gen2",
+  "dataset": "skab",
+  "channel": "valve1_0",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.5218889772886818,
+    "auc_pr": 0.37953235287383214,
+    "vus_roc": 0.5772920127136764,
+    "vus_pr": 0.4180884271224251,
+    "best_f1": 0.5188067444876784,
+    "standard_f1": 0.01937046004842615,
+    "event_f1": 0.4999999999999996,
+    "range_f1": 0.2515527950310559,
+    "affiliation_f1": 0.6846136363198562,
+    "threshold": 3.457247639768616,
+    "n_predicted_anomalies": 12.0
+  },
+  "runtime_s": 0.0131,
+  "peak_vram_mb": 1.21,
+  "commit_hash": "1a5185bb634b",
+  "config_hash": "9058a8cbdf20",
+  "config": {
+    "model": "spectral_residual",
+    "model_params": {},
+    "data": "skab",
+    "data_params": {
+      "experiment": "valve1/0"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-13T00:59:28+00:00"
+}

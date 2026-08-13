@@ -1,0 +1,44 @@
+{
+  "run_id": "sesd__skab__valve1_0__seed0__c58e84e98548",
+  "model": "sesd",
+  "generation": "gen1",
+  "dataset": "skab",
+  "channel": "valve1_0",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.5427048999485201,
+    "auc_pr": 0.4017430420388978,
+    "vus_roc": 0.5900771761873883,
+    "vus_pr": 0.43528603778324476,
+    "best_f1": 0.5215633423180593,
+    "standard_f1": 0.0387409200968523,
+    "event_f1": 0.7999999999999995,
+    "range_f1": 0.2776320719370551,
+    "affiliation_f1": 0.7905752491810727,
+    "threshold": 8.879154540434817,
+    "n_predicted_anomalies": 12.0
+  },
+  "runtime_s": 0.0629,
+  "peak_vram_mb": 2.56,
+  "commit_hash": "1a5185bb634b",
+  "config_hash": "c58e84e98548",
+  "config": {
+    "model": "sesd",
+    "model_params": {},
+    "data": "skab",
+    "data_params": {
+      "experiment": "valve1/0"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-13T00:58:01+00:00"
+}
