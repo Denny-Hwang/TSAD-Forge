@@ -1,0 +1,44 @@
+{
+  "run_id": "lof__psm__all__seed0__9a607b5e3927",
+  "model": "lof",
+  "generation": "gen2",
+  "dataset": "psm",
+  "channel": "all",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.7345522473345163,
+    "auc_pr": 0.4687546478974075,
+    "vus_roc": 0.7040931508116867,
+    "vus_pr": 0.47318846342832327,
+    "best_f1": 0.566678268319456,
+    "standard_f1": 0.046239113222486146,
+    "event_f1": 0.2664841432808575,
+    "range_f1": 0.1538468386611408,
+    "affiliation_f1": 0.29370287848545107,
+    "threshold": 4.724638880437196,
+    "n_predicted_anomalies": 879.0
+  },
+  "runtime_s": 11.056,
+  "runtime_fit_s": 3.5611,
+  "runtime_score_s": 7.4949,
+  "peak_mem_mb": 301.46,
+  "commit_hash": "ea684f3c7ab9",
+  "config_hash": "9a607b5e3927",
+  "config": {
+    "model": "lof",
+    "model_params": {},
+    "data": "psm",
+    "data_params": {},
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-17T16:56:38+00:00"
+}

@@ -1,0 +1,46 @@
+{
+  "run_id": "lof__smd__machine-1-1__seed0__701d1ed1b1c2",
+  "model": "lof",
+  "generation": "gen2",
+  "dataset": "smd",
+  "channel": "machine-1-1",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.8852183530677916,
+    "auc_pr": 0.5662353892672032,
+    "vus_roc": 0.9130879740380752,
+    "vus_pr": 0.6019964894066265,
+    "best_f1": 0.5416591686161598,
+    "standard_f1": 0.18462571332661967,
+    "event_f1": 0.758620689655172,
+    "range_f1": 0.24184264453956758,
+    "affiliation_f1": 0.7343577798358374,
+    "threshold": 23.508324595575775,
+    "n_predicted_anomalies": 285.0
+  },
+  "runtime_s": 6.734,
+  "runtime_fit_s": 2.6739,
+  "runtime_score_s": 4.0601,
+  "peak_mem_mb": 157.21,
+  "commit_hash": "ea684f3c7ab9",
+  "config_hash": "701d1ed1b1c2",
+  "config": {
+    "model": "lof",
+    "model_params": {},
+    "data": "smd",
+    "data_params": {
+      "machine": "machine-1-1"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-17T16:55:57+00:00"
+}
