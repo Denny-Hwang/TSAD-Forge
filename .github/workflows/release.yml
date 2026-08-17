@@ -6,6 +6,8 @@ name: Release
 on:
   push:
     tags: ["v*"]
+    branches: [main]
+    paths: [".github/release-tag"]  # 태그 푸시 권한이 없는 봇/CI 경로용 마커 파일
   workflow_dispatch:
     inputs:
       tag:
@@ -21,22 +23,45 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Resolve release tag
+        id: tag
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            TAG="${GITHUB_REF_NAME}"
+          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            TAG="${{ inputs.tag }}"
+          else
+            TAG="$(tr -d '[:space:]' < .github/release-tag)"
+          fi
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+          # 이미 릴리스된 태그면 중복 릴리스를 만들지 않는다
+          if gh release view "${TAG}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
       - uses: actions/setup-python@v5
+        if: steps.tag.outputs.exists == 'false'
         with:
           python-version: "3.11"
       - name: Build sdist and wheel
+        if: steps.tag.outputs.exists == 'false'
         run: |
           pip install build
           python -m build
       - name: Sanity-check the wheel installs and imports
+        if: steps.tag.outputs.exists == 'false'
         run: |
           pip install dist/*.whl
           python -c "import tsad_forge; from tsad_forge.models.registry import list_models; print(len(list_models()), 'models')"
-      - name: Create GitHub Release
+      - name: Create GitHub Release (creates the tag if missing)
+        if: steps.tag.outputs.exists == 'false'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
-          target_commitish: ${{ github.event_name == 'workflow_dispatch' && github.sha || '' }}
+          tag_name: ${{ steps.tag.outputs.tag }}
+          target_commitish: ${{ startsWith(github.ref, 'refs/tags/') && '' || github.sha }}
           files: dist/*
           generate_release_notes: true
 
