@@ -1,0 +1,44 @@
+{
+  "run_id": "dummy__synthetic__all__seed0__ca2c02bf2522",
+  "model": "dummy",
+  "generation": "gen0",
+  "dataset": "synthetic",
+  "channel": "all",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.39270977237225846,
+    "auc_pr": 0.0219570232096601,
+    "vus_roc": 0.7821926519971729,
+    "vus_pr": 0.10231976584665857,
+    "best_f1": 0.0562685093780849,
+    "standard_f1": 0.0,
+    "event_f1": 0.0,
+    "range_f1": 0.0,
+    "affiliation_f1": 0.2915537719177965,
+    "threshold": 0.9900605263839687,
+    "n_predicted_anomalies": 20.0
+  },
+  "runtime_s": 0.0002,
+  "runtime_fit_s": 0.0,
+  "runtime_score_s": 0.0002,
+  "peak_mem_mb": 0.16,
+  "commit_hash": "b2a6682702b2",
+  "config_hash": "ca2c02bf2522",
+  "config": {
+    "model": "dummy",
+    "model_params": {},
+    "data": "synthetic",
+    "data_params": {},
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-17T15:55:00+00:00"
+}
