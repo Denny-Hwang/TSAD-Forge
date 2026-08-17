@@ -1,0 +1,50 @@
+{
+  "run_id": "timesnet__skab__valve1_0__seed1__d7c62250f9fd",
+  "model": "timesnet",
+  "generation": "gen4",
+  "dataset": "skab",
+  "channel": "valve1_0",
+  "seed": 1,
+  "metrics": {
+    "auc_roc": 0.5868238251556096,
+    "auc_pr": 0.3735330804776505,
+    "vus_roc": 0.6022351990955489,
+    "vus_pr": 0.38631249744532564,
+    "best_f1": 0.5835453774385072,
+    "standard_f1": 0.0,
+    "event_f1": 0.0,
+    "range_f1": 0.0,
+    "affiliation_f1": 0.5517571554065256,
+    "mean_detection_delay": 401.0,
+    "threshold": 140.0619110107422,
+    "n_predicted_anomalies": 12.0
+  },
+  "runtime_s": 2.5565,
+  "runtime_fit_s": 2.5334,
+  "runtime_score_s": 0.0231,
+  "peak_mem_mb": 0.0,
+  "commit_hash": "7604ef01acb6",
+  "config_hash": "d7c62250f9fd",
+  "config": {
+    "model": "timesnet",
+    "model_params": {
+      "epochs": 5,
+      "window": 32
+    },
+    "data": "skab",
+    "data_params": {
+      "experiment": "valve1/0"
+    },
+    "seed": 1,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-17T17:38:59+00:00"
+}

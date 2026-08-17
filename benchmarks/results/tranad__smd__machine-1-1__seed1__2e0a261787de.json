@@ -1,0 +1,50 @@
+{
+  "run_id": "tranad__smd__machine-1-1__seed1__2e0a261787de",
+  "model": "tranad",
+  "generation": "gen4",
+  "dataset": "smd",
+  "channel": "machine-1-1",
+  "seed": 1,
+  "metrics": {
+    "auc_roc": 0.9099416337399135,
+    "auc_pr": 0.6184334855509546,
+    "vus_roc": 0.9287275977967442,
+    "vus_pr": 0.6476287880460564,
+    "best_f1": 0.6065873741994511,
+    "standard_f1": 0.16179926149714668,
+    "event_f1": 0.628422425032594,
+    "range_f1": 0.24269898754931052,
+    "affiliation_f1": 0.5407224032105378,
+    "mean_detection_delay": 263.125,
+    "threshold": 460.0961480712894,
+    "n_predicted_anomalies": 285.0
+  },
+  "runtime_s": 43.537,
+  "runtime_fit_s": 40.0869,
+  "runtime_score_s": 3.4501,
+  "peak_mem_mb": 406.9,
+  "commit_hash": "7604ef01acb6",
+  "config_hash": "2e0a261787de",
+  "config": {
+    "model": "tranad",
+    "model_params": {
+      "epochs": 5,
+      "window": 32
+    },
+    "data": "smd",
+    "data_params": {
+      "machine": "machine-1-1"
+    },
+    "seed": 1,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-17T17:35:03+00:00"
+}

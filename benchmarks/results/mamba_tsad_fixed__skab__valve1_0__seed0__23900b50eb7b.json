@@ -1,0 +1,50 @@
+{
+  "run_id": "mamba_tsad_fixed__skab__valve1_0__seed0__23900b50eb7b",
+  "model": "mamba_tsad_fixed",
+  "generation": "gen5",
+  "dataset": "skab",
+  "channel": "valve1_0",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.47961864775059676,
+    "auc_pr": 0.33112924086705126,
+    "vus_roc": 0.5448227673398529,
+    "vus_pr": 0.3828352873563726,
+    "best_f1": 0.5307486631016043,
+    "standard_f1": 0.01937046004842615,
+    "event_f1": 0.4999999999999996,
+    "range_f1": 0.23253004387359316,
+    "affiliation_f1": 0.5739841779800267,
+    "mean_detection_delay": 26.0,
+    "threshold": 0.007925333902239795,
+    "n_predicted_anomalies": 12.0
+  },
+  "runtime_s": 16.3114,
+  "runtime_fit_s": 16.0987,
+  "runtime_score_s": 0.2127,
+  "peak_mem_mb": 0.07,
+  "commit_hash": "7604ef01acb6",
+  "config_hash": "23900b50eb7b",
+  "config": {
+    "model": "mamba_tsad_fixed",
+    "model_params": {
+      "epochs": 3,
+      "window": 32
+    },
+    "data": "skab",
+    "data_params": {
+      "experiment": "valve1/0"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-17T17:41:24+00:00"
+}

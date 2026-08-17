@@ -1,0 +1,50 @@
+{
+  "run_id": "anomaly_transformer__skab__valve1_0__seed2__0bb3a6889f50",
+  "model": "anomaly_transformer",
+  "generation": "gen4",
+  "dataset": "skab",
+  "channel": "valve1_0",
+  "seed": 2,
+  "metrics": {
+    "auc_roc": 0.8792796828304573,
+    "auc_pr": 0.7433749449371967,
+    "vus_roc": 0.8938880542257841,
+    "vus_pr": 0.767217423209357,
+    "best_f1": 0.7601626016260162,
+    "standard_f1": 0.14780600461893764,
+    "event_f1": 0.9999999999999996,
+    "range_f1": 0.4175217048145225,
+    "affiliation_f1": 0.9101156476850908,
+    "mean_detection_delay": 116.0,
+    "threshold": 1000.6297607421875,
+    "n_predicted_anomalies": 32.0
+  },
+  "runtime_s": 4.708,
+  "runtime_fit_s": 4.6574,
+  "runtime_score_s": 0.0506,
+  "peak_mem_mb": 0.0,
+  "commit_hash": "7604ef01acb6",
+  "config_hash": "0bb3a6889f50",
+  "config": {
+    "model": "anomaly_transformer",
+    "model_params": {
+      "epochs": 3,
+      "window": 32
+    },
+    "data": "skab",
+    "data_params": {
+      "experiment": "valve1/0"
+    },
+    "seed": 2,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-17T17:32:40+00:00"
+}

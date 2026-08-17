@@ -78,11 +78,16 @@ def _bootstrap_ci(row: pd.Series, n_boot: int = _BOOTSTRAP_N) -> tuple[float, fl
 
 
 def friedman_pvalue(pivot: pd.DataFrame) -> tuple[float, int, int] | None:
-    """공통 엔티티(무결측 열)에서의 Friedman 검정. (p, n_models, n_entities) 또는 None.
+    """공통 엔티티에서의 Friedman 검정. (p, n_models, n_entities) 또는 None.
 
     "모델 간 순위 차이가 우연 수준인가"에 대한 전역 검정 — CD 다이어그램의 수치 근거.
+    커버리지가 이질적일 때(예: DL 프로파일은 소수 엔티티만 실행) 전 모델 교집합이
+    비어버리므로, CD 다이어그램과 같은 규칙으로 최대 커버리지의 90% 이상인 모델만
+    남긴 뒤 그 안에서 무결측 열을 취한다.
     """
-    complete = pivot.loc[:, pivot.notna().all(axis=0)]
+    coverage = pivot.notna().sum(axis=1)
+    core = pivot.loc[coverage >= 0.9 * coverage.max()]
+    complete = core.loc[:, core.notna().all(axis=0)]
     if complete.shape[0] < 3 or complete.shape[1] < 3:
         return None
     _, p = stats.friedmanchisquare(*[complete.loc[idx].to_numpy() for idx in complete.index])
