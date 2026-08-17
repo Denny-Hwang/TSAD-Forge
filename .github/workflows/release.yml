@@ -1,10 +1,17 @@
-# Release pipeline (리뷰 P2): v* 태그 푸시 → sdist/wheel 빌드 → GitHub Release.
+# Release pipeline (리뷰 P2): v* 태그 푸시 또는 수동 dispatch(tag 입력) →
+# sdist/wheel 빌드 → GitHub Release (태그가 없으면 릴리스 생성이 태그도 만든다).
 # PyPI 배포는 trusted publishing 설정 후 주석 해제 (CONTRIBUTING.md 'Releases').
 name: Release
 
 on:
   push:
     tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag (e.g. v0.2.0) — created at the target ref if missing"
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -28,6 +35,8 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+          target_commitish: ${{ github.event_name == 'workflow_dispatch' && github.sha || '' }}
           files: dist/*
           generate_release_notes: true
 
