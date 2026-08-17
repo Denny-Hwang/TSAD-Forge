@@ -89,7 +89,8 @@ filterwarnings = [
 ]
 
 [tool.mypy]
-python_version = "3.11"
+# python_version은 고정하지 않는다 — 실행 인터프리터를 따른다
+# (최신 numpy 스텁은 3.12 전용 `type` 문을 쓰므로 3.11 고정 시 3.12 러너에서 파싱 실패).
 # 완화된 시작점 (리뷰 P2): 공개 API 시그니처의 타입 정합성 검사가 목적.
 # strict 모드 승격은 roadmap. vendored 코드는 검사하지 않는다.
 ignore_missing_imports = true
