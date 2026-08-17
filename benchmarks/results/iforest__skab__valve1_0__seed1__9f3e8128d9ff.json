@@ -1,0 +1,46 @@
+{
+  "run_id": "iforest__skab__valve1_0__seed1__9f3e8128d9ff",
+  "model": "iforest",
+  "generation": "gen2",
+  "dataset": "skab",
+  "channel": "valve1_0",
+  "seed": 1,
+  "metrics": {
+    "auc_roc": 0.48342782454052535,
+    "auc_pr": 0.3334026244837835,
+    "vus_roc": 0.5271439149995191,
+    "vus_pr": 0.36387505372594164,
+    "best_f1": 0.5182291666666666,
+    "standard_f1": 0.014527845036319613,
+    "event_f1": 0.39999999999999963,
+    "range_f1": 0.2320916905444126,
+    "affiliation_f1": 0.6078844591383061,
+    "threshold": 0.7147685841297098,
+    "n_predicted_anomalies": 12.0
+  },
+  "runtime_s": 0.2036,
+  "runtime_fit_s": 0.1871,
+  "runtime_score_s": 0.0164,
+  "peak_mem_mb": 0.0,
+  "commit_hash": "aeea78f43f22",
+  "config_hash": "9f3e8128d9ff",
+  "config": {
+    "model": "iforest",
+    "model_params": {},
+    "data": "skab",
+    "data_params": {
+      "experiment": "valve1/0"
+    },
+    "seed": 1,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-17T17:00:25+00:00"
+}

@@ -1,0 +1,47 @@
+{
+  "run_id": "iforest__synthetic__all__seed0__89bf57ecbbcb",
+  "model": "iforest",
+  "generation": "gen2",
+  "dataset": "synthetic",
+  "channel": "all",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.6962854537601382,
+    "auc_pr": 0.12054077332713764,
+    "vus_roc": 0.8700640271024107,
+    "vus_pr": 0.2821694533114952,
+    "best_f1": 0.21497584541062803,
+    "standard_f1": 0.0,
+    "event_f1": 0.0,
+    "range_f1": 0.0,
+    "affiliation_f1": 0.19124369387058418,
+    "threshold": 0.5942823955776618,
+    "n_predicted_anomalies": 20.0
+  },
+  "runtime_s": 0.1955,
+  "runtime_fit_s": 0.1683,
+  "runtime_score_s": 0.0272,
+  "peak_mem_mb": 0.0,
+  "commit_hash": "aeea78f43f22",
+  "config_hash": "89bf57ecbbcb",
+  "config": {
+    "model": "iforest",
+    "model_params": {},
+    "data": "synthetic",
+    "data_params": {
+      "n_dims": 5,
+      "n_events": 8
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-17T16:58:26+00:00"
+}

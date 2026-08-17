@@ -1,0 +1,46 @@
+{
+  "run_id": "iforest__nab__realKnownCause_machine_temperature_system_failure.csv__seed2__053d1ce8d6cd",
+  "model": "iforest",
+  "generation": "gen2",
+  "dataset": "nab",
+  "channel": "realKnownCause_machine_temperature_system_failure.csv",
+  "seed": 2,
+  "metrics": {
+    "auc_roc": 0.8720617140236875,
+    "auc_pr": 0.5760521137180697,
+    "vus_roc": 0.8953526094267318,
+    "vus_pr": 0.5675049346480229,
+    "best_f1": 0.5430303030303031,
+    "standard_f1": 0.4709018214127055,
+    "event_f1": 0.7881040892193302,
+    "range_f1": 0.35870980723120516,
+    "affiliation_f1": 0.7875530392160824,
+    "threshold": 0.6724268912386206,
+    "n_predicted_anomalies": 550.0
+  },
+  "runtime_s": 0.2467,
+  "runtime_fit_s": 0.1575,
+  "runtime_score_s": 0.0893,
+  "peak_mem_mb": 0.0,
+  "commit_hash": "aeea78f43f22",
+  "config_hash": "053d1ce8d6cd",
+  "config": {
+    "model": "iforest",
+    "model_params": {},
+    "data": "nab",
+    "data_params": {
+      "rel_path": "realKnownCause/machine_temperature_system_failure.csv"
+    },
+    "seed": 2,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-17T16:58:57+00:00"
+}

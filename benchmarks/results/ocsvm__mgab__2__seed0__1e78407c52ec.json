@@ -1,0 +1,46 @@
+{
+  "run_id": "ocsvm__mgab__2__seed0__1e78407c52ec",
+  "model": "ocsvm",
+  "generation": "gen2",
+  "dataset": "mgab",
+  "channel": "2",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.5022672860204391,
+    "auc_pr": 0.05878284495395657,
+    "vus_roc": 0.5356147016624407,
+    "vus_pr": 0.06432855368504255,
+    "best_f1": 0.10842223010394783,
+    "standard_f1": 0.019957537154989383,
+    "event_f1": 0.1207708779443253,
+    "range_f1": 0.08285802156810224,
+    "affiliation_f1": 0.6426665673595039,
+    "threshold": 0.9764803431058082,
+    "n_predicted_anomalies": 700.0
+  },
+  "runtime_s": 0.7868,
+  "runtime_fit_s": 0.0769,
+  "runtime_score_s": 0.7098,
+  "peak_mem_mb": 0.0,
+  "commit_hash": "aeea78f43f22",
+  "config_hash": "1e78407c52ec",
+  "config": {
+    "model": "ocsvm",
+    "model_params": {},
+    "data": "mgab",
+    "data_params": {
+      "series": 2
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-17T16:58:08+00:00"
+}
