@@ -1,0 +1,32 @@
+# MambaTSAD 논문 세팅 재현 (Chen et al., IEEE SPL 2024, arXiv:2405.19823).
+#
+# 원 저장소(aaaceo890/mamba_tsad)의 run.sh / main.py 가 사용하는 엔티티 전체:
+#   NASA: SMAP A-4, T-1 / MSL C-2   (원 출처 s3 zip 또는 HF 미러 필요)
+#   SMD : machine-1-1, 2-1, 3-2, 3-7, 1-6
+#   SWaT: 전체 (iTrust 신청 필요 — 재배포 금지, 로컬 배치 시에만 실행)
+#
+# 데이터가 없는 엔티티는 runner가 no_data로 건너뛰므로, 접근 가능한 부분집합만으로도
+# faithful vs fixed 비교가 성립한다. 원 논문과의 차이: 우리는 원 출처 원본 데이터를
+# 쓰고(원 저장소의 재배포 zip 미사용), 평가는 PA-F1이 아닌 VUS-PR 프로토콜이다 —
+# 따라서 논문 표의 절대 수치와는 비교 불가하고, faithful/fixed 상대 비교가 목적이다.
+results_dir: benchmarks/results
+seeds: [0, 1, 2]
+defaults:
+  normalize: zscore
+  threshold: { method: quantile, q: 0.99 }
+  sliding_window: 100
+
+models:
+  - { model: mamba_tsad_faithful, stochastic: true, model_params: { epochs: 3, window: 32 } }
+  - { model: mamba_tsad_fixed, stochastic: true, model_params: { epochs: 3, window: 32 } }
+
+datasets:
+  - { data: smd, data_params: { machine: machine-1-1 } }
+  - { data: smd, data_params: { machine: machine-2-1 } }
+  - { data: smd, data_params: { machine: machine-3-2 } }
+  - { data: smd, data_params: { machine: machine-3-7 } }
+  - { data: smd, data_params: { machine: machine-1-6 } }
+  - { data: smap, data_params: { channel: A-4 } }
+  - { data: smap, data_params: { channel: T-1 } }
+  - { data: msl, data_params: { channel: C-2 } }
+  - { data: swat }

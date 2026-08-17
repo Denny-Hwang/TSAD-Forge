@@ -1,5 +1,17 @@
 {
   "test/machine-1-1.txt": "bdb801d8d52ce6b0c4a20c310edf31b5cee9bc82eb84fb38e7d4a19309b16ddb",
+  "test/machine-1-6.txt": "0797fe4bfd25ef13c830955cb9f2a36b4c9d5da265b8e91702408b6b048267f4",
+  "test/machine-2-1.txt": "2d103661799271be958227907950a1c76803356442d60a4070671cc0abbefb20",
+  "test/machine-3-2.txt": "5f83ded5fbfb9b682030bdd7dd82eb53a77f9caa3773ddcc7e38db73c25db46e",
+  "test/machine-3-7.txt": "a4588c1f39905d03bd24fce65052e7b175fba336d081843325ef780c9ed8cdad",
   "test_label/machine-1-1.txt": "cddf33441ae480c6074e173c897d4715eb893f24a7078d3d3e1b79b200c7cd19",
-  "train/machine-1-1.txt": "ecebd2933ccdc1126e2abbfb538762dbde16410cebc77257a7b96e1e1fbcf753"
+  "test_label/machine-1-6.txt": "8359ffa67b5421b0b9967ccf396a58c7b3bf52fa24c3f95e6b9df6486f1d6365",
+  "test_label/machine-2-1.txt": "416dd20a447f38b8d9394382293ed44f509c1c3f99c4aa2fbff179498626dbdc",
+  "test_label/machine-3-2.txt": "1bbf4223cc6083f718f1d6022e2a48d48af44b08cdfa80048aa51af34d5111c3",
+  "test_label/machine-3-7.txt": "80b3a19dfd0af2d800c2388474543bdcb723ba582b0f4a986d68f920b757c73c",
+  "train/machine-1-1.txt": "ecebd2933ccdc1126e2abbfb538762dbde16410cebc77257a7b96e1e1fbcf753",
+  "train/machine-1-6.txt": "27e1765c04c2a5d08f39d98e7979e7764886fc733c36382fe081157a5ac0b9d8",
+  "train/machine-2-1.txt": "d6eb13ff74a537cf33686319fffdd4cdcb394862570a3acd519b4c37af97cd2e",
+  "train/machine-3-2.txt": "7cabed178422f7772425c6cabc3c20a1f7dedc3ab2a950f90a9edfcef3b5b3e3",
+  "train/machine-3-7.txt": "5eb1f16e62c30eb498e968b2c6da3e8f60c8367e264f771245a970362d7d8574"
 }

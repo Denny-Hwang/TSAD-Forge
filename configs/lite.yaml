@@ -45,10 +45,15 @@ datasets:
   - { data: smd, data_params: { machine: machine-1-1 } }
   - { data: smd, data_params: { machine: machine-2-1 } }
   - { data: smd, data_params: { machine: machine-3-2 } }
+  # MambaTSAD 논문(SPL 2024) 엔티티 커버리지 확장
+  - { data: smd, data_params: { machine: machine-3-7 } }
+  - { data: smd, data_params: { machine: machine-1-6 } }
   # SMAP 3채널 (데이터 없으면 skip)
   - { data: smap, data_params: { channel: P-1 } }
   - { data: smap, data_params: { channel: E-1 } }
   - { data: smap, data_params: { channel: T-1 } }
+  - { data: smap, data_params: { channel: A-4 } }   # MambaTSAD 논문 엔티티
+  - { data: msl, data_params: { channel: C-2 } }    # MambaTSAD 논문 엔티티
   # UCR 일부 (데이터 없으면 skip)
   - { data: ucr, data_params: { series: 1 } }
   - { data: ucr, data_params: { series: 135 } }
