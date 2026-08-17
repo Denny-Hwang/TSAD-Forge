@@ -74,12 +74,12 @@ def _grimshaw_gpd_fit(excesses: np.ndarray, n_candidates: int = 8) -> tuple[floa
                     a, wa = m, w(m)
             roots.append((a + b) / 2)
 
-    best = (0.0, y_mean, log_likelihood(0.0, y_mean))
+    best: tuple[float, float, float] = (0.0, float(y_mean), log_likelihood(0.0, y_mean))
     for x_star in roots:
         if x_star == 0.0:
             continue
         gamma = float(np.mean(np.log1p(x_star * y)))
-        sigma = gamma / x_star if x_star != 0 else y_mean
+        sigma = gamma / x_star if x_star != 0 else float(y_mean)
         ll = log_likelihood(gamma, sigma)
         if ll > best[2]:
             best = (gamma, sigma, ll)

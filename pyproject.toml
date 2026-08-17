@@ -96,7 +96,9 @@ filterwarnings = [
 ignore_missing_imports = true
 check_untyped_defs = true
 warn_redundant_casts = true
-warn_unused_ignores = true
+# warn_unused_ignores는 끈다: numpy/torch 스텁 버전에 따라 ignore 필요 여부가
+# 갈려(로컬 vs CI 러너) version-skew 실패를 만든다.
+warn_unused_ignores = false
 no_implicit_optional = true
 exclude = ["tsad_forge/evaluation/_vendor", "notebooks", "build"]
 
