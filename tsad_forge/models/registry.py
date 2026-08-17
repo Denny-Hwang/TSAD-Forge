@@ -53,6 +53,7 @@ def _ensure_builtin() -> None:
     import tsad_forge.models.ensemble  # noqa: F401
     import tsad_forge.models.gen1_statistical  # noqa: F401
     import tsad_forge.models.gen2_classical_ml  # noqa: F401
+    import tsad_forge.models.online  # noqa: F401
 
     # Gen3-5 (torch 필요)는 선택적: 미설치 환경에서도 Gen1-2는 동작해야 한다
     try:

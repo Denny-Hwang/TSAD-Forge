@@ -13,11 +13,12 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from tsad_forge.data.paths import resolve_data_dir
 from tsad_forge.data.schema import TSADDataset
 
 
-def _load_channel(spacecraft: str, channel: str, data_dir: str | Path = "data") -> TSADDataset:
-    root = Path(data_dir) / "smap_msl"
+def _load_channel(spacecraft: str, channel: str, data_dir: str | Path | None = None) -> TSADDataset:
+    root = resolve_data_dir(data_dir) / "smap_msl"
     train_f = root / "train" / f"{channel}.npy"
     if not train_f.exists():
         raise FileNotFoundError(
@@ -52,9 +53,9 @@ def _load_channel(spacecraft: str, channel: str, data_dir: str | Path = "data") 
     return ds
 
 
-def load_smap(channel: str = "P-1", data_dir: str | Path = "data") -> TSADDataset:
+def load_smap(channel: str = "P-1", data_dir: str | Path | None = None) -> TSADDataset:
     return _load_channel("SMAP", channel, data_dir)
 
 
-def load_msl(channel: str = "M-6", data_dir: str | Path = "data") -> TSADDataset:
+def load_msl(channel: str = "M-6", data_dir: str | Path | None = None) -> TSADDataset:
     return _load_channel("MSL", channel, data_dir)

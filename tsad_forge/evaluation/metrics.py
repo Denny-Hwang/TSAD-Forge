@@ -263,6 +263,27 @@ def _best_f1(scores: np.ndarray, labels: np.ndarray, n_thresholds: int = 200) ->
 # --- 통합 엔트리 ---
 
 
+def mean_detection_delay(scores: np.ndarray, labels: np.ndarray, threshold: float) -> float | None:
+    """이상 이벤트 시작 → 첫 경보까지의 평균 지연 (steps). 조기탐지 관점 지표 (리뷰 P1).
+
+    이벤트 [s, e) 안에서 scores >= threshold 인 첫 시점 t의 (t - s).
+    이벤트 내 경보가 없으면(미탐) 이벤트 길이 (e - s)를 지연 상한으로 부과한다 —
+    미탐을 무시하면 짧은 이벤트만 잡는 모델이 유리해지는 왜곡이 생긴다.
+    이벤트가 없으면 None (지표 미산출).
+    """
+    labels = np.asarray(labels).astype(int)
+    scores = np.asarray(scores, dtype=np.float64)
+    padded = np.diff(np.concatenate([[0], labels, [0]]))
+    starts, ends = np.flatnonzero(padded == 1), np.flatnonzero(padded == -1)
+    if len(starts) == 0:
+        return None
+    delays = []
+    for s, e in zip(starts, ends, strict=True):
+        hits = np.flatnonzero(scores[s:e] >= threshold)
+        delays.append(int(hits[0]) if hits.size else int(e - s))
+    return float(np.mean(delays))
+
+
 def compute_metrics(
     scores: np.ndarray,
     labels: np.ndarray,
@@ -300,6 +321,9 @@ def compute_metrics(
             out["event_f1"] = event_f1(pred, labels)
             out["range_f1"] = range_f1(pred, labels)
             out["affiliation_f1"] = affiliation_f1(pred, labels)
+            delay = mean_detection_delay(scores, labels, threshold)
+            if delay is not None:
+                out["mean_detection_delay"] = delay
         if legacy_pa:
             warnings.warn(PA_WARNING, UserWarning, stacklevel=2)
             adjusted = point_adjust(pred, labels)

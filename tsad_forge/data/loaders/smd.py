@@ -10,11 +10,12 @@ from pathlib import Path
 
 import numpy as np
 
+from tsad_forge.data.paths import resolve_data_dir
 from tsad_forge.data.schema import TSADDataset
 
 
-def load_smd(machine: str = "machine-1-1", data_dir: str | Path = "data") -> TSADDataset:
-    root = Path(data_dir) / "smd"
+def load_smd(machine: str = "machine-1-1", data_dir: str | Path | None = None) -> TSADDataset:
+    root = resolve_data_dir(data_dir) / "smd"
     train_f = root / "train" / f"{machine}.txt"
     if not train_f.exists():
         raise FileNotFoundError(

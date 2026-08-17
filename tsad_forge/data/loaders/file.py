@@ -31,8 +31,10 @@ def load_file(path: str | Path, train_ratio: float = 0.3) -> TSADDataset:
         raise ValueError(f"unsupported file type: {path.suffix} (use .csv or .parquet)")
 
     ts_col = next((c for c in df.columns if c.lower() in TIMESTAMP_COLS), None)
+    timestamps = None
     if ts_col is not None:
         df = df.sort_values(ts_col).reset_index(drop=True)
+        timestamps = df[ts_col].to_numpy()  # 스키마에 보존 (불규칙 샘플링 정보 유지)
         df = df.drop(columns=[ts_col])
 
     label_col = next((c for c in df.columns if c.lower() in LABEL_COLS), None)
@@ -62,6 +64,8 @@ def load_file(path: str | Path, train_ratio: float = 0.3) -> TSADDataset:
         train=values[:split],
         test=values[split:],
         labels=labels_full[split:],
+        train_timestamps=timestamps[:split] if timestamps is not None else None,
+        test_timestamps=timestamps[split:] if timestamps is not None else None,
         meta={
             "name": path.stem,
             "source_url": str(path),

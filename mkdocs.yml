@@ -21,6 +21,7 @@ nav:
       - ch09 Industrial practice: learn/ch09_industrial.md
       - ch10 Reading benchmarks: learn/ch10_reading_benchmarks.md
   - Roadmap: roadmap.md
+  - Methodology: methodology.md
   - Leaderboard:
       - Charts: leaderboard/index.md
       - Lite table: leaderboard/lite.md
@@ -68,6 +69,7 @@ plugins:
             ch10 Reading benchmarks: ch10 벤치마크 읽는 법
             Leaderboard: 리더보드
             Roadmap: 로드맵
+            Methodology: 방법론
             'MBA (ECG)': MBA (심전도)
             Charts: 차트
             Lite table: lite 테이블

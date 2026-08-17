@@ -13,6 +13,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from tsad_forge.data.paths import resolve_data_dir
 from tsad_forge.data.schema import TSADDataset
 
 _LABEL_CANDIDATES = ("normal/attack", "attack", "label")
@@ -40,7 +41,7 @@ def _split_label(df: pd.DataFrame) -> tuple[np.ndarray, np.ndarray]:
 
 
 def _load_scada(name: str, data_dir: str | Path, sampling: str) -> TSADDataset:
-    root = Path(data_dir) / name
+    root = resolve_data_dir(data_dir) / name
     train_f, test_f = root / "train.csv", root / "test.csv"
     if not train_f.exists() or not test_f.exists():
         raise FileNotFoundError(
@@ -66,9 +67,9 @@ def _load_scada(name: str, data_dir: str | Path, sampling: str) -> TSADDataset:
     return ds
 
 
-def load_swat(data_dir: str | Path = "data") -> TSADDataset:
+def load_swat(data_dir: str | Path | None = None) -> TSADDataset:
     return _load_scada("swat", data_dir, "1 s")
 
 
-def load_wadi(data_dir: str | Path = "data") -> TSADDataset:
+def load_wadi(data_dir: str | Path | None = None) -> TSADDataset:
     return _load_scada("wadi", data_dir, "1 s")

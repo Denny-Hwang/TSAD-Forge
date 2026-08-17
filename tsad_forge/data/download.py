@@ -17,7 +17,7 @@ import urllib.request
 import zipfile
 from pathlib import Path
 
-DEFAULT_DATA_DIR = Path("data")
+from tsad_forge.data.paths import resolve_data_dir
 
 SMD_MACHINES = [f"machine-{g}-{i}" for g, n in [(1, 8), (2, 9), (3, 11)] for i in range(1, n + 1)]
 
@@ -270,10 +270,10 @@ _RESTRICTED = {
 
 
 def download_dataset(
-    name: str, data_dir: str | Path = DEFAULT_DATA_DIR, subset: list[str] | None = None
+    name: str, data_dir: str | Path | None = None, subset: list[str] | None = None
 ) -> None:
     name = name.lower().replace("-", "_")
-    data_dir = Path(data_dir)
+    data_dir = resolve_data_dir(data_dir)
     if name == "synthetic":
         print("'synthetic' is generated in-process; nothing to download.")
         return

@@ -13,6 +13,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from tsad_forge.data.paths import resolve_data_dir
 from tsad_forge.data.schema import TSADDataset
 
 _TR_RE = re.compile(r"_tr_(\d+)_")
@@ -25,8 +26,10 @@ def parse_train_length(filename: str) -> int:
     return int(m.group(1))
 
 
-def load_tsb_ad(filename: str, variant: str = "u", data_dir: str | Path = "data") -> TSADDataset:
-    root = Path(data_dir) / f"tsb_ad_{variant.lower()}"
+def load_tsb_ad(
+    filename: str, variant: str = "u", data_dir: str | Path | None = None
+) -> TSADDataset:
+    root = resolve_data_dir(data_dir) / f"tsb_ad_{variant.lower()}"
     matches = sorted(root.rglob(filename))
     if not matches:
         raise FileNotFoundError(
@@ -56,6 +59,6 @@ def load_tsb_ad(filename: str, variant: str = "u", data_dir: str | Path = "data"
     return ds
 
 
-def list_tsb_ad_files(variant: str = "u", data_dir: str | Path = "data") -> list[str]:
-    root = Path(data_dir) / f"tsb_ad_{variant.lower()}"
+def list_tsb_ad_files(variant: str = "u", data_dir: str | Path | None = None) -> list[str]:
+    root = resolve_data_dir(data_dir) / f"tsb_ad_{variant.lower()}"
     return sorted(p.name for p in root.rglob("*.csv"))

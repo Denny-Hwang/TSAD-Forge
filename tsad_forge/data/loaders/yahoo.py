@@ -12,16 +12,17 @@ from pathlib import Path
 
 import pandas as pd
 
+from tsad_forge.data.paths import resolve_data_dir
 from tsad_forge.data.schema import TSADDataset
 
 
 def load_yahoo(
     benchmark: str = "A1Benchmark",
     series: str = "real_1.csv",
-    data_dir: str | Path = "data",
+    data_dir: str | Path | None = None,
     train_ratio: float = 0.5,
 ) -> TSADDataset:
-    path = Path(data_dir) / "yahoo_s5" / benchmark / series
+    path = resolve_data_dir(data_dir) / "yahoo_s5" / benchmark / series
     if not path.exists():
         raise FileNotFoundError(
             f"{path} not found. Yahoo S5는 재배포 금지입니다 — 신청 및 배치 방법: "

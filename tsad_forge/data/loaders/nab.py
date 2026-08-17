@@ -14,14 +14,15 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from tsad_forge.data.paths import resolve_data_dir
 from tsad_forge.data.schema import TSADDataset
 
 PROBATION_RATIO = 0.15
 
 
-def load_nab(rel_path: str, data_dir: str | Path = "data") -> TSADDataset:
+def load_nab(rel_path: str, data_dir: str | Path | None = None) -> TSADDataset:
     """rel_path 예: 'realAWSCloudwatch/ec2_cpu_utilization_24ae8d.csv'"""
-    root = Path(data_dir) / "nab"
+    root = resolve_data_dir(data_dir) / "nab"
     path = root / "data" / rel_path
     if not path.exists():
         raise FileNotFoundError(f"{path} not found. Run: tsad-forge download nab")

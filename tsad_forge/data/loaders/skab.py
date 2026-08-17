@@ -10,6 +10,7 @@ from pathlib import Path
 
 import pandas as pd
 
+from tsad_forge.data.paths import resolve_data_dir
 from tsad_forge.data.schema import TSADDataset
 
 SENSOR_COLS = [
@@ -24,9 +25,9 @@ SENSOR_COLS = [
 ]
 
 
-def load_skab(experiment: str = "valve1/0", data_dir: str | Path = "data") -> TSADDataset:
+def load_skab(experiment: str = "valve1/0", data_dir: str | Path | None = None) -> TSADDataset:
     """experiment 예: 'valve1/0', 'valve2/3', 'other/11'"""
-    root = Path(data_dir) / "skab"
+    root = resolve_data_dir(data_dir) / "skab"
     test_f = root / f"{experiment}.csv"
     if not test_f.exists():
         raise FileNotFoundError(f"{test_f} not found. Run: tsad-forge download skab")

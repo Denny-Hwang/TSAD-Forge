@@ -153,7 +153,7 @@ def dataset_eda(ds: TSADDataset, out_dir: Path, name: str) -> Path:
 
 
 def generate_eda(
-    out_dir: str | Path = "docs/assets/eda", data_dir: str | Path = "data"
+    out_dir: str | Path = "docs/assets/eda", data_dir: str | Path | None = None
 ) -> list[Path]:
     from tsad_forge.data.registry import load_dataset
 

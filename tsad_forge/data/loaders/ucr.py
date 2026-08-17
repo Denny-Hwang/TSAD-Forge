@@ -14,6 +14,7 @@ from pathlib import Path
 
 import numpy as np
 
+from tsad_forge.data.paths import resolve_data_dir
 from tsad_forge.data.schema import TSADDataset
 
 _NAME_RE = re.compile(r"^(\d+)_UCR_Anomaly_(.+)_(\d+)_(\d+)_(\d+)\.txt$")
@@ -33,9 +34,9 @@ def parse_ucr_filename(filename: str) -> dict:
     }
 
 
-def load_ucr(series: str | int, data_dir: str | Path = "data") -> TSADDataset:
+def load_ucr(series: str | int, data_dir: str | Path | None = None) -> TSADDataset:
     """series: 3자리 인덱스(예: 1, '001') 또는 전체 파일명."""
-    root = Path(data_dir) / "ucr"
+    root = resolve_data_dir(data_dir) / "ucr"
     if isinstance(series, int) or series.isdigit():
         pattern = f"{int(series):03d}_UCR_Anomaly_*.txt"
         matches = sorted(root.glob(pattern))

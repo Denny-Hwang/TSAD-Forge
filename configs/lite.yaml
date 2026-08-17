@@ -21,6 +21,9 @@ models:
   - stl_residual
   - poly
   - sesd
+  # Gen1 online/streaming track (prequential — see docs/methodology.md)
+  - online_ewma
+  - online_cusum
   # Gen2 (production-proven additions)
   - spectral_residual
   - hbos

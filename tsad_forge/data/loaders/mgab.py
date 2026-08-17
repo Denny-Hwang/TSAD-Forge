@@ -16,11 +16,12 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from tsad_forge.data.paths import resolve_data_dir
 from tsad_forge.data.schema import TSADDataset
 
 
-def load_mgab(series: int = 1, data_dir: str | Path = "data") -> TSADDataset:
-    path = Path(data_dir) / "mgab" / f"{int(series)}.csv"
+def load_mgab(series: int = 1, data_dir: str | Path | None = None) -> TSADDataset:
+    path = resolve_data_dir(data_dir) / "mgab" / f"{int(series)}.csv"
     if not path.exists():
         raise FileNotFoundError(f"{path} not found. Run: tsad-forge download mgab")
     df = pd.read_csv(path, index_col=0)

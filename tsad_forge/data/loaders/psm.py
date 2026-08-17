@@ -11,11 +11,12 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from tsad_forge.data.paths import resolve_data_dir
 from tsad_forge.data.schema import TSADDataset
 
 
-def load_psm(data_dir: str | Path = "data") -> TSADDataset:
-    root = Path(data_dir) / "psm"
+def load_psm(data_dir: str | Path | None = None) -> TSADDataset:
+    root = resolve_data_dir(data_dir) / "psm"
     train_f = root / "train.csv"
     if not train_f.exists():
         raise FileNotFoundError(f"{train_f} not found. Run: tsad-forge download psm")

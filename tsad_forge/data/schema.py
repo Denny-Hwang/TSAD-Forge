@@ -18,6 +18,10 @@ class TSADDataset:
         train: [T_train, D] float 배열. 학습(정상 위주) 구간.
         test: [T_test, D] float 배열. 평가 구간.
         labels: [T_test] {0,1} 배열. test 구간의 point-level 이상 라벨.
+        train_timestamps: [T_train] 타임스탬프 (옵션). 불규칙 샘플링 표현용 —
+            현재 모델들은 균일 샘플링을 가정하므로 사용하지 않지만, 스키마가
+            정보를 버리지 않도록 보존한다 (리뷰 P1; ch09 산업 요구사항).
+        test_timestamps: [T_test] 타임스탬프 (옵션).
         meta: name, source_url, license, citation, sampling 정보,
             이상 이벤트 수/길이 통계 등.
     """
@@ -26,6 +30,8 @@ class TSADDataset:
     test: np.ndarray
     labels: np.ndarray
     meta: dict = field(default_factory=dict)
+    train_timestamps: np.ndarray | None = None
+    test_timestamps: np.ndarray | None = None
 
     def __post_init__(self) -> None:
         self.train = np.asarray(self.train, dtype=np.float64)
@@ -35,6 +41,10 @@ class TSADDataset:
             self.train = self.train[:, None]
         if self.test.ndim == 1:
             self.test = self.test[:, None]
+        if self.train_timestamps is not None:
+            self.train_timestamps = np.asarray(self.train_timestamps)
+        if self.test_timestamps is not None:
+            self.test_timestamps = np.asarray(self.test_timestamps)
         self.validate()
 
     def validate(self) -> None:
@@ -51,6 +61,12 @@ class TSADDataset:
         unique = set(np.unique(self.labels).tolist())
         if not unique <= {0, 1}:
             raise ValueError(f"labels must be binary 0/1, got values {sorted(unique)}")
+        for ts, ref, part in [
+            (self.train_timestamps, self.train, "train"),
+            (self.test_timestamps, self.test, "test"),
+        ]:
+            if ts is not None and len(ts) != len(ref):
+                raise ValueError(f"{part}_timestamps length {len(ts)} != {part} length {len(ref)}")
 
     @property
     def n_dims(self) -> int:

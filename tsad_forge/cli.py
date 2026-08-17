@@ -48,7 +48,9 @@ def build_parser() -> argparse.ArgumentParser:
 
     dl = sub.add_parser("download", help="download a public dataset with checksum manifest")
     dl.add_argument("dataset")
-    dl.add_argument("--data-dir", default="data")
+    dl.add_argument(
+        "--data-dir", default=None, help="data root (default: $TSAD_FORGE_DATA or ./data)"
+    )
     dl.add_argument(
         "--subset",
         default=None,
