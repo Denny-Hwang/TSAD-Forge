@@ -1,0 +1,46 @@
+{
+  "run_id": "stl_residual__nab__realKnownCause_machine_temperature_system_failure.csv__seed0__16cbe455a8fa",
+  "model": "stl_residual",
+  "generation": "gen1",
+  "dataset": "nab",
+  "channel": "realKnownCause_machine_temperature_system_failure.csv",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.5892474045465013,
+    "auc_pr": 0.18261338546626965,
+    "vus_roc": 0.6215361090646947,
+    "vus_pr": 0.18193928880170085,
+    "best_f1": 0.22246982358402972,
+    "standard_f1": 0.10770855332629356,
+    "event_f1": 0.5895953757225428,
+    "range_f1": 0.1842213961173069,
+    "affiliation_f1": 0.7629368646187835,
+    "threshold": 4.719505694689598,
+    "n_predicted_anomalies": 193.0
+  },
+  "runtime_s": 0.0014,
+  "runtime_fit_s": 0.0008,
+  "runtime_score_s": 0.0006,
+  "peak_mem_mb": 0.0,
+  "commit_hash": "f7c09255cc8c",
+  "config_hash": "16cbe455a8fa",
+  "config": {
+    "model": "stl_residual",
+    "model_params": {},
+    "data": "nab",
+    "data_params": {
+      "rel_path": "realKnownCause/machine_temperature_system_failure.csv"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-17T16:07:05+00:00"
+}
