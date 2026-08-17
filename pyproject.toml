@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tsad-forge"
-version = "0.1.0"
+version = "0.2.0"
 description = "A reproducible benchmarking and learning ecosystem for time-series anomaly detection"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -39,7 +39,16 @@ dl = ["torch>=2.6"]
 # Gen 5 파운데이션 모델 어댑터 (M5에서 라이선스 감사 후 확정)
 foundation = ["torch>=2.6"]
 docs = ["mkdocs>=1.6", "mkdocs-material>=9.5", "matplotlib>=3.8"]
-dev = ["pytest>=8.0", "ruff>=0.4", "black>=24.0", "pre-commit>=3.7"]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.4",
+    "black>=24.0",
+    "pre-commit>=3.7",
+    "mypy>=1.10",
+    "pandas-stubs",
+    "types-PyYAML",
+    "types-psutil",
+]
 
 [project.scripts]
 tsad-forge = "tsad_forge.cli:main"
@@ -78,3 +87,18 @@ filterwarnings = [
     "ignore:invalid escape sequence:DeprecationWarning",
     "ignore:invalid escape sequence:SyntaxWarning",
 ]
+
+[tool.mypy]
+python_version = "3.11"
+# 완화된 시작점 (리뷰 P2): 공개 API 시그니처의 타입 정합성 검사가 목적.
+# strict 모드 승격은 roadmap. vendored 코드는 검사하지 않는다.
+ignore_missing_imports = true
+check_untyped_defs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+no_implicit_optional = true
+exclude = ["tsad_forge/evaluation/_vendor", "notebooks", "build"]
+
+[[tool.mypy.overrides]]
+module = "tsad_forge.evaluation._vendor.*"
+ignore_errors = true

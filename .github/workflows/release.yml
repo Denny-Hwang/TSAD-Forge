@@ -1,0 +1,49 @@
+# Release pipeline (리뷰 P2): v* 태그 푸시 → sdist/wheel 빌드 → GitHub Release.
+# PyPI 배포는 trusted publishing 설정 후 주석 해제 (CONTRIBUTING.md 'Releases').
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Build sdist and wheel
+        run: |
+          pip install build
+          python -m build
+      - name: Sanity-check the wheel installs and imports
+        run: |
+          pip install dist/*.whl
+          python -c "import tsad_forge; from tsad_forge.models.registry import list_models; print(len(list_models()), 'models')"
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true
+
+  # PyPI publishing via trusted publishing (OIDC). A maintainer must first add
+  # this repository as a trusted publisher on pypi.org, then uncomment:
+  #
+  # publish-pypi:
+  #   needs: build-and-release
+  #   runs-on: ubuntu-latest
+  #   environment: pypi
+  #   permissions:
+  #     id-token: write
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-python@v5
+  #       with:
+  #         python-version: "3.11"
+  #     - run: pip install build && python -m build
+  #     - uses: pypa/gh-action-pypi-publish@release/v1

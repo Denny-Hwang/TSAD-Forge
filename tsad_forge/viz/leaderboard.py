@@ -21,6 +21,8 @@ from tsad_forge.viz.charts import GEN_COLOR, GEN_LABEL
 PRIMARY_METRIC = "vus_pr"
 _BOOTSTRAP_N = 2000
 _BOOTSTRAP_SEED = 0
+# 리더보드 행 → 재현 설정(run JSON) 링크의 베이스 (CLAUDE.md §9)
+_RESULTS_BLOB_URL = "https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results"
 
 # 10% tint of each generation hue for row backgrounds (readable zebra substitute)
 _GEN_TINT = {
@@ -131,6 +133,23 @@ def build_leaderboard(
         .rename("config_hash")
     )
     summary = summary.join(cfg)
+    # 대표 run_id — config 셀이 실제 재현 설정(run JSON)으로 링크되게 (CLAUDE.md §9)
+    first = df.sort_values(["dataset", "channel", "seed"]).groupby(["generation", "model"]).first()
+    example = (
+        first["dataset"]
+        + "__"
+        + first["channel"]
+        + "__seed"
+        + first["seed"].astype(str)
+        + "__"
+        + first["config_hash"]
+    )
+    example_runs: list[str] = [
+        f"{idx[1]}__{rest}"  # type: ignore[index]  # MultiIndex(gen, model)
+        for idx, rest in example.items()
+    ]
+    example = pd.Series(example_runs, index=example.index, name="example_run")
+    summary = summary.join(example)
     return pivot.round(4), summary.round(4)
 
 
@@ -148,7 +167,8 @@ def _summary_html(summary: pd.DataFrame, metric: str) -> str:
         ]
     )
     rows = []
-    for (gen, model), r in summary.iterrows():
+    for idx, r in summary.iterrows():
+        gen, model = str(idx[0]), str(idx[1])  # type: ignore[index]  # MultiIndex(gen, model)
         tint = _GEN_TINT.get(gen, "")
         cfg = str(r["config_hash"]).split(",")[0]
         ci = (
@@ -166,7 +186,9 @@ def _summary_html(summary: pd.DataFrame, metric: str) -> str:
             f'<td style="{_TD}text-align:right;">{r["mean_rank"]:.2f}</td>'
             f'<td style="{_TD}text-align:right;">{int(r["n_entities"])}</td>'
             f'<td style="{_TD}text-align:right;">{r["mean_runtime_s"]:.2f}</td>'
-            f'<td style="{_TD}"><code style="font-size:0.72rem;">{cfg}</code></td>'
+            f'<td style="{_TD}"><a href="{_RESULTS_BLOB_URL}/{r["example_run"]}.json" '
+            f'title="example run JSON (full config + metrics)">'
+            f'<code style="font-size:0.72rem;">{cfg}</code></a></td>'
             "</tr>"
         )
     return (
@@ -182,7 +204,8 @@ def _pivot_html(pivot: pd.DataFrame) -> str:
         for e in entities
     )
     rows = []
-    for (gen, model), r in pivot.iterrows():
+    for idx, r in pivot.iterrows():
+        gen, model = str(idx[0]), str(idx[1])  # type: ignore[index]  # MultiIndex(gen, model)
         tint = _GEN_TINT.get(gen, "")
         cells = "".join(
             f'<td style="{_TD}{_shade(r[e])}text-align:right;">'

@@ -148,7 +148,9 @@ def dataset_eda(ds: TSADDataset, out_dir: Path, name: str) -> Path:
 
     out_dir.mkdir(parents=True, exist_ok=True)
     path = out_dir / f"{name}.html"
-    fig.write_html(path, include_plotlyjs="cdn", full_html=True)
+    from tsad_forge.viz.charts import plotlyjs_src
+
+    fig.write_html(path, include_plotlyjs=plotlyjs_src(out_dir), full_html=True)
     return path
 
 

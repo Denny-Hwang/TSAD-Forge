@@ -40,7 +40,7 @@ def _split_label(df: pd.DataFrame) -> tuple[np.ndarray, np.ndarray]:
     return values, labels
 
 
-def _load_scada(name: str, data_dir: str | Path, sampling: str) -> TSADDataset:
+def _load_scada(name: str, data_dir: str | Path | None, sampling: str) -> TSADDataset:
     root = resolve_data_dir(data_dir) / name
     train_f, test_f = root / "train.csv", root / "test.csv"
     if not train_f.exists() or not test_f.exists():

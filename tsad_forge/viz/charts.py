@@ -106,10 +106,25 @@ def _metric_frame(results_dir: str | Path) -> pd.DataFrame:
     return df
 
 
+def plotlyjs_src(out_dir: Path) -> str:
+    """번들 plotly.js를 상위 assets/js/에 1회 기록하고 상대 src를 반환.
+
+    CDN 의존 제거 (리뷰 P2): 오프라인/방화벽 환경에서도 차트 HTML이 열린다.
+    charts/와 eda/가 assets/ 아래 형제 디렉터리라 ../js/ 상대 경로가 양쪽에서 유효.
+    """
+    js_path = out_dir.parent / "js" / "plotly.min.js"
+    if not js_path.exists():
+        from plotly.offline import get_plotlyjs
+
+        js_path.parent.mkdir(parents=True, exist_ok=True)
+        js_path.write_text(get_plotlyjs())
+    return "../js/plotly.min.js"
+
+
 def _write(fig: go.Figure, out_dir: Path, name: str) -> Path:
     out_dir.mkdir(parents=True, exist_ok=True)
     path = out_dir / f"{name}.html"
-    fig.write_html(path, include_plotlyjs="cdn", full_html=True)
+    fig.write_html(path, include_plotlyjs=plotlyjs_src(out_dir), full_html=True)
     return path
 
 
@@ -517,7 +532,7 @@ def case_viewer(results_dir: str | Path, df: pd.DataFrame, out_dir: Path) -> Pat
         if gen == "gen0":
             continue  # the uninformed baseline is pure noise here — skip for legibility
         model = best.get(gen)
-        npz = npz_by_model.get(model)
+        npz = npz_by_model.get(model) if model is not None else None
         if npz is None:
             continue
         scores, _ = load_scores(npz)

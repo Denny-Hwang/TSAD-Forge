@@ -34,12 +34,13 @@ DEFAULT_CONFIG = {
 
 
 def resolve_config(overrides: dict | None = None) -> dict:
-    cfg = {k: (v.copy() if isinstance(v, dict) else v) for k, v in DEFAULT_CONFIG.items()}
+    cfg: dict = {k: (v.copy() if isinstance(v, dict) else v) for k, v in DEFAULT_CONFIG.items()}
     for k, v in (overrides or {}).items():
         if v is None:
             continue
-        if isinstance(v, dict) and isinstance(cfg.get(k), dict):
-            cfg[k].update(v)
+        existing = cfg.get(k)
+        if isinstance(v, dict) and isinstance(existing, dict):
+            existing.update(v)
         else:
             cfg[k] = v
     return cfg

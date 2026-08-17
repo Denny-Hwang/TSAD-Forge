@@ -30,7 +30,8 @@ class _AnomalyAttention(nn.Module):
         q, k, v = self.qkv(x).chunk(3, dim=-1)
         series = torch.softmax(q @ k.transpose(1, 2) / (q.shape[-1] ** 0.5), dim=2)
         sigma = F.softplus(self.sigma(x)) + 1e-3  # [B, w, 1]
-        prior = torch.exp(-self.dist.unsqueeze(0) ** 2 / (2 * sigma**2))
+        # self.dist는 register_buffer라 mypy가 Tensor로 좁히지 못함
+        prior = torch.exp(-self.dist.unsqueeze(0) ** 2 / (2 * sigma**2))  # type: ignore[operator]
         prior = prior / prior.sum(dim=2, keepdim=True)
         return series @ v, series, prior
 

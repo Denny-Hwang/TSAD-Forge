@@ -10,6 +10,8 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
+
 import numpy as np
 
 
@@ -54,8 +56,8 @@ def _grimshaw_gpd_fit(excesses: np.ndarray, n_candidates: int = 8) -> tuple[floa
     )
 
     def w(x: float) -> float:
-        u = np.mean(1.0 / (1 + x * y))
-        v = np.mean(np.log1p(x * y)) + 1.0
+        u = float(np.mean(1.0 / (1 + x * y)))
+        v = float(np.mean(np.log1p(x * y))) + 1.0
         return u * v - 1.0
 
     roots = [0.0]  # x*=0 (지수분포 해) 항상 포함
@@ -152,7 +154,7 @@ def conformal_threshold(
     return float(np.sort(cal)[rank - 1])
 
 
-THRESHOLDERS = {
+THRESHOLDERS: dict[str, Callable[..., float]] = {
     "quantile": quantile_threshold,
     "spot": spot_threshold,
     "dspot": dspot_threshold,
