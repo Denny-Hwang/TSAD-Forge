@@ -1,0 +1,47 @@
+{
+  "run_id": "pca_t2spe__smd__machine-1-6__seed0__69af9c427106",
+  "model": "pca_t2spe",
+  "generation": "gen1",
+  "dataset": "smd",
+  "channel": "machine-1-6",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.9173338862858226,
+    "auc_pr": 0.8592195380499619,
+    "vus_roc": 0.9232104920768898,
+    "vus_pr": 0.8163367401500831,
+    "best_f1": 0.8512866546977857,
+    "standard_f1": 0.11863117870722434,
+    "event_f1": 0.18160651920838167,
+    "range_f1": 0.049549468281838864,
+    "affiliation_f1": 0.16078237061186584,
+    "mean_detection_delay": 7.1,
+    "threshold": 129.91172399362844,
+    "n_predicted_anomalies": 237.0
+  },
+  "runtime_s": 0.0815,
+  "runtime_fit_s": 0.0694,
+  "runtime_score_s": 0.0122,
+  "peak_mem_mb": 24.07,
+  "commit_hash": "8d7eb6520d58",
+  "config_hash": "69af9c427106",
+  "config": {
+    "model": "pca_t2spe",
+    "model_params": {},
+    "data": "smd",
+    "data_params": {
+      "machine": "machine-1-6"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-17T21:08:53+00:00"
+}

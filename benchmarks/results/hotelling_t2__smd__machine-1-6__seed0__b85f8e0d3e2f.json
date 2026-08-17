@@ -1,0 +1,47 @@
+{
+  "run_id": "hotelling_t2__smd__machine-1-6__seed0__b85f8e0d3e2f",
+  "model": "hotelling_t2",
+  "generation": "gen1",
+  "dataset": "smd",
+  "channel": "machine-1-6",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.9134389104384872,
+    "auc_pr": 0.864331229170111,
+    "vus_roc": 0.9207415603668395,
+    "vus_pr": 0.8124439976449663,
+    "best_f1": 0.8776181926989827,
+    "standard_f1": 0.11863117870722434,
+    "event_f1": 0.23493975903614434,
+    "range_f1": 0.07456884008987431,
+    "affiliation_f1": 0.22497527308176044,
+    "mean_detection_delay": 7.0,
+    "threshold": 15344.53407701776,
+    "n_predicted_anomalies": 237.0
+  },
+  "runtime_s": 0.0895,
+  "runtime_fit_s": 0.0085,
+  "runtime_score_s": 0.081,
+  "peak_mem_mb": 0.0,
+  "commit_hash": "8d7eb6520d58",
+  "config_hash": "b85f8e0d3e2f",
+  "config": {
+    "model": "hotelling_t2",
+    "model_params": {},
+    "data": "smd",
+    "data_params": {
+      "machine": "machine-1-6"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-17T21:08:34+00:00"
+}

@@ -33,6 +33,29 @@ The two variants appear as separate models on the leaderboard. **The lesson: a
 substantial part of reported performance can hinge on implementation details —
 which is exactly why reproduction studies matter.**
 
+### Paper-setting reproduction (SPL 2024 entities)
+
+`configs/mamba_paper_repro.yaml` runs both variants on the exact entities the
+paper's official code uses (SMD ×5, SMAP A-4/T-1, MSL C-2, SWaT). Differences
+from the paper: original-source data (not the repo's redistributed zip), and the
+VUS-PR protocol instead of PA-F1 — so absolute numbers are **not** comparable
+with the paper's table; the faithful-vs-fixed *relative* comparison is the point.
+Results on the SMD portion (3 seeds; NASA/SWaT data must be placed locally):
+
+| SMD machine | faithful (VUS-PR ± seed std) | fixed | Δ |
+|---|---|---|---|
+| machine-1-1 | 0.340 ± 0.042 | **0.748** ± 0.015 | +0.408 |
+| machine-1-6 | 0.384 ± 0.015 | **0.663** ± 0.029 | +0.279 |
+| machine-2-1 | 0.324 ± 0.017 | **0.429** ± 0.003 | +0.105 |
+| machine-3-2 | 0.099 ± 0.013 | **0.192** ± 0.010 | +0.092 |
+| machine-3-7 | 0.109 ± 0.110 | **0.477** ± 0.015 | +0.368 |
+| **mean** | 0.251 | **0.502** | +0.251 |
+
+The fixed variant wins on **all five machines**, doubles the mean VUS-PR, and
+cuts the mean seed standard deviation from 0.039 to 0.014 (event-F1: 0.092 →
+0.337) at identical runtime — the four implementation issues account for half
+of the achievable score in the paper's own setting.
+
 ## Foundation models and zero-shot
 
 MOMENT, Chronos and TimesFM are general-purpose models pretrained on large time-series
