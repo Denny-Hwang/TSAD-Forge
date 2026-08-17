@@ -1,0 +1,47 @@
+{
+  "run_id": "spectral_residual__smd__machine-3-7__seed0__9427cb9bf25f",
+  "model": "spectral_residual",
+  "generation": "gen2",
+  "dataset": "smd",
+  "channel": "machine-3-7",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.47654441288862065,
+    "auc_pr": 0.027137794189968607,
+    "vus_roc": 0.5963213221666278,
+    "vus_pr": 0.025633477385778914,
+    "best_f1": 0.044905008635578586,
+    "standard_f1": 0.036011080332409975,
+    "event_f1": 0.08545603944124888,
+    "range_f1": 0.06844263798435421,
+    "affiliation_f1": 0.6839232790597117,
+    "mean_detection_delay": 5.2,
+    "threshold": 10.527893521739555,
+    "n_predicted_anomalies": 288.0
+  },
+  "runtime_s": 0.3432,
+  "runtime_fit_s": 0.0,
+  "runtime_score_s": 0.3432,
+  "peak_mem_mb": 0.01,
+  "commit_hash": "48ce27b17add",
+  "config_hash": "9427cb9bf25f",
+  "config": {
+    "model": "spectral_residual",
+    "model_params": {},
+    "data": "smd",
+    "data_params": {
+      "machine": "machine-3-7"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-17T21:27:40+00:00"
+}

@@ -1,0 +1,47 @@
+{
+  "run_id": "ensemble_simple__smd__machine-1-6__seed0__b85040ec2b22",
+  "model": "ensemble_simple",
+  "generation": "gen0",
+  "dataset": "smd",
+  "channel": "machine-1-6",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.892379313746117,
+    "auc_pr": 0.7201047908624321,
+    "vus_roc": 0.8174992805680428,
+    "vus_pr": 0.6108741435229953,
+    "best_f1": 0.6557377049180327,
+    "standard_f1": 0.12015209125475285,
+    "event_f1": 0.064516129032258,
+    "range_f1": 0.013265165289093656,
+    "affiliation_f1": 0.06396604231464403,
+    "mean_detection_delay": 18.266666666666666,
+    "threshold": 0.9227482269503543,
+    "n_predicted_anomalies": 237.0
+  },
+  "runtime_s": 30.0811,
+  "runtime_fit_s": 16.3582,
+  "runtime_score_s": 13.7229,
+  "peak_mem_mb": 1578.09,
+  "commit_hash": "48ce27b17add",
+  "config_hash": "b85040ec2b22",
+  "config": {
+    "model": "ensemble_simple",
+    "model_params": {},
+    "data": "smd",
+    "data_params": {
+      "machine": "machine-1-6"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-17T21:37:27+00:00"
+}
