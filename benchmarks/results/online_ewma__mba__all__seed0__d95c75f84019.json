@@ -1,0 +1,45 @@
+{
+  "run_id": "online_ewma__mba__all__seed0__d95c75f84019",
+  "model": "online_ewma",
+  "generation": "gen1",
+  "dataset": "mba",
+  "channel": "all",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.6895222592368262,
+    "auc_pr": 0.6388690704658234,
+    "vus_roc": 0.9004730954917655,
+    "vus_pr": 0.8553392970229584,
+    "best_f1": 0.5470903522205207,
+    "standard_f1": 0.057527082555098995,
+    "event_f1": 0.9075630252100835,
+    "range_f1": 0.314096744909869,
+    "affiliation_f1": 0.8234258810973105,
+    "mean_detection_delay": 24.153846153846153,
+    "threshold": 5.999829547640722,
+    "n_predicted_anomalies": 77.0
+  },
+  "runtime_s": 0.237,
+  "runtime_fit_s": 0.1129,
+  "runtime_score_s": 0.124,
+  "peak_mem_mb": 0.0,
+  "commit_hash": "40aa5bc44264",
+  "config_hash": "d95c75f84019",
+  "config": {
+    "model": "online_ewma",
+    "model_params": {},
+    "data": "mba",
+    "data_params": {},
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-17T17:16:11+00:00"
+}

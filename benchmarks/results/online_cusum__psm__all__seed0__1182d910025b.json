@@ -1,0 +1,45 @@
+{
+  "run_id": "online_cusum__psm__all__seed0__1182d910025b",
+  "model": "online_cusum",
+  "generation": "gen1",
+  "dataset": "psm",
+  "channel": "all",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.4484691726686318,
+    "auc_pr": 0.24300109500153913,
+    "vus_roc": 0.35793064214672066,
+    "vus_pr": 0.28828853388846265,
+    "best_f1": 0.43451373171035984,
+    "standard_f1": 0.0,
+    "event_f1": 0.0,
+    "range_f1": 0.0,
+    "affiliation_f1": 0.01962620282244195,
+    "mean_detection_delay": 338.625,
+    "threshold": 174970.35894035728,
+    "n_predicted_anomalies": 879.0
+  },
+  "runtime_s": 4.9193,
+  "runtime_fit_s": 2.9433,
+  "runtime_score_s": 1.976,
+  "peak_mem_mb": 0.68,
+  "commit_hash": "40aa5bc44264",
+  "config_hash": "1182d910025b",
+  "config": {
+    "model": "online_cusum",
+    "model_params": {},
+    "data": "psm",
+    "data_params": {},
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-17T17:16:54+00:00"
+}

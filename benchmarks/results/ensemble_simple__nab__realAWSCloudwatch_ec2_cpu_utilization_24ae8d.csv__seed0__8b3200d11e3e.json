@@ -1,0 +1,46 @@
+{
+  "run_id": "ensemble_simple__nab__realAWSCloudwatch_ec2_cpu_utilization_24ae8d.csv__seed0__8b3200d11e3e",
+  "model": "ensemble_simple",
+  "generation": "gen0",
+  "dataset": "nab",
+  "channel": "realAWSCloudwatch_ec2_cpu_utilization_24ae8d.csv",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.5984572346463322,
+    "auc_pr": 0.1593105739206787,
+    "vus_roc": 0.6689581022536986,
+    "vus_pr": 0.20137028928260892,
+    "best_f1": 0.25783132530120484,
+    "standard_f1": 0.02288329519450801,
+    "event_f1": 0.22222222222222188,
+    "range_f1": 0.11759668902526045,
+    "affiliation_f1": 0.5695400010339497,
+    "threshold": 0.9133812372337322,
+    "n_predicted_anomalies": 35.0
+  },
+  "runtime_s": 0.2393,
+  "runtime_fit_s": 0.1748,
+  "runtime_score_s": 0.0645,
+  "peak_mem_mb": 4.72,
+  "commit_hash": "40aa5bc44264",
+  "config_hash": "8b3200d11e3e",
+  "config": {
+    "model": "ensemble_simple",
+    "model_params": {},
+    "data": "nab",
+    "data_params": {
+      "rel_path": "realAWSCloudwatch/ec2_cpu_utilization_24ae8d.csv"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-17T17:11:26+00:00"
+}

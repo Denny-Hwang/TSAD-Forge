@@ -1,0 +1,44 @@
+{
+  "run_id": "matrix_profile__psm__all__seed0__351589ee0867",
+  "model": "matrix_profile",
+  "generation": "gen2",
+  "dataset": "psm",
+  "channel": "all",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.5222796617589041,
+    "auc_pr": 0.296729900788707,
+    "vus_roc": 0.42702585651944514,
+    "vus_pr": 0.3130849462531178,
+    "best_f1": 0.43451373171035984,
+    "standard_f1": 0.017301994864704722,
+    "event_f1": 0.049671127239736705,
+    "range_f1": 0.01806844353613575,
+    "affiliation_f1": 0.12137782048970755,
+    "threshold": 11.309961699778693,
+    "n_predicted_anomalies": 934.0
+  },
+  "runtime_s": 205.4585,
+  "runtime_fit_s": 0.0,
+  "runtime_score_s": 205.4584,
+  "peak_mem_mb": 1.49,
+  "commit_hash": "40aa5bc44264",
+  "config_hash": "351589ee0867",
+  "config": {
+    "model": "matrix_profile",
+    "model_params": {},
+    "data": "psm",
+    "data_params": {},
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-17T17:10:02+00:00"
+}
