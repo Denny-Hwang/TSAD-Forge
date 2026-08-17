@@ -1,0 +1,46 @@
+{
+  "run_id": "hbos__skab__valve1_0__seed0__a061d8cd66b6",
+  "model": "hbos",
+  "generation": "gen2",
+  "dataset": "skab",
+  "channel": "valve1_0",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.43685023366516684,
+    "auc_pr": 0.31592720109264927,
+    "vus_roc": 0.5038852089893475,
+    "vus_pr": 0.36959678485534736,
+    "best_f1": 0.5201037613488976,
+    "standard_f1": 0.0,
+    "event_f1": 0.0,
+    "range_f1": 0.0,
+    "affiliation_f1": 0.5520920576984308,
+    "threshold": 5.3147118194335405,
+    "n_predicted_anomalies": 12.0
+  },
+  "runtime_s": 0.0355,
+  "runtime_fit_s": 0.0312,
+  "runtime_score_s": 0.0042,
+  "peak_mem_mb": 0.0,
+  "commit_hash": "c15987bc6342",
+  "config_hash": "a061d8cd66b6",
+  "config": {
+    "model": "hbos",
+    "model_params": {},
+    "data": "skab",
+    "data_params": {
+      "experiment": "valve1/0"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-17T16:55:20+00:00"
+}
