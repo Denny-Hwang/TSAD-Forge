@@ -24,6 +24,7 @@
 | statsmodels | https://github.com/statsmodels/statsmodels | pip (>=0.14) | BSD-3-Clause | pip 의존성 | STL |
 | PyTorch | https://github.com/pytorch/pytorch | pip (extras: dl) | BSD-style | pip 의존성 | Gen3-5 |
 | tabulate | https://github.com/astanin/python-tabulate | pip (>=0.9) | MIT | pip 의존성 | 리더보드 |
+| psutil | https://github.com/giampaolo/psutil | pip (>=5.9) | BSD-3-Clause | pip 의존성 | 런타임 무오염 메모리 계측 (runner/measure.py) |
 
 ## Gen3–4 모델 라이선스 감사 기록 (M4)
 

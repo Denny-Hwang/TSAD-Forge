@@ -30,6 +30,7 @@ dependencies = [
     "tabulate>=0.9",      # 리더보드 마크다운
     "plotly>=5.20",       # 시각화 8종 (MIT)
     "openpyxl>=3.1",      # MBA(xlsx) 로더 (MIT)
+    "psutil>=5.9",        # 런타임 무오염 메모리 계측 (runner/measure.py, BSD-3)
 ]
 
 [project.optional-dependencies]
@@ -48,6 +49,9 @@ Repository = "https://github.com/Denny-Hwang/TSAD-Forge"
 
 [tool.setuptools.packages.find]
 include = ["tsad_forge*"]
+
+[tool.setuptools.package-data]
+tsad_forge = ["data/checksums/*.json"]
 
 [tool.ruff]
 line-length = 100

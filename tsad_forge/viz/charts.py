@@ -331,7 +331,7 @@ def perf_vs_cost(df: pd.DataFrame, out_dir: Path) -> Path:
     m = df[df["metric"] == PRIMARY]
     agg = (
         m.groupby(["generation", "model"])
-        .agg(vus_pr=("value", "mean"), runtime=("runtime_s", "mean"), mem=("peak_vram_mb", "mean"))
+        .agg(vus_pr=("value", "mean"), runtime=("runtime_s", "mean"), mem=("peak_mem_mb", "mean"))
         .reset_index()
     )
     # Direct-label only the best model per generation; everything else is hover-only
@@ -361,7 +361,9 @@ def perf_vs_cost(df: pd.DataFrame, out_dir: Path) -> Path:
             )
         )
     _base_layout(
-        fig, "Performance vs cost — VUS-PR vs mean runtime (marker size ~ memory)", height=560
+        fig,
+        "Performance vs cost — VUS-PR vs mean fit+score runtime (marker size ~ peak host memory)",
+        height=560,
     )
     lo, hi = float(agg["runtime"].min()), float(agg["runtime"].max())
     log_lo, log_hi = math.log10(max(lo, 1e-3)), math.log10(max(hi, 1e-3))

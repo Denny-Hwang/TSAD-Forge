@@ -6,7 +6,6 @@ config(dict) 기반으로 동작하며 CLI(tsad_forge.cli)와 benchmarks/run_all
 from __future__ import annotations
 
 import time
-import tracemalloc
 from pathlib import Path
 
 from tsad_forge.data.loaders.file import load_file
@@ -17,6 +16,7 @@ from tsad_forge.evaluation.protocol import save_scores, set_seed, zscore_normali
 from tsad_forge.evaluation.thresholding import NEEDS_CALIBRATION, apply_threshold
 from tsad_forge.models.registry import get_model
 from tsad_forge.runner import results as res
+from tsad_forge.runner.measure import PeakRssSampler, cuda_peak_mb, reset_cuda_peak
 
 DEFAULT_CONFIG = {
     "model": "dummy",
@@ -91,28 +91,32 @@ def run_experiment(
     set_seed(cfg["seed"])
     ds = load_data(cfg)
 
-    t0 = time.perf_counter()
-    tracemalloc.start()
-
     train, test = ds.train, ds.test
     if cfg["normalize"] == "zscore":
         train, test = zscore_normalize(train, test)
 
     model = get_model(cfg["model"], seed=cfg["seed"], **cfg.get("model_params", {}))
-    model.fit(train)
-    scores = model.score(test)
+
+    # 계측 (measure.py): 타이머 구간 안에 프로파일러 없음, RSS는 스레드 샘플링,
+    # CUDA 실행 시에만 정확한 피크 VRAM을 병기.
+    cuda_tracking = reset_cuda_peak()
+    with PeakRssSampler() as mem:
+        t0 = time.perf_counter()
+        model.fit(train)
+        runtime_fit_s = time.perf_counter() - t0
+        t0 = time.perf_counter()
+        scores = model.score(test)
+        runtime_score_s = time.perf_counter() - t0
+    runtime_s = runtime_fit_s + runtime_score_s
+    peak_vram = cuda_peak_mb() if cuda_tracking else None
 
     th_cfg = dict(cfg["threshold"])
     method = th_cfg.pop("method")
     train_scores = None
     if method in NEEDS_CALIBRATION:
-        # 보정용 train(정상) 점수 — EVT/conformal 임계값의 기준 분포
+        # 보정용 train(정상) 점수 — 임계값 비용이므로 fit/score 런타임에 불포함
         train_scores = model.score(train)
     threshold, preds = apply_threshold(scores, method=method, train_scores=train_scores, **th_cfg)
-
-    _, peak_mem = tracemalloc.get_traced_memory()
-    tracemalloc.stop()
-    runtime_s = time.perf_counter() - t0
 
     has_labels = ds.meta.get("has_labels", True) and ds.labels.sum() > 0
     metrics = (
@@ -133,8 +137,6 @@ def run_experiment(
         rid = res.run_id(cfg["model"], dataset_name, channel, cfg["seed"], cfg_hash)
         save_scores(scores, ds.labels, results_dir / "scores" / f"{rid}.npz")
 
-    # peak_vram_mb: GPU 모델(M4+)에서 torch.cuda.max_memory_allocated로 대체 예정.
-    # CPU 전용 M0에서는 tracemalloc 피크(호스트 메모리)를 기록.
     res.write_result(
         results_dir,
         metrics,
@@ -144,7 +146,11 @@ def run_experiment(
         channel=channel,
         seed=cfg["seed"],
         runtime_s=round(runtime_s, 4),
-        peak_vram_mb=round(peak_mem / 1e6, 2),
+        runtime_fit_s=round(runtime_fit_s, 4),
+        runtime_score_s=round(runtime_score_s, 4),
+        peak_mem_mb=round(mem.peak_mb, 2),
+        peak_vram_mb=round(peak_vram, 2) if peak_vram is not None else None,
+        data_hash=res.config_hash({"data": cfg["data"], "data_params": cfg.get("data_params", {})}),
         cfg_hash=cfg_hash,
         config=cfg,
     )

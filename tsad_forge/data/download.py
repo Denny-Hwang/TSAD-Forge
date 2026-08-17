@@ -90,14 +90,52 @@ def _fetch(url: str, dest: Path, expected_sha256: str | None = None) -> Path:
     return dest
 
 
-def _write_manifest(dataset_dir: Path) -> None:
-    """디렉터리 내 데이터 파일들의 sha256 manifest 기록 (재현성 추적)."""
+PINNED_CHECKSUMS_DIR = Path(__file__).parent / "checksums"
+
+
+def load_pinned_checksums(dataset_dirname: str) -> dict[str, str] | None:
+    """저장소에 커밋된 known-good sha256 (파일 상대경로 -> 해시). 없으면 None."""
+    path = PINNED_CHECKSUMS_DIR / f"{dataset_dirname}.json"
+    return json.loads(path.read_text()) if path.exists() else None
+
+
+def _write_manifest(dataset_dir: Path, verify: bool = True) -> None:
+    """디렉터리 내 데이터 파일들의 sha256 manifest 기록 + 고정 체크섬 대조.
+
+    저장소에 커밋된 known-good 체크섬(tsad_forge/data/checksums/<name>.json)이 있으면
+    받은 파일과 대조한다 (리뷰 P0-4 — 다운로드 시점 기록만으로는 업스트림 변조/오염을
+    감지하지 못하는 TOFU 문제 해결). subset 다운로드를 지원해야 하므로 대조는
+    '고정 목록과 실제 받은 파일의 교집합'에 대해서만 수행하고, 고정 목록에 없는
+    파일은 MANIFEST.json에 기록만 한다.
+    """
     manifest = {
         str(p.relative_to(dataset_dir)): sha256sum(p)
         for p in sorted(dataset_dir.rglob("*"))
         if p.is_file() and not p.name.endswith((".sha256", ".part")) and p.name != "MANIFEST.json"
     }
     (dataset_dir / "MANIFEST.json").write_text(json.dumps(manifest, indent=2))
+
+    pinned = load_pinned_checksums(dataset_dir.name) if verify else None
+    if pinned:
+        mismatched = {
+            rel: (pinned[rel], manifest[rel])
+            for rel in pinned.keys() & manifest.keys()
+            if pinned[rel] != manifest[rel]
+        }
+        if mismatched:
+            detail = "\n".join(
+                f"  {rel}: pinned {exp[:12]}..., got {act[:12]}..."
+                for rel, (exp, act) in sorted(mismatched.items())[:5]
+            )
+            raise RuntimeError(
+                f"checksum mismatch against pinned known-good values for "
+                f"'{dataset_dir.name}' ({len(mismatched)} file(s)):\n{detail}\n"
+                "The upstream source may have changed or the download is corrupted. "
+                f"Delete {dataset_dir} and retry; if the mismatch persists, please "
+                "open an issue — the pinned checksums may need a reviewed update."
+            )
+        n_checked = len(pinned.keys() & manifest.keys())
+        print(f"[checksum] {dataset_dir.name}: {n_checked} file(s) verified against pinned sha256")
 
 
 # --- 데이터셋별 다운로더 ---

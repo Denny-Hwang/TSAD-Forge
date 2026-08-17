@@ -142,7 +142,10 @@ THIRD_PARTY_NOTICES.md에 [이름, URL, 커밋해시, 라이선스, 도입 방�
   - **lite**: CI/노트북용 소규모 부분집합(UCR 일부 + SMD 3개 머신 + SMAP 3채널), CPU 가능
   - **full**: 전체 매트릭스, 8GB GPU 기준 순차 실행
 - 결과 스키마(parquet): model, generation, dataset, channel, seed, metric, value,
-  runtime_s, peak_vram_mb, commit_hash, config_hash, timestamp.
+  runtime_s(=fit+score), runtime_fit_s, runtime_score_s, peak_mem_mb(호스트 RSS 피크
+  증가분; CUDA 실행 시 peak_vram_mb를 JSON 요약에 병기), commit_hash, config_hash,
+  timestamp. 집계 시 동일 (model, dataset, channel, seed)의 구 config_hash 결과는
+  최신 timestamp로 대체한다(이중 집계 방지).
 - 실행 재개(resume) 지원: 이미 결과가 있는 (model, dataset, seed) 조합은 건너뜀.
 
 ## 6. 시각화 + GitHub Pages
