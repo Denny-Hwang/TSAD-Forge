@@ -1,0 +1,51 @@
+{
+  "run_id": "mtad_gat__synthetic__all__seed0__ee6a51aac5be",
+  "model": "mtad_gat",
+  "generation": "gen4",
+  "dataset": "synthetic",
+  "channel": "all",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.8773615843611524,
+    "auc_pr": 0.5470675497114783,
+    "vus_roc": 0.9698266540399156,
+    "vus_pr": 0.797593242252668,
+    "best_f1": 0.6530612244897959,
+    "standard_f1": 0.22077922077922077,
+    "event_f1": 0.5698324022346364,
+    "range_f1": 0.23763664501375076,
+    "affiliation_f1": 0.5747454785382804,
+    "mean_detection_delay": 12.285714285714286,
+    "threshold": 4.386771030426026,
+    "n_predicted_anomalies": 20.0
+  },
+  "runtime_s": 1.3116,
+  "runtime_fit_s": 1.2237,
+  "runtime_score_s": 0.0879,
+  "peak_mem_mb": 0.0,
+  "commit_hash": "11a5fc44e8b3",
+  "config_hash": "ee6a51aac5be",
+  "config": {
+    "model": "mtad_gat",
+    "model_params": {
+      "epochs": 3,
+      "window": 32
+    },
+    "data": "synthetic",
+    "data_params": {
+      "n_dims": 5,
+      "n_events": 8
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-17T17:29:59+00:00"
+}

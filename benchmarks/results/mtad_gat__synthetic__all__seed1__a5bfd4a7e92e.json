@@ -1,0 +1,48 @@
+{
+  "run_id": "mtad_gat__synthetic__all__seed1__a5bfd4a7e92e",
+  "model": "mtad_gat",
+  "generation": "gen4",
+  "dataset": "synthetic",
+  "channel": "all",
+  "seed": 1,
+  "metrics": {
+    "auc_roc": 0.8149884579609942,
+    "auc_pr": 0.610339717666909,
+    "vus_roc": 0.9677141687469166,
+    "vus_pr": 0.8552339825536213,
+    "best_f1": 0.6456692913385826,
+    "standard_f1": 0.24539877300613497,
+    "event_f1": 0.33333333333333304,
+    "range_f1": 0.09027777777777778,
+    "affiliation_f1": 0.33174037709618537,
+    "mean_detection_delay": 20.8,
+    "threshold": 3.4577416586875906,
+    "n_predicted_anomalies": 20.0
+  },
+  "runtime_s": 1.4018,
+  "runtime_fit_s": 1.2966,
+  "runtime_score_s": 0.1053,
+  "peak_mem_mb": 0.0,
+  "commit_hash": "11a5fc44e8b3",
+  "config_hash": "a5bfd4a7e92e",
+  "config": {
+    "model": "mtad_gat",
+    "model_params": {
+      "epochs": 3,
+      "window": 32
+    },
+    "data": "synthetic",
+    "data_params": {},
+    "seed": 1,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-17T17:29:53+00:00"
+}

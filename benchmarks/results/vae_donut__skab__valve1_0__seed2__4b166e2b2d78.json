@@ -1,0 +1,50 @@
+{
+  "run_id": "vae_donut__skab__valve1_0__seed2__4b166e2b2d78",
+  "model": "vae_donut",
+  "generation": "gen3",
+  "dataset": "skab",
+  "channel": "valve1_0",
+  "seed": 2,
+  "metrics": {
+    "auc_roc": 0.30143475092429783,
+    "auc_pr": 0.3163114497647421,
+    "vus_roc": 0.3561063342606232,
+    "vus_pr": 0.34239975192621985,
+    "best_f1": 0.5228758169934641,
+    "standard_f1": 0.05811138014527845,
+    "event_f1": 0.9999999999999996,
+    "range_f1": 0.33806986382474835,
+    "affiliation_f1": 0.8422197959177246,
+    "mean_detection_delay": 7.0,
+    "threshold": 605277.51625,
+    "n_predicted_anomalies": 12.0
+  },
+  "runtime_s": 1.9621,
+  "runtime_fit_s": 1.9067,
+  "runtime_score_s": 0.0554,
+  "peak_mem_mb": 0.0,
+  "commit_hash": "11a5fc44e8b3",
+  "config_hash": "4b166e2b2d78",
+  "config": {
+    "model": "vae_donut",
+    "model_params": {
+      "epochs": 5,
+      "window": 32
+    },
+    "data": "skab",
+    "data_params": {
+      "experiment": "valve1/0"
+    },
+    "seed": 2,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-17T17:23:45+00:00"
+}

@@ -1,0 +1,51 @@
+{
+  "run_id": "vae_donut__synthetic__all__seed2__681ff60acb06",
+  "model": "vae_donut",
+  "generation": "gen3",
+  "dataset": "synthetic",
+  "channel": "all",
+  "seed": 2,
+  "metrics": {
+    "auc_roc": 0.8831788295947537,
+    "auc_pr": 0.4098658740098315,
+    "vus_roc": 0.9734746279814701,
+    "vus_pr": 0.8169204890902824,
+    "best_f1": 0.5203883495145631,
+    "standard_f1": 0.10328638497652583,
+    "event_f1": 0.20370370370370341,
+    "range_f1": 0.09955307262569832,
+    "affiliation_f1": 0.18947153955029483,
+    "mean_detection_delay": 22.75,
+    "threshold": 6.049633793830869,
+    "n_predicted_anomalies": 20.0
+  },
+  "runtime_s": 0.4647,
+  "runtime_fit_s": 0.377,
+  "runtime_score_s": 0.0877,
+  "peak_mem_mb": 0.0,
+  "commit_hash": "11a5fc44e8b3",
+  "config_hash": "681ff60acb06",
+  "config": {
+    "model": "vae_donut",
+    "model_params": {
+      "epochs": 5,
+      "window": 32
+    },
+    "data": "synthetic",
+    "data_params": {
+      "n_dims": 5,
+      "n_events": 8
+    },
+    "seed": 2,
+    "normalize": "zscore",
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true
+  },
+  "timestamp": "2026-08-17T17:23:00+00:00"
+}
