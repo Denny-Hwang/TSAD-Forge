@@ -1,0 +1,1445 @@
+
+<!doctype html>
+<html lang="ko" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A Reproducible Benchmarking and Learning Ecosystem for Time-Series Anomaly Detection">
+      
+      
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../../datasets/">
+      
+      
+        
+          <link rel="alternate" href="../../../leaderboard/lite/" hreflang="en">
+        
+          <link rel="alternate" href="./" hreflang="ko">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>lite 테이블 - TSAD-Forge</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#leaderboard-vus-pr" class="md-skip">
+          콘텐츠로 이동
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="상단/헤더">
+    <a href="../../" title="TSAD-Forge" class="md-header__button md-logo" aria-label="TSAD-Forge" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TSAD-Forge
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              lite 테이블
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="언어설정">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../leaderboard/lite/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="ko" class="md-select__link">
+              한국어
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="검색" placeholder="검색" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="검색">
+        
+        <button type="reset" class="md-search__icon md-icon" title="지우기" aria-label="지우기" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            검색 초기화
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Denny-Hwang/TSAD-Forge" title="저장소로 이동" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="네비게이션" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="TSAD-Forge" class="md-nav__button md-logo" aria-label="TSAD-Forge" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    TSAD-Forge
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Denny-Hwang/TSAD-Forge" title="저장소로 이동" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    홈
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    학습 트랙
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    학습 트랙
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    개요
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learn/ch01_problem/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ch01 문제 정의
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learn/ch02_gen1_statistical/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ch02 Gen1 통계
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learn/ch03_gen2_classical_ml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ch03 Gen2 고전 ML
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learn/ch04_gen3_dl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ch04 Gen3 딥러닝
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learn/ch05_gen4_graph_transformer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ch05 Gen4 Graph/Transformer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learn/ch06_gen5_ssm_foundation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ch06 Gen5 SSM/Foundation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learn/ch07_evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ch07 평가 방법론
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learn/ch08_thresholding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ch08 임계값
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learn/ch09_industrial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ch09 산업 적용
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learn/ch10_reading_benchmarks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ch10 벤치마크 읽는 법
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    로드맵
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    방법론
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    리더보드
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    리더보드
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    차트
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    lite 테이블
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    lite 테이블
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#model-summary-sorted-by-mean-rank" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Model summary (sorted by mean rank)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#model-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Model × dataset
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    데이터셋
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    데이터셋
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datasets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    개요
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datasets/smap_msl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SMAP/MSL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datasets/smd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SMD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datasets/ucr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UCR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datasets/tsb_ad/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TSB-AD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datasets/nab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NAB
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datasets/psm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PSM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datasets/skab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SKAB
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datasets/mgab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MGAB
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datasets/mba/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MBA (심전도)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datasets/yahoo_s5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Yahoo S5 (신청)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datasets/swat_wadi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SWaT/WADI (신청)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datasets/secom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SECOM (참고)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#model-summary-sorted-by-mean-rank" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Model summary (sorted by mean rank)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#model-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Model × dataset
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="leaderboard-vus-pr">Leaderboard — VUS-PR</h1>
+<div class="admonition warning">
+<p class="admonition-title">Lite profile — preview</p>
+<p>These numbers come from the <strong>lite</strong> subset (CI-sized: a handful of entities per dataset), not the full benchmark matrix. Means are shown with entity-bootstrap 95% CIs and an <code>entities</code> count — a mean over few entities with a wide CI is weak evidence. Do not quote ranks from this page without those qualifiers.</p>
+</div>
+<p>Primary metric: <strong>VUS-PR</strong> (Paparrizos et al., VLDB 2022). Values are seed averages; cell shading follows the metric value, row tint and badge follow the generation. PA-F1 is intentionally not shown (CLAUDE.md §4).</p>
+<p>Friedman test across the 21 models with complete coverage of the 13 shared entities: <strong>p = 1.71e-09</strong> — model ranking differences are statistically significant overall; see the critical-difference diagram for which pairs are separable.</p>
+<h2 id="model-summary-sorted-by-mean-rank">Model summary (sorted by mean rank)</h2>
+<table style="border-collapse:collapse;width:100%;font-size:0.82rem;line-height:1.35;"><thead><tr><th style="text-align:left;padding:6px 10px;border-bottom:2px solid #d5d5d2;background:#eef2f7;white-space:nowrap;">generation</th><th style="text-align:left;padding:6px 10px;border-bottom:2px solid #d5d5d2;background:#eef2f7;white-space:nowrap;">model</th><th style="text-align:left;padding:6px 10px;border-bottom:2px solid #d5d5d2;background:#eef2f7;white-space:nowrap;">mean vus_pr [95% CI]</th><th style="text-align:left;padding:6px 10px;border-bottom:2px solid #d5d5d2;background:#eef2f7;white-space:nowrap;">mean rank</th><th style="text-align:left;padding:6px 10px;border-bottom:2px solid #d5d5d2;background:#eef2f7;white-space:nowrap;">entities</th><th style="text-align:left;padding:6px 10px;border-bottom:2px solid #d5d5d2;background:#eef2f7;white-space:nowrap;">runtime (s)</th><th style="text-align:left;padding:6px 10px;border-bottom:2px solid #d5d5d2;background:#eef2f7;white-space:nowrap;">config</th></tr></thead><tbody><tr style="background:rgba(237,161,0,0.09)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#eda100;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen4 Graph/Transformer">Gen 4</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">mtad_gat</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.30);text-align:right;white-space:nowrap;">0.821 <span style="font-size:0.72rem;color:#5f5e5b;">[0.72, 0.89]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">5.00</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">3</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">5.85</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/mtad_gat__skab__valve1_0__seed0__f4830fceaa63.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">10ce709c421b</code></a></td></tr><tr style="background:rgba(27,175,122,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#1baf7a;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen3 DL Recon">Gen 3</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">lstm_p</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.29);text-align:right;white-space:nowrap;">0.812 <span style="font-size:0.72rem;color:#5f5e5b;">[0.71, 0.91]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">5.33</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">3</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">2.38</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/lstm_p__skab__valve1_0__seed0__2d11f154dbe4.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">2d11f154dbe4</code></a></td></tr><tr style="background:rgba(235,104,52,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#eb6834;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen2 Classical ML">Gen 2</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">sub_knn</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.19);text-align:right;white-space:nowrap;">0.455 <span style="font-size:0.72rem;color:#5f5e5b;">[0.32, 0.59]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">7.15</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">13</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">9.24</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/sub_knn__mba__all__seed0__ffb9d54a19dd.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">1622386787b5</code></a></td></tr><tr style="background:rgba(42,120,214,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#2a78d6;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen1 Statistical">Gen 1</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">sub_pca</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.18);text-align:right;white-space:nowrap;">0.439 <span style="font-size:0.72rem;color:#5f5e5b;">[0.31, 0.57]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">7.46</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">13</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">13.26</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/sub_pca__mba__all__seed0__a385bb0d456d.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">3a8820e97431</code></a></td></tr><tr style="background:rgba(27,175,122,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#1baf7a;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen3 DL Recon">Gen 3</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">lstm_ad</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.28);text-align:right;white-space:nowrap;">0.782 <span style="font-size:0.72rem;color:#5f5e5b;">[0.63, 0.89]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">7.67</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">3</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">2.66</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/lstm_ad__skab__valve1_0__seed0__0dfacdce9d7b.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">0dfacdce9d7b</code></a></td></tr><tr style="background:rgba(237,161,0,0.09)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#eda100;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen4 Graph/Transformer">Gen 4</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">tranad</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.28);text-align:right;white-space:nowrap;">0.763 <span style="font-size:0.72rem;color:#5f5e5b;">[0.66, 0.91]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">8.33</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">3</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">20.63</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/tranad__skab__valve1_0__seed0__734f60928c1d.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">2e0a261787de</code></a></td></tr><tr style="background:rgba(27,175,122,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#1baf7a;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen3 DL Recon">Gen 3</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">usad</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.27);text-align:right;white-space:nowrap;">0.746 <span style="font-size:0.72rem;color:#5f5e5b;">[0.72, 0.79]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">9.33</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">3</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">4.58</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/usad__skab__valve1_0__seed0__a6b33aff3b93.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">0a248a10c2d7</code></a></td></tr><tr style="background:rgba(27,175,122,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#1baf7a;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen3 DL Recon">Gen 3</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">ae</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.27);text-align:right;white-space:nowrap;">0.734 <span style="font-size:0.72rem;color:#5f5e5b;">[0.72, 0.75]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">9.67</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">3</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">1.90</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/ae__skab__valve1_0__seed0__00565c2c3da2.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">00565c2c3da2</code></a></td></tr><tr style="background:rgba(235,104,52,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#eb6834;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen2 Classical ML">Gen 2</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">ocsvm</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.17);text-align:right;white-space:nowrap;">0.404 <span style="font-size:0.72rem;color:#5f5e5b;">[0.26, 0.56]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">10.08</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">13</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">2.16</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/ocsvm__mba__all__seed0__9dcb6eae3ea4.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">19dda5b3ab8b</code></a></td></tr><tr style="background:rgba(82,81,78,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#52514e;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen0 baseline">Gen 0</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">ensemble_simple</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.16);text-align:right;white-space:nowrap;">0.383 <span style="font-size:0.72rem;color:#5f5e5b;">[0.25, 0.52]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">10.23</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">13</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">19.83</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/ensemble_simple__mba__all__seed0__03504b13be43.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">03504b13be43</code></a></td></tr><tr style="background:rgba(42,120,214,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#2a78d6;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen1 Statistical">Gen 1</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">sesd</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.17);text-align:right;white-space:nowrap;">0.406 <span style="font-size:0.72rem;color:#5f5e5b;">[0.28, 0.55]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">10.38</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">13</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">157.21</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/sesd__mba__all__seed0__8d6d08f16df2.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">0b4ff0f6ef56</code></a></td></tr><tr style="background:rgba(42,120,214,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#2a78d6;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen1 Statistical">Gen 1</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">pca_t2spe</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.18);text-align:right;white-space:nowrap;">0.428 <span style="font-size:0.72rem;color:#5f5e5b;">[0.27, 0.59]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">10.54</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">13</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">0.10</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/pca_t2spe__mba__all__seed0__995d4428680f.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">05d8070873bb</code></a></td></tr><tr style="background:rgba(232,123,164,0.08)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#e87ba4;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen5 SSM/Foundation">Gen 5</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">mamba_tsad_fixed</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.20);text-align:right;white-space:nowrap;">0.500 <span style="font-size:0.72rem;color:#5f5e5b;">[0.37, 0.62]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">11.00</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">7</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">19.94</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/mamba_tsad_fixed__skab__valve1_0__seed0__23900b50eb7b.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">0465248a5e25</code></a></td></tr><tr style="background:rgba(42,120,214,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#2a78d6;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen1 Statistical">Gen 1</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">hotelling_t2</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.18);text-align:right;white-space:nowrap;">0.437 <span style="font-size:0.72rem;color:#5f5e5b;">[0.28, 0.59]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">11.15</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">13</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">0.04</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/hotelling_t2__mba__all__seed0__e52ebbfdeead.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">2803a14210c8</code></a></td></tr><tr style="background:rgba(235,104,52,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#eb6834;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen2 Classical ML">Gen 2</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">lof</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.17);text-align:right;white-space:nowrap;">0.411 <span style="font-size:0.72rem;color:#5f5e5b;">[0.26, 0.56]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">11.46</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">13</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">3.19</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/lof__mba__all__seed0__0d91f8dc49f0.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">0d91f8dc49f0</code></a></td></tr><tr style="background:rgba(42,120,214,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#2a78d6;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen1 Statistical">Gen 1</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">ewma</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.17);text-align:right;white-space:nowrap;">0.413 <span style="font-size:0.72rem;color:#5f5e5b;">[0.26, 0.57]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">11.54</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">13</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">0.20</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/ewma__mba__all__seed0__eb50db1180c9.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">0454ea03f379</code></a></td></tr><tr style="background:rgba(235,104,52,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#eb6834;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen2 Classical ML">Gen 2</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">knn</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.18);text-align:right;white-space:nowrap;">0.427 <span style="font-size:0.72rem;color:#5f5e5b;">[0.27, 0.58]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">11.62</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">13</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">0.54</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/knn__mba__all__seed0__6f8627e36e4f.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">30938e6805a4</code></a></td></tr><tr style="background:rgba(42,120,214,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#2a78d6;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen1 Statistical">Gen 1</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">poly</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.16);text-align:right;white-space:nowrap;">0.378 <span style="font-size:0.72rem;color:#5f5e5b;">[0.23, 0.55]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">11.85</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">13</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">0.02</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/poly__mba__all__seed0__ec0cc7094b00.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">04f78382c778</code></a></td></tr><tr style="background:rgba(42,120,214,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#2a78d6;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen1 Statistical">Gen 1</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">stl_residual</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.17);text-align:right;white-space:nowrap;">0.403 <span style="font-size:0.72rem;color:#5f5e5b;">[0.26, 0.55]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">12.08</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">13</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">101.17</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/stl_residual__mba__all__seed0__70d68b1c2c4b.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">13f77ab717d1</code></a></td></tr><tr style="background:rgba(42,120,214,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#2a78d6;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen1 Statistical">Gen 1</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">zscore</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.16);text-align:right;white-space:nowrap;">0.380 <span style="font-size:0.72rem;color:#5f5e5b;">[0.23, 0.54]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">13.54</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">13</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">0.03</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/zscore__mba__all__seed0__aa34371b3236.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">247f60d04790</code></a></td></tr><tr style="background:rgba(237,161,0,0.09)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#eda100;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen4 Graph/Transformer">Gen 4</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">dcdetector</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.24);text-align:right;white-space:nowrap;">0.647 <span style="font-size:0.72rem;color:#5f5e5b;">[0.43, 0.80]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">14.33</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">3</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">2.11</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/dcdetector__skab__valve1_0__seed0__60694ecf71fc.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">02770db3600f</code></a></td></tr><tr style="background:rgba(237,161,0,0.09)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#eda100;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen4 Graph/Transformer">Gen 4</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">timesnet</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.24);text-align:right;white-space:nowrap;">0.645 <span style="font-size:0.72rem;color:#5f5e5b;">[0.54, 0.81]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">15.00</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">3</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">2.41</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/timesnet__skab__valve1_0__seed0__e869b386e372.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">047d78f5691c</code></a></td></tr><tr style="background:rgba(235,104,52,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#eb6834;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen2 Classical ML">Gen 2</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">iforest</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.15);text-align:right;white-space:nowrap;">0.332 <span style="font-size:0.72rem;color:#5f5e5b;">[0.22, 0.46]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">15.38</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">13</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">0.64</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/iforest__mba__all__seed0__896118d91a57.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">053d1ce8d6cd</code></a></td></tr><tr style="background:rgba(235,104,52,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#eb6834;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen2 Classical ML">Gen 2</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">hbos</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.14);text-align:right;white-space:nowrap;">0.296 <span style="font-size:0.72rem;color:#5f5e5b;">[0.19, 0.42]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">16.46</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">13</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">0.45</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/hbos__mba__all__seed0__407ae1f4b3e2.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">0ac2775a90c3</code></a></td></tr><tr style="background:rgba(27,175,122,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#1baf7a;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen3 DL Recon">Gen 3</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">vae_donut</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.22);text-align:right;white-space:nowrap;">0.575 <span style="font-size:0.72rem;color:#5f5e5b;">[0.40, 0.76]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">17.00</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">3</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">2.69</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/vae_donut__skab__valve1_0__seed0__e2f48e170fb2.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">4b166e2b2d78</code></a></td></tr><tr style="background:rgba(232,123,164,0.08)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#e87ba4;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen5 SSM/Foundation">Gen 5</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">mamba_tsad_faithful</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.15);text-align:right;white-space:nowrap;">0.318 <span style="font-size:0.72rem;color:#5f5e5b;">[0.20, 0.43]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">17.29</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">7</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">21.11</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/mamba_tsad_faithful__skab__valve1_0__seed0__b5592720bebc.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">103a30200cbe</code></a></td></tr><tr style="background:rgba(27,175,122,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#1baf7a;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen3 DL Recon">Gen 3</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">omni_anomaly</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.23);text-align:right;white-space:nowrap;">0.609 <span style="font-size:0.72rem;color:#5f5e5b;">[0.56, 0.64]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">17.33</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">3</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">7.48</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/omni_anomaly__skab__valve1_0__seed0__3de09096040c.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">0bbd75197861</code></a></td></tr><tr style="background:rgba(235,104,52,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#eb6834;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen2 Classical ML">Gen 2</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">matrix_profile</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.14);text-align:right;white-space:nowrap;">0.287 <span style="font-size:0.72rem;color:#5f5e5b;">[0.18, 0.41]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">18.31</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">13</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">30.60</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/matrix_profile__mba__all__seed0__9e56f3634efc.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">169bf64ba146</code></a></td></tr><tr style="background:rgba(237,161,0,0.09)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#eda100;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen4 Graph/Transformer">Gen 4</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">anomaly_transformer</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.23);text-align:right;white-space:nowrap;">0.613 <span style="font-size:0.72rem;color:#5f5e5b;">[0.45, 0.78]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">18.67</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">3</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">4.28</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/anomaly_transformer__skab__valve1_0__seed0__4f21fb65521d.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">0302c3c4f1ba</code></a></td></tr><tr style="background:rgba(235,104,52,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#eb6834;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen2 Classical ML">Gen 2</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">spectral_residual</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.11);text-align:right;white-space:nowrap;">0.200 <span style="font-size:0.72rem;color:#5f5e5b;">[0.11, 0.33]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">18.85</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">13</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">0.17</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/spectral_residual__mba__all__seed0__c35798c8f6e6.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">1a3ce6927c20</code></a></td></tr><tr style="background:rgba(42,120,214,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#2a78d6;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen1 Statistical">Gen 1</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">cusum</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.12);text-align:right;white-space:nowrap;">0.232 <span style="font-size:0.72rem;color:#5f5e5b;">[0.14, 0.34]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">19.08</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">13</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">0.24</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/cusum__mba__all__seed0__c6b99eef133b.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">02df36fe32e4</code></a></td></tr><tr style="background:rgba(42,120,214,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#2a78d6;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen1 Statistical">Gen 1</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">online_ewma</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.12);text-align:right;white-space:nowrap;">0.224 <span style="font-size:0.72rem;color:#5f5e5b;">[0.12, 0.36]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">19.15</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">13</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">0.79</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/online_ewma__mba__all__seed0__d95c75f84019.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">1d197cc21867</code></a></td></tr><tr style="background:rgba(42,120,214,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#2a78d6;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen1 Statistical">Gen 1</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">online_cusum</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.11);text-align:right;white-space:nowrap;">0.208 <span style="font-size:0.72rem;color:#5f5e5b;">[0.12, 0.32]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">19.69</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">13</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">1.16</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/online_cusum__mba__all__seed0__26f61930987f.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">02b785172714</code></a></td></tr><tr style="background:rgba(82,81,78,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#52514e;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen0 baseline">Gen 0</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">dummy</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.10);text-align:right;white-space:nowrap;">0.179 <span style="font-size:0.72rem;color:#5f5e5b;">[0.10, 0.29]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">21.69</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">13</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">0.00</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/dummy__mba__all__seed0__7e18e40d2235.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">0051646a3b58</code></a></td></tr><tr style="background:rgba(237,161,0,0.09)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#eda100;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen4 Graph/Transformer">Gen 4</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">gdn</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.18);text-align:right;white-space:nowrap;">0.420 <span style="font-size:0.72rem;color:#5f5e5b;">[0.21, 0.62]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">26.33</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">3</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">6.84</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/gdn__skab__valve1_0__seed0__0b1bd833ee60.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">0b1bd833ee60</code></a></td></tr><tr style="background:rgba(27,175,122,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#1baf7a;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen3 DL Recon">Gen 3</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">dagmm</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.14);text-align:right;white-space:nowrap;">0.291 <span style="font-size:0.72rem;color:#5f5e5b;">[0.16, 0.52]</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">29.33</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">3</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">2.37</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;"><a href="https://github.com/Denny-Hwang/TSAD-Forge/blob/main/benchmarks/results/dagmm__skab__valve1_0__seed0__9b86bfc9cb05.json" title="example run JSON (full config + metrics)"><code style="font-size:0.72rem;">12266f472566</code></a></td></tr></tbody></table>
+
+<h2 id="model-dataset">Model × dataset</h2>
+<div style="overflow-x:auto;"><table style="border-collapse:collapse;width:100%;font-size:0.82rem;line-height:1.35;"><thead><tr><th style="text-align:left;padding:6px 10px;border-bottom:2px solid #d5d5d2;background:#eef2f7;white-space:nowrap;">generation</th><th style="text-align:left;padding:6px 10px;border-bottom:2px solid #d5d5d2;background:#eef2f7;white-space:nowrap;">model</th><th style="text-align:left;padding:6px 10px;border-bottom:2px solid #d5d5d2;background:#eef2f7;white-space:nowrap;white-space:normal;min-width:86px;">mba</th><th style="text-align:left;padding:6px 10px;border-bottom:2px solid #d5d5d2;background:#eef2f7;white-space:nowrap;white-space:normal;min-width:86px;">mgab/1</th><th style="text-align:left;padding:6px 10px;border-bottom:2px solid #d5d5d2;background:#eef2f7;white-space:nowrap;white-space:normal;min-width:86px;">mgab/2</th><th style="text-align:left;padding:6px 10px;border-bottom:2px solid #d5d5d2;background:#eef2f7;white-space:nowrap;white-space:normal;min-width:86px;">nab/<br>realAWSCloudwatch_ec2_cpu_utilization_24ae8d.csv</th><th style="text-align:left;padding:6px 10px;border-bottom:2px solid #d5d5d2;background:#eef2f7;white-space:nowrap;white-space:normal;min-width:86px;">nab/<br>realKnownCause_machine_temperature_system_failure.csv</th><th style="text-align:left;padding:6px 10px;border-bottom:2px solid #d5d5d2;background:#eef2f7;white-space:nowrap;white-space:normal;min-width:86px;">psm</th><th style="text-align:left;padding:6px 10px;border-bottom:2px solid #d5d5d2;background:#eef2f7;white-space:nowrap;white-space:normal;min-width:86px;">skab/valve1_0</th><th style="text-align:left;padding:6px 10px;border-bottom:2px solid #d5d5d2;background:#eef2f7;white-space:nowrap;white-space:normal;min-width:86px;">smd/<br>machine-1-1</th><th style="text-align:left;padding:6px 10px;border-bottom:2px solid #d5d5d2;background:#eef2f7;white-space:nowrap;white-space:normal;min-width:86px;">smd/<br>machine-1-6</th><th style="text-align:left;padding:6px 10px;border-bottom:2px solid #d5d5d2;background:#eef2f7;white-space:nowrap;white-space:normal;min-width:86px;">smd/<br>machine-2-1</th><th style="text-align:left;padding:6px 10px;border-bottom:2px solid #d5d5d2;background:#eef2f7;white-space:nowrap;white-space:normal;min-width:86px;">smd/<br>machine-3-2</th><th style="text-align:left;padding:6px 10px;border-bottom:2px solid #d5d5d2;background:#eef2f7;white-space:nowrap;white-space:normal;min-width:86px;">smd/<br>machine-3-7</th><th style="text-align:left;padding:6px 10px;border-bottom:2px solid #d5d5d2;background:#eef2f7;white-space:nowrap;white-space:normal;min-width:86px;">synthetic</th></tr></thead><tbody><tr style="background:rgba(237,161,0,0.09)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#eda100;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen4 Graph/Transformer">Gen 4</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">mtad_gat</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.32);text-align:right;">0.893</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.27);text-align:right;">0.717</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.31);text-align:right;">0.852</td></tr><tr style="background:rgba(27,175,122,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#1baf7a;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen3 DL Recon">Gen 3</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">lstm_p</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.32);text-align:right;">0.909</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.26);text-align:right;">0.709</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.30);text-align:right;">0.817</td></tr><tr style="background:rgba(235,104,52,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#eb6834;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen2 Classical ML">Gen 2</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">sub_knn</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.26);text-align:right;">0.690</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.08);text-align:right;">0.091</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.08);text-align:right;">0.105</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.14);text-align:right;">0.307</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.20);text-align:right;">0.516</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.20);text-align:right;">0.495</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.32);text-align:right;">0.908</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.27);text-align:right;">0.744</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.23);text-align:right;">0.587</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.20);text-align:right;">0.501</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.08);text-align:right;">0.114</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.13);text-align:right;">0.262</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.23);text-align:right;">0.592</td></tr><tr style="background:rgba(42,120,214,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#2a78d6;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen1 Statistical">Gen 1</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">sub_pca</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.27);text-align:right;">0.731</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.067</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.065</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.13);text-align:right;">0.272</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.11);text-align:right;">0.196</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.21);text-align:right;">0.531</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.27);text-align:right;">0.721</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.28);text-align:right;">0.762</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.24);text-align:right;">0.644</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.17);text-align:right;">0.416</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.13);text-align:right;">0.274</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.17);text-align:right;">0.386</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.24);text-align:right;">0.648</td></tr><tr style="background:rgba(27,175,122,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#1baf7a;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen3 DL Recon">Gen 3</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">lstm_ad</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.32);text-align:right;">0.889</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.24);text-align:right;">0.628</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.30);text-align:right;">0.830</td></tr><tr style="background:rgba(237,161,0,0.09)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#eda100;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen4 Graph/Transformer">Gen 4</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">tranad</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.32);text-align:right;">0.913</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.25);text-align:right;">0.661</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.26);text-align:right;">0.715</td></tr><tr style="background:rgba(27,175,122,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#1baf7a;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen3 DL Recon">Gen 3</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">usad</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.29);text-align:right;">0.793</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.27);text-align:right;">0.724</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.27);text-align:right;">0.719</td></tr><tr style="background:rgba(27,175,122,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#1baf7a;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen3 DL Recon">Gen 3</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">ae</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.27);text-align:right;">0.731</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.27);text-align:right;">0.725</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.27);text-align:right;">0.747</td></tr><tr style="background:rgba(235,104,52,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#eb6834;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen2 Classical ML">Gen 2</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">ocsvm</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.29);text-align:right;">0.809</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.059</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.064</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.12);text-align:right;">0.222</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.16);text-align:right;">0.381</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.20);text-align:right;">0.495</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.17);text-align:right;">0.387</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.25);text-align:right;">0.673</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.29);text-align:right;">0.790</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.18);text-align:right;">0.436</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.08);text-align:right;">0.108</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.06);text-align:right;">0.042</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.28);text-align:right;">0.782</td></tr><tr style="background:rgba(82,81,78,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#52514e;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen0 baseline">Gen 0</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">ensemble_simple</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.28);text-align:right;">0.767</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.063</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.073</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.11);text-align:right;">0.201</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.14);text-align:right;">0.305</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.22);text-align:right;">0.569</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.27);text-align:right;">0.732</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.20);text-align:right;">0.510</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.23);text-align:right;">0.611</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.15);text-align:right;">0.348</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.08);text-align:right;">0.114</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.08);text-align:right;">0.101</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.23);text-align:right;">0.587</td></tr><tr style="background:rgba(42,120,214,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#2a78d6;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen1 Statistical">Gen 1</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">sesd</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.32);text-align:right;">0.889</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.057</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.066</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.11);text-align:right;">0.206</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.10);text-align:right;">0.182</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.16);text-align:right;">0.378</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.18);text-align:right;">0.435</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.27);text-align:right;">0.747</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.14);text-align:right;">0.296</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.16);text-align:right;">0.357</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.14);text-align:right;">0.310</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.25);text-align:right;">0.681</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.25);text-align:right;">0.674</td></tr><tr style="background:rgba(42,120,214,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#2a78d6;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen1 Statistical">Gen 1</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">pca_t2spe</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.28);text-align:right;">0.774</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.062</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.064</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.09);text-align:right;">0.143</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.24);text-align:right;">0.637</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.21);text-align:right;">0.527</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.30);text-align:right;">0.831</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.22);text-align:right;">0.581</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.29);text-align:right;">0.816</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.12);text-align:right;">0.246</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.069</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.09);text-align:right;">0.123</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.26);text-align:right;">0.697</td></tr><tr style="background:rgba(232,123,164,0.08)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#e87ba4;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen5 SSM/Foundation">Gen 5</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">mamba_tsad_fixed</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.16);text-align:right;">0.378</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.27);text-align:right;">0.748</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.25);text-align:right;">0.663</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.18);text-align:right;">0.429</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.11);text-align:right;">0.192</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.19);text-align:right;">0.477</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.23);text-align:right;">0.611</td></tr><tr style="background:rgba(42,120,214,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#2a78d6;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen1 Statistical">Gen 1</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">hotelling_t2</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.28);text-align:right;">0.770</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.062</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.064</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.09);text-align:right;">0.143</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.24);text-align:right;">0.637</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.21);text-align:right;">0.544</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.30);text-align:right;">0.833</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.20);text-align:right;">0.509</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.29);text-align:right;">0.812</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.13);text-align:right;">0.255</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.060</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.14);text-align:right;">0.301</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.26);text-align:right;">0.688</td></tr><tr style="background:rgba(235,104,52,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#eb6834;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen2 Classical ML">Gen 2</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">lof</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.26);text-align:right;">0.696</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.057</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.065</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.11);text-align:right;">0.198</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.19);text-align:right;">0.461</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.19);text-align:right;">0.473</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.32);text-align:right;">0.900</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.23);text-align:right;">0.602</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.21);text-align:right;">0.545</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.19);text-align:right;">0.453</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.062</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.055</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.28);text-align:right;">0.782</td></tr><tr style="background:rgba(42,120,214,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#2a78d6;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen1 Statistical">Gen 1</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">ewma</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.26);text-align:right;">0.716</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.062</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.064</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.10);text-align:right;">0.169</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.24);text-align:right;">0.637</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.18);text-align:right;">0.420</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.33);text-align:right;">0.933</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.21);text-align:right;">0.517</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.22);text-align:right;">0.569</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.20);text-align:right;">0.509</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.08);text-align:right;">0.103</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.06);text-align:right;">0.036</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.24);text-align:right;">0.637</td></tr><tr style="background:rgba(235,104,52,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#eb6834;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen2 Classical ML">Gen 2</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">knn</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.29);text-align:right;">0.793</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.062</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.063</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.09);text-align:right;">0.143</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.21);text-align:right;">0.532</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.21);text-align:right;">0.518</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.30);text-align:right;">0.848</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.22);text-align:right;">0.574</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.28);text-align:right;">0.775</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.14);text-align:right;">0.305</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.064</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.11);text-align:right;">0.203</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.25);text-align:right;">0.672</td></tr><tr style="background:rgba(42,120,214,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#2a78d6;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen1 Statistical">Gen 1</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">poly</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.32);text-align:right;">0.908</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.064</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.063</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.10);text-align:right;">0.169</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.09);text-align:right;">0.136</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.18);text-align:right;">0.429</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.17);text-align:right;">0.403</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.23);text-align:right;">0.598</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.25);text-align:right;">0.682</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.11);text-align:right;">0.197</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.08);text-align:right;">0.103</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.12);text-align:right;">0.250</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.33);text-align:right;">0.919</td></tr><tr style="background:rgba(42,120,214,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#2a78d6;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen1 Statistical">Gen 1</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">stl_residual</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.32);text-align:right;">0.888</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.057</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.066</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.10);text-align:right;">0.177</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.10);text-align:right;">0.182</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.18);text-align:right;">0.444</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.21);text-align:right;">0.548</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.24);text-align:right;">0.648</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.25);text-align:right;">0.671</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.11);text-align:right;">0.203</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.061</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.24);text-align:right;">0.623</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.25);text-align:right;">0.675</td></tr><tr style="background:rgba(42,120,214,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#2a78d6;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen1 Statistical">Gen 1</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">zscore</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.28);text-align:right;">0.765</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.062</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.064</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.09);text-align:right;">0.143</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.24);text-align:right;">0.637</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.18);text-align:right;">0.431</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.25);text-align:right;">0.674</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.19);text-align:right;">0.466</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.25);text-align:right;">0.678</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.12);text-align:right;">0.217</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.064</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.06);text-align:right;">0.038</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.26);text-align:right;">0.706</td></tr><tr style="background:rgba(237,161,0,0.09)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#eda100;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen4 Graph/Transformer">Gen 4</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">dcdetector</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.18);text-align:right;">0.430</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.26);text-align:right;">0.713</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.29);text-align:right;">0.798</td></tr><tr style="background:rgba(237,161,0,0.09)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#eda100;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen4 Graph/Transformer">Gen 4</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">timesnet</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.21);text-align:right;">0.542</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.22);text-align:right;">0.579</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.29);text-align:right;">0.814</td></tr><tr style="background:rgba(235,104,52,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#eb6834;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen2 Classical ML">Gen 2</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">iforest</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.29);text-align:right;">0.792</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.059</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.064</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.10);text-align:right;">0.170</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.22);text-align:right;">0.568</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.19);text-align:right;">0.476</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.16);text-align:right;">0.376</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.15);text-align:right;">0.347</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.19);text-align:right;">0.466</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.14);text-align:right;">0.309</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.08);text-align:right;">0.088</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.08);text-align:right;">0.100</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.20);text-align:right;">0.499</td></tr><tr style="background:rgba(235,104,52,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#eb6834;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen2 Classical ML">Gen 2</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">hbos</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.28);text-align:right;">0.765</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.060</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.063</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.11);text-align:right;">0.214</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.24);text-align:right;">0.632</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.19);text-align:right;">0.450</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.16);text-align:right;">0.370</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.14);text-align:right;">0.286</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.16);text-align:right;">0.371</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.13);text-align:right;">0.282</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.08);text-align:right;">0.087</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.060</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.11);text-align:right;">0.206</td></tr><tr style="background:rgba(27,175,122,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#1baf7a;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen3 DL Recon">Gen 3</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">vae_donut</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.22);text-align:right;">0.571</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.17);text-align:right;">0.396</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.28);text-align:right;">0.756</td></tr><tr style="background:rgba(232,123,164,0.08)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#e87ba4;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen5 SSM/Foundation">Gen 5</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">mamba_tsad_faithful</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.22);text-align:right;">0.559</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.15);text-align:right;">0.340</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.17);text-align:right;">0.384</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.15);text-align:right;">0.324</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.08);text-align:right;">0.099</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.08);text-align:right;">0.109</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.17);text-align:right;">0.414</td></tr><tr style="background:rgba(27,175,122,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#1baf7a;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen3 DL Recon">Gen 3</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">omni_anomaly</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.22);text-align:right;">0.563</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.24);text-align:right;">0.622</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.24);text-align:right;">0.641</td></tr><tr style="background:rgba(235,104,52,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#eb6834;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen2 Classical ML">Gen 2</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">matrix_profile</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.24);text-align:right;">0.635</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.18);text-align:right;">0.450</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.21);text-align:right;">0.522</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.09);text-align:right;">0.139</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.065</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.14);text-align:right;">0.313</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.20);text-align:right;">0.493</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.08);text-align:right;">0.096</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.11);text-align:right;">0.199</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.063</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.062</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.08);text-align:right;">0.113</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.22);text-align:right;">0.579</td></tr><tr style="background:rgba(237,161,0,0.09)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#eda100;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen4 Graph/Transformer">Gen 4</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">anomaly_transformer</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.28);text-align:right;">0.782</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.23);text-align:right;">0.606</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.19);text-align:right;">0.451</td></tr><tr style="background:rgba(235,104,52,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#eb6834;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen2 Classical ML">Gen 2</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">spectral_residual</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.29);text-align:right;">0.803</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.066</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.064</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.09);text-align:right;">0.142</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.08);text-align:right;">0.095</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.14);text-align:right;">0.312</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.18);text-align:right;">0.418</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.08);text-align:right;">0.114</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.12);text-align:right;">0.222</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.075</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.076</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.06);text-align:right;">0.026</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.11);text-align:right;">0.186</td></tr><tr style="background:rgba(42,120,214,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#2a78d6;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen1 Statistical">Gen 1</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">cusum</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.25);text-align:right;">0.677</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.059</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.064</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.12);text-align:right;">0.218</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.08);text-align:right;">0.110</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.14);text-align:right;">0.310</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.21);text-align:right;">0.521</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.10);text-align:right;">0.167</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.15);text-align:right;">0.333</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.09);text-align:right;">0.136</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.06);text-align:right;">0.044</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.06);text-align:right;">0.030</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.15);text-align:right;">0.343</td></tr><tr style="background:rgba(42,120,214,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#2a78d6;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen1 Statistical">Gen 1</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">online_ewma</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.31);text-align:right;">0.855</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.062</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.063</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.08);text-align:right;">0.116</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.08);text-align:right;">0.097</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.14);text-align:right;">0.313</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.18);text-align:right;">0.440</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.09);text-align:right;">0.117</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.11);text-align:right;">0.212</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.073</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.068</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.06);text-align:right;">0.022</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.19);text-align:right;">0.476</td></tr><tr style="background:rgba(42,120,214,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#2a78d6;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen1 Statistical">Gen 1</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">online_cusum</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.25);text-align:right;">0.679</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.059</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.064</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.11);text-align:right;">0.197</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.11);text-align:right;">0.184</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.14);text-align:right;">0.288</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.19);text-align:right;">0.453</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.08);text-align:right;">0.111</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.09);text-align:right;">0.139</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.051</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.08);text-align:right;">0.100</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.06);text-align:right;">0.021</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.16);text-align:right;">0.357</td></tr><tr style="background:rgba(82,81,78,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#52514e;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen0 baseline">Gen 0</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">dummy</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.26);text-align:right;">0.685</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.062</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.065</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.09);text-align:right;">0.137</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.08);text-align:right;">0.095</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.14);text-align:right;">0.302</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.16);text-align:right;">0.364</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.08);text-align:right;">0.105</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.11);text-align:right;">0.212</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.072</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.07);text-align:right;">0.063</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.06);text-align:right;">0.022</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.09);text-align:right;">0.140</td></tr><tr style="background:rgba(237,161,0,0.09)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#eda100;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen4 Graph/Transformer">Gen 4</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">gdn</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.18);text-align:right;">0.433</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.11);text-align:right;">0.206</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.24);text-align:right;">0.620</td></tr><tr style="background:rgba(27,175,122,0.07)"><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;white-space:nowrap;"><span style="display:inline-block;padding:1px 8px;border-radius:10px;background:#1baf7a;color:#ffffff;font-size:0.72rem;font-weight:600;" title="Gen3 DL Recon">Gen 3</span></td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;font-weight:600;">dagmm</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.20);text-align:right;">0.515</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.11);text-align:right;">0.197</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;text-align:right;">–</td><td style="padding:5px 10px;border-bottom:1px solid #e8e8e6;background:rgba(42,120,214,0.10);text-align:right;">0.161</td></tr></tbody></table></div>
+
+<p>Reproduce with <code>python benchmarks/run_all.py --profile configs/lite.yaml</code> — each row's config hash resolves to its full configuration in the results JSON.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.sections", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\ud074\ub9bd\ubcf4\ub4dc\uc5d0 \ubcf5\uc0ac\ub428", "clipboard.copy": "\ud074\ub9bd\ubcf4\ub4dc\ub85c \ubcf5\uc0ac", "search.result.more.one": "\uc774 \ubb38\uc11c\uc5d0\uc11c 1\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.more.other": "\uc774 \ubb38\uc11c\uc5d0\uc11c #\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.none": "\uac80\uc0c9\uc5b4\uc640 \uc77c\uce58\ud558\ub294 \ubb38\uc11c\uac00 \uc5c6\uc2b5\ub2c8\ub2e4", "search.result.one": "1\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.other": "#\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.placeholder": "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uc138\uc694", "search.result.term.missing": "\ud3ec\ud568\ub418\uc9c0 \uc54a\uc740 \uac80\uc0c9\uc5b4", "select.version": "\ubc84\uc804 \uc120\ud0dd"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
