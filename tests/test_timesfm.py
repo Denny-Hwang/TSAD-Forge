@@ -13,10 +13,19 @@ import types
 import numpy as np
 import pytest
 
-from tsad_forge.evaluation.forecast_metrics import DEFAULT_QUANTILE_LEVELS
-from tsad_forge.models.gen5_ssm_foundation.foundation import _ForecastResidualBase
-from tsad_forge.models.gen5_ssm_foundation.timesfm import NONCOMMERCIAL_WARNING
-from tsad_forge.models.registry import get_model, list_models
+# 어댑터 자체는 torch가 필요 없지만(백엔드가 자체 의존성을 가짐), gen5 패키지 __init__이
+# mamba_tsad를 import하므로 registry 경로가 torch에 묶여 있다. torch 없는 CI 잡에서는
+# 수집 단계에서 죽지 않도록 건너뛴다 (test_gen5_models.py와 같은 규약, CI test-dl 잡이 실행).
+pytest.importorskip("torch", reason="Gen5 등록 경로가 torch 필요 (extras: dl)")
+
+from tsad_forge.evaluation.forecast_metrics import DEFAULT_QUANTILE_LEVELS  # noqa: E402
+from tsad_forge.models.gen5_ssm_foundation.foundation import (  # noqa: E402
+    _ForecastResidualBase,
+)
+from tsad_forge.models.gen5_ssm_foundation.timesfm import (  # noqa: E402
+    NONCOMMERCIAL_WARNING,
+)
+from tsad_forge.models.registry import get_model, list_models  # noqa: E402
 
 RNG = np.random.default_rng(3)
 T_TR, T_TE, D = 300, 160, 3
