@@ -25,6 +25,9 @@
 | PyTorch | https://github.com/pytorch/pytorch | pip (extras: dl) | BSD-style | pip 의존성 | Gen3-5 |
 | tabulate | https://github.com/astanin/python-tabulate | pip (>=0.9) | MIT | pip 의존성 | 리더보드 |
 | psutil | https://github.com/giampaolo/psutil | pip (>=5.9) | BSD-3-Clause | pip 의존성 | 런타임 무오염 메모리 계측 (runner/measure.py) |
+| timesfm | https://github.com/google-research/timesfm | pip 3.0.0 (extras: foundation) | **코드** Apache-2.0 (LICENSE 원문 확인) | pip 의존성 / 어댑터 (`models/gen5_ssm_foundation/timesfm.py`) | 코드 복사 없음. **가중치 라이선스는 아래 별도 항목 참조** |
+| chronos-forecasting | https://github.com/amazon-science/chronos-forecasting | pip (extras: foundation) | Apache-2.0 | pip 의존성 / 어댑터 | 가중치도 Apache-2.0 |
+| momentfm | https://github.com/moment-timeseries-foundation-model/moment | pip (extras: foundation) | MIT | pip 의존성 / 어댑터 | |
 
 ## Gen3–4 모델 라이선스 감사 기록 (M4)
 
@@ -55,6 +58,23 @@
 | MERLIN | 공개 참조 구현 라이선스 불명 | 불명 → 복사 금지 | **도입 보류** (Gen2 목록에서 제외) |
 
 (M3 이후 stumpy, statsmodels, PyTorch 등 추가 시 이 표를 갱신한다.)
+
+## 사전학습 가중치 라이선스 (Gen5 파운데이션 어댑터)
+
+코드 라이선스와 **가중치 라이선스는 별개**다. TSAD-Forge는 가중치를 재배포하지
+않지만(사용자가 HuggingFace에서 직접 내려받는다), 사용 제약이 있는 가중치는 여기에
+기록하고 어댑터가 런타임에 경고한다.
+
+| 체크포인트 | 어댑터(등록명) | 가중치 라이선스 | 제약 |
+|---|---|---|---|
+| `google/timesfm-3.0-pytorch` | `timesfm3`, `timesfm3_ci`, `timesfm3_prob` | `timesfm-non-commercial-license-v1.0` | **비상업·비프로덕션 용도로만 사용 가능.** 기본 체크포인트 사용 시 `fit()`에서 UserWarning 발생 |
+| `google/timesfm-2.5-200m-pytorch` | `timesfm` | Apache-2.0 | 제약 없음 — 상업/프로덕션 비교에는 이 쪽을 쓴다 |
+| `amazon/chronos-bolt-*` | `chronos` | Apache-2.0 | 제약 없음 |
+| `AutonLab/MOMENT-1-*` | `moment` | MIT | 제약 없음 |
+
+TSAD-Forge 저장소 자체의 Apache-2.0 배포에는 영향이 없다: 가중치도 서드파티 코드도
+저장소에 포함되지 않는다. 자세한 배경은
+`docs/benchmarks/forecasting-benchmarks.md` 참조.
 
 ## 데이터셋
 

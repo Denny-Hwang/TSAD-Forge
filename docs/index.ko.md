@@ -20,7 +20,7 @@ tsad-forge run --model dummy --data synthetic
 | Gen2 Classical ML | 2000–2016 | LOF, OC-SVM, IForest, KNN, Sub-KNN, Matrix Profile |
 | Gen3 DL Recon/Forecast | 2015–2020 | AE, LSTM-AD/P, VAE(Donut), DAGMM, OmniAnomaly, USAD |
 | Gen4 Graph/Transformer | 2020–2023 | GDN, MTAD-GAT, Anomaly Transformer, TranAD, DCdetector, TimesNet |
-| Gen5 SSM/Foundation | 2023– | MambaTSAD(faithful/fixed), MOMENT, Chronos, TimesFM |
+| Gen5 SSM/Foundation | 2023– | MambaTSAD(faithful/fixed), MOMENT, Chronos, TimesFM 2.5 / 3.0 (다변량 · 채널독립 · 확률) |
 
 !!! warning "평가 방법론이 먼저다"
     point adjustment(PA)는 random score조차 SOTA로 만듭니다 (Kim et al., AAAI 2022).

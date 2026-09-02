@@ -36,7 +36,10 @@ dependencies = [
 [project.optional-dependencies]
 # Gen 3-5 딥러닝 모델용. 기본 config는 8GB VRAM (RTX A2000 Laptop) 기준.
 dl = ["torch>=2.6"]
-# Gen 5 파운데이션 모델 어댑터 (M5에서 라이선스 감사 후 확정)
+# Gen 5 파운데이션 모델 어댑터. 백엔드 라이브러리(timesfm/chronos-forecasting/momentfm)는
+# 무게와 라이선스가 제각각이라 사용자가 필요한 것만 별도 설치한다:
+#   pip install "timesfm[torch]" chronos-forecasting momentfm
+# TimesFM 3.0 가중치는 비상업 라이선스다 — THIRD_PARTY_NOTICES.md 참조.
 foundation = ["torch>=2.6"]
 docs = ["mkdocs>=1.6", "mkdocs-material>=9.5", "matplotlib>=3.8"]
 dev = [

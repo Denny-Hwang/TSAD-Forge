@@ -1,0 +1,51 @@
+# Gen5 파운데이션 모델 프로파일 — TimesFM 3.0 / 2.5 / Chronos / MOMENT.
+#
+# 실행: python benchmarks/run_all.py --profile configs/foundation.yaml
+# 준비: pip install "tsad-forge[foundation]" timesfm[torch] chronos-forecasting momentfm
+#       + HuggingFace 접근 (가중치 다운로드). CI에서는 실행하지 않는다 (CLAUDE.md §9).
+#
+# 라이선스 주의: `timesfm3`/`timesfm3_ci`가 쓰는 google/timesfm-3.0-pytorch 가중치는
+# timesfm-non-commercial-license-v1.0(비상업·비프로덕션)이다. 상업/프로덕션 비교가
+# 필요하면 Apache-2.0 가중치인 `timesfm`(2.5)만 실행하라. 어댑터가 fit()에서 경고한다.
+# 자세한 내용: docs/benchmarks/forecasting-benchmarks.md
+#
+# 이 프로파일이 답하려는 질문:
+#   Q1. 예측 벤치마크 1위(GIFT-Eval/fev-bench/TIME) 모델이 TSAD에서도 1위인가?
+#       -> 같은 데이터셋에서 Gen1-4 리더보드(lite 프로파일)와 VUS-PR로 직접 비교.
+#   Q2. TimesFM 3.0의 네이티브 다변량(변량 어텐션)이 탐지에 기여하는가?
+#       -> timesfm3 (결합 예측) vs timesfm3_ci (채널 독립), 같은 가중치·같은 설정.
+#   Q3. 확률 예측(분위)을 점수로 쓰면 점 잔차보다 나은가?
+#       -> score_mode: residual vs crps vs interval.
+#   Q4. 예측을 잘하는 것과 이상을 잘 찾는 것은 같은가?
+#       -> 각 실행이 fc_mase/fc_wql/fc_crps를 함께 기록한다 (§ runner/experiment.py).
+results_dir: benchmarks/results
+# zero-shot 추론은 결정적이다 (샘플링 없음) -> 시드 1개면 충분.
+# stochastic: true 로 표시된 모델만 전 시드를 돌린다.
+seeds: [0]
+defaults:
+  normalize: zscore
+  threshold: { method: quantile, q: 0.99 }
+  sliding_window: 100
+
+models:
+  # --- Q1/Q2: TimesFM 3.0 (비상업 가중치) ---
+  - { model: timesfm3, model_params: { context: 512, horizon: 32, batch_size: 8 } }
+  - { model: timesfm3_ci, model_params: { context: 512, horizon: 32, batch_size: 8 } }
+  # --- Q3: 확률(분위) 점수 변형 — 같은 예측, 점수 변환만 다름 ---
+  - { model: timesfm3_prob, model_params: { context: 512, horizon: 32, batch_size: 8 } }
+  # --- 세대 내 대조군 ---
+  - { model: timesfm, model_params: { context: 512, horizon: 32 } } # 2.5, Apache-2.0
+  - { model: chronos, model_params: { context: 512, horizon: 32 } }
+  - moment
+
+datasets:
+  # 합성 (항상 가능 — 데이터 다운로드 없이 스모크 확인용)
+  - synthetic
+  - { data: synthetic, data_params: { n_dims: 5, n_events: 8 } }
+  # lite 프로파일과 같은 엔티티 -> Gen1-4 결과와 직접 비교 가능
+  - { data: smd, data_params: { machine: machine-1-1 } } # D=38 > 32: 변량 청크 분할
+  - { data: smd, data_params: { machine: machine-2-1 } }
+  - { data: smap, data_params: { channel: P-1 } }
+  - { data: msl, data_params: { channel: C-2 } }
+  - { data: ucr, data_params: { series: 1 } } # 단변량: timesfm3 == timesfm3_ci 여야 함
+  - { data: skab, data_params: { experiment: valve1/0 } }
