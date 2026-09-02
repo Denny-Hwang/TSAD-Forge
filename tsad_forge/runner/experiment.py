@@ -134,6 +134,12 @@ def run_experiment(
     metrics["threshold"] = threshold
     metrics["n_predicted_anomalies"] = int(preds.sum())
 
+    # 모델이 남긴 진단 지표 (예: 예측 기반 Gen5 어댑터의 fc_mase/fc_wql/fc_crps).
+    # 탐지 지표와 나란히 저장해 "예측 잘함 == 탐지 잘함"인지 검증할 수 있게 한다
+    # (docs/benchmarks/forecasting-benchmarks.md).
+    for k, v in (getattr(model, "diagnostics_", None) or {}).items():
+        metrics[str(k)] = float(v)
+
     if cfg.get("save_raw_scores", True):
         rid = res.run_id(cfg["model"], dataset_name, channel, cfg["seed"], cfg_hash)
         save_scores(scores, ds.labels, results_dir / "scores" / f"{rid}.npz")

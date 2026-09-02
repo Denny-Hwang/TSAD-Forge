@@ -22,6 +22,7 @@ nav:
       - ch10 Reading benchmarks: learn/ch10_reading_benchmarks.md
   - Roadmap: roadmap.md
   - Methodology: methodology.md
+  - Forecasting benchmarks: benchmarks/forecasting-benchmarks.md
   - Leaderboard:
       - Charts: leaderboard/index.md
       - Lite table: leaderboard/lite.md
@@ -70,6 +71,7 @@ plugins:
             Leaderboard: 리더보드
             Roadmap: 로드맵
             Methodology: 방법론
+            Forecasting benchmarks: 예측 벤치마크
             'MBA (ECG)': MBA (심전도)
             Charts: 차트
             Lite table: lite 테이블

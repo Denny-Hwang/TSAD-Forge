@@ -51,7 +51,7 @@ jobs:
           pip install torch --index-url https://download.pytorch.org/whl/cpu
           pip install -e ".[dev]"
       - name: Gen3-5 model tests
-        run: pytest tests/test_gen34_models.py tests/test_gen5_models.py -rs
+        run: pytest tests/test_gen34_models.py tests/test_gen5_models.py tests/test_timesfm.py -rs
 
   # 학습 트랙 노트북 실행 검증 (리뷰 P2: API 변경 시 노트북이 조용히 깨지는 것 방지).
   # ch04-06(DL 학습)은 시간 관계상 제외 — test-dl이 같은 모델 경로를 검증한다.

@@ -23,7 +23,16 @@ SMALL = {"epochs": 2, "window": 16, "batch_size": 64}
 
 def test_gen5_registered():
     names = list_models()
-    for m in ["mamba_tsad_faithful", "mamba_tsad_fixed", "moment", "chronos", "timesfm"]:
+    for m in [
+        "mamba_tsad_faithful",
+        "mamba_tsad_fixed",
+        "moment",
+        "chronos",
+        "timesfm",
+        "timesfm3",
+        "timesfm3_ci",
+        "timesfm3_prob",
+    ]:
         assert m in names, m
 
 

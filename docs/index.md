@@ -21,7 +21,7 @@ tsad-forge run --model dummy --data synthetic
 | Gen2 Classical ML | 2000–2016 | LOF, OC-SVM, IForest, KNN, Sub-KNN, Matrix Profile |
 | Gen3 DL Recon/Forecast | 2015–2020 | AE, LSTM-AD/P, VAE (Donut), DAGMM, OmniAnomaly, USAD |
 | Gen4 Graph/Transformer | 2020–2023 | GDN, MTAD-GAT, Anomaly Transformer, TranAD, DCdetector, TimesNet |
-| Gen5 SSM/Foundation | 2023– | MambaTSAD (faithful/fixed), MOMENT, Chronos, TimesFM |
+| Gen5 SSM/Foundation | 2023– | MambaTSAD (faithful/fixed), MOMENT, Chronos, TimesFM 2.5 / 3.0 (multivariate · channel-independent · probabilistic) |
 
 !!! warning "Evaluation methodology comes first"
     Point adjustment (PA) makes even random scores look state-of-the-art
