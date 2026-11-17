@@ -8,14 +8,23 @@ from __future__ import annotations
 import time
 from pathlib import Path
 
+import numpy as np
+
 from tsad_forge.data.loaders.file import load_file
 from tsad_forge.data.registry import load_dataset
 from tsad_forge.data.schema import TSADDataset
 from tsad_forge.evaluation.metrics import compute_metrics
-from tsad_forge.evaluation.protocol import save_scores, set_seed, zscore_normalize
+from tsad_forge.evaluation.protocol import (
+    check_scores,
+    estimate_sliding_window,
+    save_scores,
+    set_seed,
+    zscore_normalize,
+)
 from tsad_forge.evaluation.thresholding import NEEDS_CALIBRATION, apply_threshold
-from tsad_forge.models.registry import get_model
+from tsad_forge.models.registry import get_model, get_model_class
 from tsad_forge.runner import results as res
+from tsad_forge.runner.environment import environment_fingerprint, resolve_device
 from tsad_forge.runner.measure import PeakRssSampler, cuda_peak_mb, reset_cuda_peak
 
 DEFAULT_CONFIG = {
@@ -25,8 +34,14 @@ DEFAULT_CONFIG = {
     "data_params": {},
     "seed": 0,
     "normalize": "zscore",
+    # z-score 옵션: {std_floor: float, clip: float}. 빈 dict = 레거시 동작 (해시 불변)
+    "normalize_params": {},
     "threshold": {"method": "quantile", "q": 0.99},
-    "sliding_window": 100,  # VUS buffer 최대 폭 (TSB-AD 기본과 동일)
+    # VUS buffer 최대 폭. 정수(레거시 100) 또는 "auto"(시계열별 ACF 주기 — TSB-AD 관례)
+    "sliding_window": 100,
+    # 실행 장치: "auto" | "cpu" | "cuda" | "cuda:N". torch 모델에만 의미가 있고,
+    # 해석된 값이 config에 기록된다 (runner/environment.py)
+    "device": "auto",
     "legacy_pa": False,
     "results_dir": "benchmarks/results",
     "save_raw_scores": True,
@@ -62,9 +77,10 @@ def run_experiment(
 ) -> dict | None:
     """단일 (model, data, seed) 실험. resume 대상이면 None을 반환하고 건너뜀."""
     cfg = resolve_config(overrides)
-    cfg_hash = res.config_hash(
-        {k: v for k, v in cfg.items() if k not in ("results_dir", "save_raw_scores")}
-    )
+    model_cls = get_model_class(cfg["model"])
+    # 장치는 해시 전에 해석한다: 같은 config라도 cpu/cuda 결과는 다른 실험이다
+    cfg["device"] = resolve_device(cfg.get("device"), model_cls.uses_torch)
+    cfg_hash = res.experiment_hash(cfg)
     results_dir = Path(cfg["results_dir"])
     dataset_name = Path(str(cfg["data"])).stem if "." in str(cfg["data"]) else str(cfg["data"])
     dp = cfg.get("data_params", {})
@@ -94,9 +110,14 @@ def run_experiment(
 
     train, test = ds.train, ds.test
     if cfg["normalize"] == "zscore":
-        train, test = zscore_normalize(train, test)
+        train, test = zscore_normalize(train, test, **(cfg.get("normalize_params") or {}))
+    elif cfg["normalize"] not in (None, "none"):
+        raise ValueError(f"unknown normalize '{cfg['normalize']}' (expected 'zscore' or 'none')")
 
-    model = get_model(cfg["model"], seed=cfg["seed"], **cfg.get("model_params", {}))
+    model_kwargs = dict(cfg.get("model_params", {}))
+    if model_cls.accepts_device:
+        model_kwargs.setdefault("device", cfg["device"])
+    model = get_model(cfg["model"], seed=cfg["seed"], **model_kwargs)
 
     # 계측 (measure.py): 타이머 구간 안에 프로파일러 없음, RSS는 스레드 샘플링,
     # CUDA 실행 시에만 정확한 피크 VRAM을 병기.
@@ -110,6 +131,8 @@ def run_experiment(
         runtime_score_s = time.perf_counter() - t0
     runtime_s = runtime_fit_s + runtime_score_s
     peak_vram = cuda_peak_mb() if cuda_tracking else None
+    # NaN/inf 점수는 여기서 실패로 처리 — 붕괴한 모델이 지표를 얻지 못하게 한다
+    scores = check_scores(scores, len(test))
 
     th_cfg = dict(cfg["threshold"])
     method = th_cfg.pop("method")
@@ -119,6 +142,9 @@ def run_experiment(
         train_scores = model.score(train)
     threshold, preds = apply_threshold(scores, method=method, train_scores=train_scores, **th_cfg)
 
+    sliding_window = cfg.get("sliding_window", 100)
+    if sliding_window == "auto":
+        sliding_window = estimate_sliding_window(ds.test)
     has_labels = ds.meta.get("has_labels", True) and ds.labels.sum() > 0
     metrics = (
         compute_metrics(
@@ -126,13 +152,18 @@ def run_experiment(
             ds.labels,
             threshold=threshold,
             legacy_pa=cfg["legacy_pa"],
-            sliding_window=cfg.get("sliding_window", 100),
+            sliding_window=int(sliding_window),
         )
         if has_labels
         else {}
     )
     metrics["threshold"] = threshold
     metrics["n_predicted_anomalies"] = int(preds.sum())
+    # 진단 지표 (diag_ 접두사 — 리더보드 지표 목록에서 제외된다):
+    # 정규화 후 test 입력의 최대 |값|. 수만 단위면 거의-상수 train 채널이 점수를
+    # 지배하고 있다는 신호다 (normalize_params.std_floor로 완화).
+    metrics["diag_test_input_absmax"] = float(np.abs(test).max()) if test.size else 0.0
+    metrics["diag_vus_window"] = float(sliding_window)
 
     # 모델이 남긴 진단 지표 (예: 예측 기반 Gen5 어댑터의 fc_mase/fc_wql/fc_crps).
     # 탐지 지표와 나란히 저장해 "예측 잘함 == 탐지 잘함"인지 검증할 수 있게 한다
@@ -160,6 +191,7 @@ def run_experiment(
         data_hash=res.config_hash({"data": cfg["data"], "data_params": cfg.get("data_params", {})}),
         cfg_hash=cfg_hash,
         config=cfg,
+        environment=environment_fingerprint(cfg["device"]),
     )
 
     if verbose:

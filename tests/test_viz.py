@@ -50,7 +50,7 @@ def test_all_eight_charts_generated(results, tmp_path):
 def test_leaderboard_build_and_save(results, tmp_path):
     pivot, summary = build_leaderboard(results)
     assert "mean_vus_pr" in summary.columns
-    assert summary["mean_rank"].is_monotonic_increasing
+    assert summary["norm_rank"].is_monotonic_increasing
     # dummy(무정보)는 정보 있는 모델보다 순위가 나빠야 한다
     models_by_rank = [m for _, m in summary.index]
     assert models_by_rank.index("dummy") > models_by_rank.index("sub_pca")

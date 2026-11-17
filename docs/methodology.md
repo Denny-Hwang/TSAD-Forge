@@ -17,6 +17,25 @@ including the policies that could bias results if left implicit.
   are always reported alongside.
 - **Raw scores are stored** (`benchmarks/results/scores/*.npz`) so every metric
   can be recomputed without re-running models.
+- **Normalization options** (`normalize_params`): `std_floor` lower-bounds the
+  train standard deviation and `clip` truncates z-scores. Channels that are
+  *nearly* constant in train (e.g. SMD machine-1-1 channel 33, std 1.5e-5) reach
+  |z| ≈ 7×10⁴ in test and make squared reconstruction errors explode to ~10⁸;
+  `std_floor: 0.01` is a safe floor for min-max-scaled data. The default (empty)
+  keeps the legacy behavior so existing results stay comparable. Every run
+  records `diag_test_input_absmax` so the problem is visible after the fact.
+- **Score health**: NaN/inf anomaly scores fail the run instead of being
+  coerced into a metric — a numerically collapsed model must not get a score.
+- **VUS buffer width** (`sliding_window`): legacy fixed `100`, or `"auto"` for a
+  per-series period estimated from the autocorrelation (the TSB-AD convention;
+  own implementation, numerical parity with TSB-AD's helper is not tested).
+  The width actually used is recorded as `diag_vus_window`.
+- **Execution device** (`device: auto | cpu | cuda | cuda:N`): resolved before
+  hashing and part of the experiment identity for torch models — CPU and GPU
+  runs of the same config are different experiments (and some models, e.g.
+  `mamba_tsad_faithful`, deliberately behave differently per device). Each run
+  JSON also records an environment fingerprint (Python/library versions, CUDA,
+  GPU name — no host identity) and `git_dirty`.
 
 ## Hyperparameter policy
 
@@ -50,6 +69,15 @@ advantage. A validation-split HP-selection protocol is on the roadmap.
 - A **Friedman test** over the complete-coverage entity set gates the ranking
   claim: if it does not reject, adjacent ranks must be read as ties. The
   critical-difference diagram shows which pairs are separable.
+- **Coverage-aware comparison**: models are not all run on the same entities
+  (the DL profile covers far fewer). The leaderboard therefore sorts by
+  **normalized rank** — each entity's rank rescaled to [0, 1] so entities with
+  different numbers of competitors are comparable — and adds a
+  **shared-entity** mean over only the entities *every* model ran on. The
+  generation chart likewise draws only entities covered by every generation,
+  one point per (model, entity).
+- Data variants without a channel key (e.g. `synthetic` with different
+  `n_dims`) are separate entities, suffixed with their data hash.
 - Results are deduplicated by experiment identity
   (model, dataset, channel, seed, data-hash): when a default-config change
   causes a re-run, only the latest result counts — stale runs can never be

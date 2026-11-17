@@ -17,8 +17,11 @@ from tsad_forge.models._window import window_scores_to_points
 from tsad_forge.models.base import BaseDetector
 
 
-def select_device() -> torch.device:
-    return torch.device("cuda" if torch.cuda.is_available() else "cpu")
+def select_device(device: str | None = None) -> torch.device:
+    """None/"auto" -> CUDA 가능하면 cuda, 아니면 cpu. 그 외는 그대로 사용."""
+    if device in (None, "auto"):
+        return torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    return torch.device(device)
 
 
 class TorchDetector(BaseDetector):
@@ -33,6 +36,9 @@ class TorchDetector(BaseDetector):
     """
 
     generation = "gen3"
+    uses_torch = True
+    #: runner가 해석한 실행 장치를 생성자 인자 `device`로 넘겨도 되는 모델
+    accepts_device = True
     max_train_windows = 10000
 
     def __init__(
@@ -43,8 +49,10 @@ class TorchDetector(BaseDetector):
         batch_size: int = 128,
         lr: float = 1e-3,
         stride: int = 1,
+        device: str | None = None,
         **params,
     ) -> None:
+        # device는 결과 정체성에 runner가 따로 기록하므로 params(get_config)에는 넣지 않는다
         super().__init__(
             seed=seed,
             window=window,
@@ -59,7 +67,7 @@ class TorchDetector(BaseDetector):
         self.batch_size = batch_size
         self.lr = lr
         self.stride = stride
-        self.device = select_device()
+        self.device = select_device(device)
 
     # --- 서브클래스 인터페이스 ---
 

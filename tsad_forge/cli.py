@@ -20,13 +20,28 @@ def build_parser() -> argparse.ArgumentParser:
     sub = p.add_subparsers(dest="command", required=True)
 
     run = sub.add_parser("run", help="run a single experiment (fit → score → threshold → metrics)")
-    run.add_argument("--model", default="dummy", help="registered model name")
+    # 기본값은 None: 명시한 플래그만 --config 값을 덮어쓴다 (미지정 플래그가 config의
+    # model/data/seed를 기본값으로 조용히 덮던 버그 수정). 최종 기본값은
+    # runner.experiment.DEFAULT_CONFIG (model=dummy, data=synthetic, seed=0).
+    run.add_argument("--model", default=None, help="registered model name (default: dummy)")
     run.add_argument(
-        "--data", default="synthetic", help="registered dataset name or CSV/parquet path"
+        "--data",
+        default=None,
+        help="registered dataset name or CSV/parquet path (default: synthetic)",
     )
-    run.add_argument("--seed", type=int, default=0)
+    run.add_argument("--seed", type=int, default=None)
     run.add_argument("--config", type=Path, help="YAML config file (CLI flags override it)")
-    run.add_argument("--results-dir", default="benchmarks/results")
+    run.add_argument("--results-dir", default=None, help="default: benchmarks/results")
+    run.add_argument(
+        "--device",
+        default=None,
+        help="auto | cpu | cuda | cuda:N (torch models only; default: auto)",
+    )
+    run.add_argument(
+        "--sliding-window",
+        default=None,
+        help="VUS buffer width: integer, or 'auto' for per-series ACF period (default: 100)",
+    )
     run.add_argument(
         "--threshold-q", type=float, default=None, help="quantile threshold q (default 0.99)"
     )
@@ -109,15 +124,18 @@ def main(argv: list[str] | None = None) -> int:
         overrides: dict = {}
         if args.config:
             overrides.update(yaml.safe_load(args.config.read_text()) or {})
-        overrides.update(
-            {
-                "model": args.model,
-                "data": args.data,
-                "seed": args.seed,
-                "results_dir": args.results_dir,
-                "legacy_pa": args.legacy_pa,
-            }
-        )
+        flags = {
+            "model": args.model,
+            "data": args.data,
+            "seed": args.seed,
+            "results_dir": args.results_dir,
+            "device": args.device,
+            "legacy_pa": True if args.legacy_pa else None,
+        }
+        if args.sliding_window is not None:
+            sw = args.sliding_window
+            flags["sliding_window"] = sw if sw == "auto" else int(sw)
+        overrides.update({k: v for k, v in flags.items() if v is not None})
         if args.threshold_q is not None:
             overrides["threshold"] = {"method": "quantile", "q": args.threshold_q}
         if args.data_param:

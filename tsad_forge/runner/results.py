@@ -16,7 +16,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-import subprocess
 import warnings
 from datetime import UTC, datetime
 from pathlib import Path
@@ -48,16 +47,34 @@ def config_hash(config: dict) -> str:
     return hashlib.sha256(canonical.encode()).hexdigest()[:12]
 
 
+#: 해시 대상에서 빠지는 실행 부수 설정 (결과 수치에 영향 없음)
+HASH_EXCLUDED_KEYS = ("results_dir", "save_raw_scores")
+
+#: config에 나중에 추가된 키의 "레거시 동작" 값. 값이 이것과 같으면 해시에서 뺀다 —
+#: 새 키를 도입해도 그 키가 생기기 전의 결과(같은 동작)의 해시가 바뀌지 않게 하는
+#: 하위호환 장치다. 새 config 키를 추가할 때는 반드시 여기에 레거시 값을 등록하라
+#: (tests/test_integrity.py가 DEFAULT_CONFIG의 기존 해시 불변을 검사한다).
+HASH_EXEMPT_DEFAULTS: dict = {
+    "device": "cpu",  # 해석된 실행 장치; 기존 결과는 전부 CPU
+    "normalize_params": {},  # std_floor/clip 미사용 = 레거시 z-score
+}
+
+
+def experiment_hash(config: dict) -> str:
+    """실험 정체성 해시: 실행 부수 키와 레거시 값의 신규 키를 제외하고 해시한다."""
+    payload = {
+        k: v
+        for k, v in config.items()
+        if k not in HASH_EXCLUDED_KEYS
+        and not (k in HASH_EXEMPT_DEFAULTS and v == HASH_EXEMPT_DEFAULTS[k])
+    }
+    return config_hash(payload)
+
+
 def get_commit_hash() -> str:
-    try:
-        return subprocess.run(
-            ["git", "rev-parse", "--short=12", "HEAD"],
-            capture_output=True,
-            text=True,
-            check=True,
-        ).stdout.strip()
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        return "unknown"
+    from tsad_forge.runner.environment import git_state
+
+    return str(git_state()["commit"])
 
 
 def utc_now() -> str:
@@ -85,12 +102,19 @@ def write_result(
     data_hash: str,
     cfg_hash: str,
     config: dict,
+    environment: dict | None = None,
 ) -> Path:
-    """단일 실행 결과를 parquet(지표 long-format) + JSON(요약)으로 저장."""
+    """단일 실행 결과를 parquet(지표 long-format) + JSON(요약)으로 저장.
+
+    environment: runner.environment.environment_fingerprint() 결과 (JSON에만 기록).
+    """
+    from tsad_forge.runner.environment import git_state
+
     results_dir = Path(results_dir)
     results_dir.mkdir(parents=True, exist_ok=True)
     rid = run_id(model, dataset, channel, seed, cfg_hash)
-    commit = get_commit_hash()
+    git = git_state()
+    commit = git["commit"]
     ts = utc_now()
 
     rows = [
@@ -131,8 +155,11 @@ def write_result(
         "peak_mem_mb": peak_mem_mb,
         **({"peak_vram_mb": peak_vram_mb} if peak_vram_mb is not None else {}),
         "commit_hash": commit,
+        # dirty=True면 커밋 해시만으로는 이 결과를 재현할 수 없다 (리더보드 감사용)
+        "git_dirty": git["dirty"],
         "config_hash": cfg_hash,
         "config": config,
+        **({"environment": environment} if environment is not None else {}),
         "timestamp": ts,
     }
     (results_dir / f"{rid}.json").write_text(json.dumps(summary, indent=2, default=str))
@@ -176,3 +203,44 @@ def load_all_results(results_dir: str | Path, dedup: bool = True) -> pd.DataFram
             )
         df = deduped.reset_index(drop=True)
     return df
+
+
+def add_entity_column(df: pd.DataFrame) -> pd.DataFrame:
+    """평가 단위(entity) 라벨 열을 붙인다: "dataset" 또는 "dataset/channel".
+
+    channel은 data_params의 식별 키(machine/channel/series...)에서만 만들어지므로,
+    식별 키가 없는 데이터 변형(예: synthetic의 n_dims=1 vs n_dims=5)은 둘 다
+    "synthetic"이 되어 리더보드에서 서로 다른 데이터가 평균으로 섞인다. 같은 라벨에
+    data_hash가 여럿이면 "#<data_hash 앞 6자>"를 붙여 구분한다.
+    """
+    df = df.copy()
+    df["entity"] = df["dataset"].where(df["channel"] == "all", df["dataset"] + "/" + df["channel"])
+    if "data_hash" in df.columns and len(df):
+        n_variants = df.groupby("entity")["data_hash"].transform("nunique")
+        multi = n_variants > 1
+        df.loc[multi, "entity"] = (
+            df.loc[multi, "entity"] + "#" + df.loc[multi, "data_hash"].astype(str).str[:6]
+        )
+    return df
+
+
+def shared_entities(pivot: pd.DataFrame) -> list:
+    """pivot(index=모델, columns=entity)에서 모든 행이 값을 가진 entity 목록.
+
+    모델마다 실행된 entity 집합이 다르면 단순 평균은 "어떤 데이터에서 돌았는가"를
+    비교하게 된다 (예: DL 모델만 쉬운 synthetic에서 실행). 공정 비교는 교집합에서만.
+    """
+    return [c for c in pivot.columns if pivot[c].notna().all()]
+
+
+def normalized_ranks(pivot: pd.DataFrame, higher_is_better: bool = True) -> pd.DataFrame:
+    """entity별 순위를 [0, 1]로 정규화 (0=최고, 1=최하). 결측은 NaN 유지.
+
+    entity마다 참가 모델 수가 다르면 원시 순위의 척도가 달라진다 (21개 중 10위와
+    36개 중 10위는 다른 의미). (rank-1)/(n-1)로 맞춘 뒤 평균해야 커버리지가 다른
+    모델끼리 순위를 비교할 수 있다. 참가 모델이 1개뿐인 entity는 제외(NaN).
+    """
+    ranks = pivot.rank(ascending=not higher_is_better, axis=0)
+    n = pivot.notna().sum(axis=0)
+    denom = (n - 1).where(n > 1)
+    return (ranks - 1) / denom

@@ -15,7 +15,12 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
-from tsad_forge.runner.results import load_all_results
+from tsad_forge.runner.results import (
+    add_entity_column,
+    load_all_results,
+    normalized_ranks,
+    shared_entities,
+)
 from tsad_forge.viz.charts import GEN_COLOR, GEN_LABEL
 
 PRIMARY_METRIC = "vus_pr"
@@ -105,26 +110,30 @@ def build_leaderboard(
     df = load_all_results(results_dir)
     if df.empty:
         raise FileNotFoundError(f"no results under {results_dir}")
-    m = df[df["metric"] == metric].copy()
+    m = df[df["metric"] == metric]
     if m.empty:
         raise ValueError(f"metric '{metric}' not found in results")
-    m["entity"] = m["dataset"] + "/" + m["channel"]
-    m.loc[m["channel"] == "all", "entity"] = m.loc[m["channel"] == "all", "dataset"]
+    m = add_entity_column(m)
 
     pivot = m.pivot_table(
         index=["generation", "model"], columns="entity", values="value", aggfunc="mean"
     )
-    ranks = pivot.rank(ascending=False, axis=0)
     ci = pivot.apply(_bootstrap_ci, axis=1)
+    shared = shared_entities(pivot)
     summary = pd.DataFrame(
         {
             f"mean_{metric}": pivot.mean(axis=1),
             "ci_lo": ci.str[0],
             "ci_hi": ci.str[1],
-            "mean_rank": ranks.mean(axis=1),
+            # 원시 평균 순위는 entity별 참가 모델 수가 달라 척도가 섞인다 — 참고용
+            "mean_rank": pivot.rank(ascending=False, axis=0).mean(axis=1),
+            # 정렬 기준: entity별 [0,1] 정규화 순위의 평균 (0=최고)
+            "norm_rank": normalized_ranks(pivot).mean(axis=1),
+            # 전 모델 공통 entity에서의 평균 — 커버리지 편향 없는 유일한 직접 비교
+            f"shared_{metric}": pivot[shared].mean(axis=1) if shared else np.nan,
             "n_entities": pivot.notna().sum(axis=1),
         }
-    ).sort_values("mean_rank")
+    ).sort_values(["norm_rank", "mean_rank"])
     runtime = (
         df[df["metric"] == metric]
         .groupby(["generation", "model"])["runtime_s"]
@@ -154,8 +163,10 @@ def build_leaderboard(
         for idx, rest in example.items()
     ]
     example = pd.Series(example_runs, index=example.index, name="example_run")
-    summary = summary.join(example)
-    return pivot.round(4), summary.round(4)
+    summary = summary.join(example).round(4)
+    # attrs는 join/round를 거치며 보존이 보장되지 않으므로 마지막에 다시 붙인다
+    summary.attrs["n_shared_entities"] = len(shared)
+    return pivot.round(4), summary
 
 
 def _summary_html(summary: pd.DataFrame, metric: str) -> str:
@@ -165,7 +176,8 @@ def _summary_html(summary: pd.DataFrame, metric: str) -> str:
             "generation",
             "model",
             f"mean {metric} [95% CI]",
-            "mean rank",
+            f"shared-entity {metric}",
+            "norm. rank",
             "entities",
             "runtime (s)",
             "config",
@@ -188,7 +200,10 @@ def _summary_html(summary: pd.DataFrame, metric: str) -> str:
             f'<td style="{_TD}font-weight:600;">{model}</td>'
             f'<td style="{_TD}{_shade(r[f"mean_{metric}"])}text-align:right;white-space:nowrap;">'
             f"{r[f'mean_{metric}']:.3f}{ci}</td>"
-            f'<td style="{_TD}text-align:right;">{r["mean_rank"]:.2f}</td>'
+            f'<td style="{_TD}text-align:right;">'
+            + ("–" if pd.isna(r[f"shared_{metric}"]) else f'{r[f"shared_{metric}"]:.3f}')
+            + "</td>"
+            f'<td style="{_TD}text-align:right;">{r["norm_rank"]:.2f}</td>'
             f'<td style="{_TD}text-align:right;">{int(r["n_entities"])}</td>'
             f'<td style="{_TD}text-align:right;">{r["mean_runtime_s"]:.2f}</td>'
             f'<td style="{_TD}"><a href="{_RESULTS_BLOB_URL}/{r["example_run"]}.json" '
@@ -230,6 +245,26 @@ def _pivot_html(pivot: pd.DataFrame) -> str:
     )
 
 
+def _coverage_line(summary: pd.DataFrame, metric: str) -> str:
+    n_shared = summary.attrs.get("n_shared_entities", 0)
+    cov = summary["n_entities"]
+    if cov.min() == cov.max():
+        return f"Every model was run on the same {int(cov.max())} entities."
+    head = (
+        f"**Coverage differs across models** ({int(cov.min())}–{int(cov.max())} entities)."
+        f" `mean {metric}` averages over *each model's own* entities and is not a fair"
+        " cross-model comparison; `shared-entity` averages only over the"
+        f" **{n_shared}** entities every model was run on"
+    )
+    tail = (
+        ", and `norm. rank` is the per-entity rank rescaled to [0, 1] (0 = best) so that"
+        " entities with different numbers of competitors are comparable."
+    )
+    if n_shared == 0:
+        head += " (none here — no model set is fully comparable on this page)"
+    return head + tail
+
+
 def leaderboard_markdown(results_dir: str | Path, metric: str = PRIMARY_METRIC) -> str:
     pivot, summary = build_leaderboard(results_dir, metric)
     # keep pivot rows in summary (rank) order
@@ -264,7 +299,9 @@ def leaderboard_markdown(results_dir: str | Path, metric: str = PRIMARY_METRIC) 
         "",
         friedman_line,
         "",
-        "## Model summary (sorted by mean rank)",
+        _coverage_line(summary, metric),
+        "",
+        "## Model summary (sorted by normalized rank)",
         "",
         _summary_html(summary, metric),
         "",

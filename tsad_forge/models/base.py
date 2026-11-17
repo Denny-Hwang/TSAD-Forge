@@ -22,10 +22,15 @@ class BaseDetector(ABC):
     Class attributes:
         generation: "gen1" ... "gen5" (리더보드 그룹핑에 사용)
         supports_multivariate: D>1 입력 지원 여부
+        uses_torch: torch로 연산하는 모델 여부. True면 runner가 실행 장치(cpu/cuda)를
+            해석해 결과 정체성(config_hash)에 반영한다 (runner/environment.py).
     """
 
     generation: str = "gen0"
     supports_multivariate: bool = True
+    uses_torch: bool = False
+    #: 생성자가 `device` 인자를 받는지 (runner가 해석한 장치를 주입할지 결정)
+    accepts_device: bool = False
 
     def __init__(self, seed: int = 0, **params) -> None:
         self.seed = seed

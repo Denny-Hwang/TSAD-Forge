@@ -28,7 +28,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from tsad_forge.runner.results import load_all_results
+from tsad_forge.runner.results import add_entity_column, load_all_results
 
 GEN_ORDER = ["gen0", "gen1", "gen2", "gen3", "gen4", "gen5"]
 GEN_LABEL = {
@@ -98,10 +98,7 @@ def _metric_frame(results_dir: str | Path) -> pd.DataFrame:
     df = load_all_results(results_dir)
     if df.empty:
         raise FileNotFoundError(f"no results under {results_dir}")
-    df = df.copy()
-    df["entity"] = np.where(
-        df["channel"] == "all", df["dataset"], df["dataset"] + "/" + df["channel"]
-    )
+    df = add_entity_column(df)
     df["entity"] = df["entity"].map(_short)
     return df
 
@@ -131,8 +128,39 @@ def _write(fig: go.Figure, out_dir: Path, name: str) -> Path:
 # 1 ---------------------------------------------------------------------------
 
 
+def generation_shared_entities(m: pd.DataFrame) -> list[str]:
+    """모든 세대(gen0 baseline 제외)가 최소 1개 모델로 실행된 entity 목록.
+
+    세대마다 실행된 entity가 다르면(예: DL 프로파일은 소수 entity만) 세대 간 분포
+    비교가 "데이터 난이도" 비교로 변질된다. 이 교집합에서만 상자를 그린다.
+    """
+    gens = [g for g in GEN_ORDER if g != "gen0" and (m["generation"] == g).any()]
+    per_gen = [set(m.loc[m["generation"] == g, "entity"]) for g in gens]
+    shared = set.intersection(*per_gen) if per_gen else set()
+    return sorted(shared)
+
+
 def generation_evolution(df: pd.DataFrame, out_dir: Path) -> Path:
-    m = df[df["metric"] == PRIMARY]
+    # 시드 평균 → (model, entity) 1점: 시드가 많은 확률적 모델이 분포를 과대표하지 않게
+    m: pd.DataFrame = (
+        df[df["metric"] == PRIMARY]
+        .groupby(["generation", "model", "entity"])["value"]
+        .mean()
+        .reset_index()
+    )
+    shared = generation_shared_entities(m)
+    if shared:
+        m = m[m["entity"].isin(shared)]
+        subtitle = (
+            f"{len(shared)} entities shared by every generation"
+            " · one point per (model, entity), seed-averaged"
+        )
+    else:
+        warnings.warn(
+            "no entity is covered by every generation — generation chart mixes datasets",
+            stacklevel=2,
+        )
+        subtitle = "⚠ no entity shared by all generations — distributions are NOT comparable"
     fig = go.Figure()
     for gen in GEN_ORDER:
         vals = m[m["generation"] == gen]["value"]
@@ -146,10 +174,15 @@ def generation_evolution(df: pd.DataFrame, out_dir: Path) -> Path:
                     line={"width": 2},
                 )
             )
-    _base_layout(fig, "VUS-PR by generation — does newer mean better?", height=540)
-    fig.update_yaxes(title_text="VUS-PR (entities × seeds)", range=[-0.05, 1.05])
+    _base_layout(
+        fig,
+        "VUS-PR by generation — does newer mean better?"
+        f"<br><span style='font-size:12px;color:{_INK2}'>{subtitle}</span>",
+        height=560,
+    )
+    fig.update_yaxes(title_text="VUS-PR (model × entity)", range=[-0.05, 1.05])
     fig.update_xaxes(tickangle=0, tickfont={"size": 11})
-    fig.update_layout(showlegend=False, margin={"l": 70, "r": 40, "t": 64, "b": 84})
+    fig.update_layout(showlegend=False, margin={"l": 70, "r": 40, "t": 88, "b": 84})
     return _write(fig, out_dir, "generation_evolution")
 
 
@@ -158,7 +191,11 @@ def generation_evolution(df: pd.DataFrame, out_dir: Path) -> Path:
 
 def leaderboard_table(df: pd.DataFrame, out_dir: Path) -> Path:
     metrics = sorted(df["metric"].unique())
-    metrics = [m for m in metrics if m not in ("threshold", "n_predicted_anomalies")]
+    metrics = [
+        m
+        for m in metrics
+        if m not in ("threshold", "n_predicted_anomalies") and not m.startswith("diag_")
+    ]
     if PRIMARY in metrics:  # primary metric first in the dropdown
         metrics = [PRIMARY] + [m for m in metrics if m != PRIMARY]
     pivots = {
