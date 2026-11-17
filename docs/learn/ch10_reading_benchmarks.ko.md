@@ -30,7 +30,20 @@
 python benchmarks/run_all.py --profile configs/lite.yaml      # Gen0-2
 python benchmarks/run_all.py --profile configs/lite_dl.yaml   # Gen3-4
 python benchmarks/run_all.py --profile configs/mamba_compare.yaml  # Gen5 비교
+python benchmarks/run_all.py --profile configs/lite_dl_gpu.yaml  # Gen3-5, 실제 학습 예산 (GPU)
 tsad-forge viz                                                 # 차트 + 리더보드 재생성
+```
+
+워크스테이션/서버에서는 full 매트릭스가 로컬에 내려받은 모든 엔티티를 실행한다.
+torch를 쓰지 않는 모델은 병렬 워커 프로세스(`--jobs`)로, torch 모델은 GPU를 순차로
+공유하며, 모든 실행은 타임아웃과 함께 격리된다. 실패(`timeout`, `oom`,
+`score_health`, `crashed`, `error`)는 매트릭스를 멈추지 않고
+`<results_dir>/failures/`에 기록된다. 같은 명령을 다시 실행하면 이어서 돈다.
+
+```bash
+python benchmarks/run_all.py --profile configs/full.yaml --dry-run   # 계획 + 상태
+python benchmarks/run_all.py --profile configs/full.yaml --jobs 6 --timeout 7200
+python benchmarks/run_all.py --profile configs/full.yaml --datasets smd --models iforest,lof
 ```
 
 ## 참고문헌 (전체)

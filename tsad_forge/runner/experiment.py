@@ -6,6 +6,7 @@ config(dict) 기반으로 동작하며 CLI(tsad_forge.cli)와 benchmarks/run_all
 from __future__ import annotations
 
 import time
+from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
@@ -72,16 +73,44 @@ def load_data(cfg: dict) -> TSADDataset:
     return load_dataset(data, **params)
 
 
-def run_experiment(
-    overrides: dict | None = None, *, force: bool = False, verbose: bool = True
-) -> dict | None:
-    """단일 (model, data, seed) 실험. resume 대상이면 None을 반환하고 건너뜀."""
+@dataclass(frozen=True)
+class RunPlan:
+    """실행 전 확정되는 실험 정체성 (resume 판정·실패 기록·스케줄링에 사용)."""
+
+    cfg: dict
+    cfg_hash: str
+    dataset: str
+    channel: str
+    uses_torch: bool
+
+    @property
+    def run_id(self) -> str:
+        return res.run_id(
+            self.cfg["model"], self.dataset, self.channel, self.cfg["seed"], self.cfg_hash
+        )
+
+    @property
+    def results_dir(self) -> Path:
+        return Path(self.cfg["results_dir"])
+
+    def exists(self) -> bool:
+        return res.result_exists(
+            self.results_dir,
+            self.cfg["model"],
+            self.dataset,
+            self.channel,
+            self.cfg["seed"],
+            self.cfg_hash,
+        )
+
+
+def plan_experiment(overrides: dict | None = None) -> RunPlan:
+    """config를 해석해 실험 정체성을 확정한다 (데이터 로드·학습 없음, 빠름)."""
     cfg = resolve_config(overrides)
     model_cls = get_model_class(cfg["model"])
     # 장치는 해시 전에 해석한다: 같은 config라도 cpu/cuda 결과는 다른 실험이다
     cfg["device"] = resolve_device(cfg.get("device"), model_cls.uses_torch)
     cfg_hash = res.experiment_hash(cfg)
-    results_dir = Path(cfg["results_dir"])
     dataset_name = Path(str(cfg["data"])).stem if "." in str(cfg["data"]) else str(cfg["data"])
     dp = cfg.get("data_params", {})
     # 데이터셋별 하위 단위 식별자 (smd: machine, smap/msl: channel, ucr: series ...)
@@ -94,10 +123,19 @@ def run_experiment(
         or dp.get("rel_path")
         or "all"
     ).replace("/", "_")
+    return RunPlan(cfg, cfg_hash, dataset_name, channel, bool(model_cls.uses_torch))
 
-    if not force and res.result_exists(
-        results_dir, cfg["model"], dataset_name, channel, cfg["seed"], cfg_hash
-    ):
+
+def run_experiment(
+    overrides: dict | None = None, *, force: bool = False, verbose: bool = True
+) -> dict | None:
+    """단일 (model, data, seed) 실험. resume 대상이면 None을 반환하고 건너뜀."""
+    plan = plan_experiment(overrides)
+    cfg, cfg_hash = plan.cfg, plan.cfg_hash
+    results_dir, dataset_name, channel = plan.results_dir, plan.dataset, plan.channel
+    model_cls = get_model_class(cfg["model"])
+
+    if not force and plan.exists():
         if verbose:
             print(
                 f"[resume] skip {cfg['model']} on {dataset_name} "

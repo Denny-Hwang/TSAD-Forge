@@ -1,0 +1,125 @@
+# full 프로파일 (CLAUDE.md §5) — 로컬 GPU 워크스테이션/서버에서 수동 실행. CI 금지.
+#
+# 매트릭스: Gen0-5 전 모델(파운데이션 어댑터 제외 — configs/foundation.yaml) ×
+# 로컬에 내려받은 모든 entity. `entities: all`은 실행 시점의 로컬 파일로 확장되므로
+# 먼저 내려받아야 한다:  tsad-forge download smd   (smap, ucr, tsb_ad_u ... 동일)
+# 신청이 필요한 데이터(SWaT/WADI/Yahoo)는 로컬에 배치된 경우에만 실행되고, 없으면
+# no_data로 보고된다.
+#
+# 권장 실행 (8코어 + GPU 1장 기준):
+#   python benchmarks/run_all.py --profile configs/full.yaml --dry-run      # 계획 확인
+#   python benchmarks/run_all.py --profile configs/full.yaml --jobs 6 --timeout 7200
+# --jobs는 Gen1-2(cpu 레인) 병렬도, torch 모델은 GPU 1장에서 순차(torch 레인)로 동시에 돈다.
+# 중단 후 같은 명령을 다시 실행하면 resume된다. 실패는 results/failures/에 남는다.
+#
+# 규모 감각: TSB-AD-U(~870) + UCR(250) + SMD(28) + SMAP/MSL(~80) ... × 모델 ~37
+# × (DL은 3시드). 하위집합부터 돌리려면 --datasets smd,smap,msl 또는 아래 limit 사용.
+#
+# 정규화: z-score + std_floor 0.01 (SMD 등의 거의-상수 train 채널로 인한 점수 발산
+# 방지 — docs/methodology.md). lite 결과와는 config_hash가 달라 섞이지 않는다.
+# VUS 버퍼 폭: 시계열별 ACF 주기 추정("auto", TSB-AD 관례).
+results_dir: benchmarks/results_full
+seeds: [0, 1, 2]
+defaults:
+  normalize: zscore
+  normalize_params: { std_floor: 0.01 }
+  threshold: { method: quantile, q: 0.99 }
+  sliding_window: auto
+  device: auto
+
+_train: &train
+  epochs: 50
+  batch_size: 128
+  lr: 0.001
+  val_ratio: 0.2
+  patience: 5
+  min_delta: 0.0001
+  lr_schedule: plateau
+  amp: bf16
+  max_train_windows: 50000
+  score_batch_size: 512
+
+models:
+  # --- Gen0-2 (cpu 레인, --jobs 병렬) ---
+  - dummy
+  - zscore
+  - cusum
+  - ewma
+  - hotelling_t2
+  - pca_t2spe
+  - sub_pca
+  - stl_residual
+  - poly
+  - sesd
+  - online_ewma
+  - online_cusum
+  - spectral_residual
+  - hbos
+  - lof
+  - ocsvm
+  - { model: iforest, stochastic: true }
+  - knn
+  - sub_knn
+  - matrix_profile
+  - ensemble_simple
+  # --- Gen3-5 (torch 레인, 공통 학습 예산 &train) ---
+  - model: ae
+    stochastic: true
+    model_params: { <<: *train, window: 100 }
+  - model: lstm_ad
+    stochastic: true
+    model_params: { <<: *train, window: 100, hidden: 64 }
+  - model: lstm_p
+    stochastic: true
+    model_params: { <<: *train, window: 100, hidden: 64 }
+  - model: vae_donut
+    stochastic: true
+    model_params: { <<: *train, window: 100 }
+  - model: dagmm
+    stochastic: true
+    model_params: { <<: *train, window: 100 }
+  - model: omni_anomaly
+    stochastic: true
+    model_params: { <<: *train, window: 100, hidden: 64 }
+  - model: usad
+    stochastic: true
+    model_params: { <<: *train, window: 100 }
+  - model: gdn
+    stochastic: true
+    model_params: { <<: *train, window: 100 }
+  - model: mtad_gat
+    stochastic: true
+    model_params: { <<: *train, window: 100 }
+  - model: anomaly_transformer
+    stochastic: true
+    model_params: { <<: *train, window: 100 }
+  - model: tranad
+    stochastic: true
+    model_params: { <<: *train, window: 100 }
+  - model: dcdetector
+    stochastic: true
+    model_params: { <<: *train, window: 100, patch: 10 }
+  - model: timesnet
+    stochastic: true
+    model_params: { <<: *train, window: 100 }
+  - model: mamba_tsad_faithful
+    stochastic: true
+    model_params: { <<: *train, window: 64, batch_size: 64 }
+  - model: mamba_tsad_fixed
+    stochastic: true
+    model_params: { <<: *train, window: 64, batch_size: 64 }
+
+datasets:
+  - { data: smd, entities: all }
+  - { data: smap, entities: all }
+  - { data: msl, entities: all }
+  - { data: ucr, entities: all }
+  - { data: tsb_ad_u, entities: all }
+  - { data: tsb_ad_m, entities: all }
+  - { data: nab, entities: all }
+  - { data: skab, entities: all }
+  - { data: mgab, entities: all }
+  - { data: psm }
+  - { data: mba }
+  - { data: swat }   # iTrust 신청 필요 — 로컬 배치 시에만
+  - { data: wadi }   # 동일
