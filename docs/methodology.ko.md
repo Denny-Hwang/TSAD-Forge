@@ -41,6 +41,14 @@
 있고, 유사 데이터에서 기본값이 정해진 모델은 태생적으로 유리하다.
 validation 분할 기반 HP 선택 프로토콜은 로드맵에 있다.
 
+**학습 예산 (DL).** `configs/lite_dl.yaml`은 CPU 스모크 프로파일(3–5 epoch,
+window 32)이다 — 여기서 나온 DL 수치는 모델 능력을 과소평가하며 세대 판정으로
+읽으면 안 된다. `configs/lite_dl_gpu.yaml`은 모든 Gen3–5 모델에 같은 예산을 준다:
+최대 50 epoch, **시간순 검증 구간(train의 마지막 20% — test 라벨은 절대 쓰지
+않음) 기반 조기 종료**, 정체 시 학습률 감소, CUDA에서 bf16 autocast. 데이터셋
+목록이 `configs/lite.yaml`과 같아 DL과 Gen1–2 결과를 엔티티 단위로 비교할 수 있다.
+실제 수행 epoch 수는 실행마다 기록된다(`diag_epochs_run`).
+
 ## 측정
 
 - `runtime_fit_s` / `runtime_score_s`: `fit()`/`score()`만 감싼 wall-clock.

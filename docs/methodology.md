@@ -47,6 +47,16 @@ number here is a *default-configuration* result — a tuned deployment may do
 better, and models whose defaults were set on similar data have an inherent
 advantage. A validation-split HP-selection protocol is on the roadmap.
 
+**Training budget (DL).** `configs/lite_dl.yaml` is a CPU smoke profile
+(3–5 epochs, window 32) — its DL numbers understate what these models can do
+and must not be read as a generation verdict. `configs/lite_dl_gpu.yaml` gives
+every Gen3–5 model the same budget: up to 50 epochs with **early stopping on a
+temporal validation split** (the last 20% of *train* — test labels are never
+used), learning-rate reduction on plateau, and bf16 autocast on CUDA. It uses
+the same entity list as `configs/lite.yaml`, so DL and Gen1–2 results are
+comparable entity by entity. The number of epochs actually run is recorded per
+run (`diag_epochs_run`).
+
 ## Measurement
 
 - `runtime_fit_s` / `runtime_score_s`: wall-clock around `fit()` and `score()`
