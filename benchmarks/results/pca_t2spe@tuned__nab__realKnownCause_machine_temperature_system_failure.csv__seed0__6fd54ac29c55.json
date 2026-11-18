@@ -1,0 +1,72 @@
+{
+  "run_id": "pca_t2spe@tuned__nab__realKnownCause_machine_temperature_system_failure.csv__seed0__6fd54ac29c55",
+  "model": "pca_t2spe@tuned",
+  "generation": "gen1",
+  "dataset": "nab",
+  "channel": "realKnownCause_machine_temperature_system_failure.csv",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.8378737852428713,
+    "auc_pr": 0.6239332132675736,
+    "vus_roc": 0.8668895663935212,
+    "vus_pr": 0.6369374462554834,
+    "best_f1": 0.591254752851711,
+    "standard_f1": 0.20380147835269272,
+    "event_f1": 0.7999999999999995,
+    "range_f1": 0.2543103448275862,
+    "affiliation_f1": 0.7852997331040666,
+    "mean_detection_delay": 354.3333333333333,
+    "threshold": 2.3907545875695555,
+    "n_predicted_anomalies": 193.0,
+    "diag_test_input_absmax": 6.177753584385521,
+    "diag_vus_window": 100.0
+  },
+  "runtime_s": 0.0007,
+  "runtime_fit_s": 0.0005,
+  "runtime_score_s": 0.0002,
+  "peak_mem_mb": 0.36,
+  "commit_hash": "959a3af7f828",
+  "git_dirty": true,
+  "config_hash": "6fd54ac29c55",
+  "config": {
+    "model": "pca_t2spe",
+    "model_alias": "pca_t2spe@tuned",
+    "model_params": {
+      "mode": "combined",
+      "var_ratio": 0.99
+    },
+    "data": "nab",
+    "data_params": {
+      "rel_path": "realKnownCause/machine_temperature_system_failure.csv"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-18T06:53:56+00:00"
+}

@@ -1,0 +1,72 @@
+{
+  "run_id": "pca_t2spe@tuned__skab__valve1_0__seed0__8590b00e88c7",
+  "model": "pca_t2spe@tuned",
+  "generation": "gen1",
+  "dataset": "skab",
+  "channel": "valve1_0",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.911163779559145,
+    "auc_pr": 0.8354742865381907,
+    "vus_roc": 0.9252066282449926,
+    "vus_pr": 0.8540481567619608,
+    "best_f1": 0.7805383022774327,
+    "standard_f1": 0.05811138014527845,
+    "event_f1": 0.9999999999999996,
+    "range_f1": 0.3360995850622407,
+    "affiliation_f1": 0.9511331347858007,
+    "mean_detection_delay": 106.0,
+    "threshold": 1000.6348598891533,
+    "n_predicted_anomalies": 12.0,
+    "diag_test_input_absmax": 58.70610357920882,
+    "diag_vus_window": 100.0
+  },
+  "runtime_s": 0.0027,
+  "runtime_fit_s": 0.0026,
+  "runtime_score_s": 0.0001,
+  "peak_mem_mb": 1.67,
+  "commit_hash": "959a3af7f828",
+  "git_dirty": true,
+  "config_hash": "8590b00e88c7",
+  "config": {
+    "model": "pca_t2spe",
+    "model_alias": "pca_t2spe@tuned",
+    "model_params": {
+      "mode": "combined",
+      "var_ratio": 0.99
+    },
+    "data": "skab",
+    "data_params": {
+      "experiment": "valve1/0"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-18T06:53:56+00:00"
+}

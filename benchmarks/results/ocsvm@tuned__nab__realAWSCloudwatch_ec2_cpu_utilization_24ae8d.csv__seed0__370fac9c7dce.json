@@ -1,0 +1,72 @@
+{
+  "run_id": "ocsvm@tuned__nab__realAWSCloudwatch_ec2_cpu_utilization_24ae8d.csv__seed0__370fac9c7dce",
+  "model": "ocsvm@tuned",
+  "generation": "gen2",
+  "dataset": "nab",
+  "channel": "realAWSCloudwatch_ec2_cpu_utilization_24ae8d.csv",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.5155772689756768,
+    "auc_pr": 0.19012219169518946,
+    "vus_roc": 0.5863609244334936,
+    "vus_pr": 0.22145819618234344,
+    "best_f1": 0.21016410799364743,
+    "standard_f1": 0.09153318077803203,
+    "event_f1": 0.7272727272727267,
+    "range_f1": 0.24479431183341802,
+    "affiliation_f1": 0.8212063349972211,
+    "mean_detection_delay": 100.0,
+    "threshold": 5.843380996403064,
+    "n_predicted_anomalies": 35.0,
+    "diag_test_input_absmax": 26.14417660407832,
+    "diag_vus_window": 100.0
+  },
+  "runtime_s": 0.0066,
+  "runtime_fit_s": 0.0033,
+  "runtime_score_s": 0.0033,
+  "peak_mem_mb": 0.54,
+  "commit_hash": "959a3af7f828",
+  "git_dirty": true,
+  "config_hash": "370fac9c7dce",
+  "config": {
+    "model": "ocsvm",
+    "model_alias": "ocsvm@tuned",
+    "model_params": {
+      "nu": 0.05241080612639499,
+      "window": 10
+    },
+    "data": "nab",
+    "data_params": {
+      "rel_path": "realAWSCloudwatch/ec2_cpu_utilization_24ae8d.csv"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-18T06:55:37+00:00"
+}

@@ -1,0 +1,72 @@
+{
+  "run_id": "lof@tuned__msl__C-2__seed0__f9a0339ed3e7",
+  "model": "lof@tuned",
+  "generation": "gen2",
+  "dataset": "msl",
+  "channel": "C-2",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.6898420398294549,
+    "auc_pr": 0.19305523647319056,
+    "vus_roc": 0.8073560724615136,
+    "vus_pr": 0.30176248154375623,
+    "best_f1": 0.33633633633633636,
+    "standard_f1": 0.012658227848101266,
+    "event_f1": 0.08695652173913027,
+    "range_f1": 0.14685314685314688,
+    "affiliation_f1": 0.6441662536913932,
+    "mean_detection_delay": 45.0,
+    "threshold": 160079968.54397267,
+    "n_predicted_anomalies": 21.0,
+    "diag_test_input_absmax": 19.519221295943247,
+    "diag_vus_window": 100.0
+  },
+  "runtime_s": 0.0569,
+  "runtime_fit_s": 0.0341,
+  "runtime_score_s": 0.0229,
+  "peak_mem_mb": 15.48,
+  "commit_hash": "959a3af7f828",
+  "git_dirty": true,
+  "config_hash": "f9a0339ed3e7",
+  "config": {
+    "model": "lof",
+    "model_alias": "lof@tuned",
+    "model_params": {
+      "n_neighbors": 10,
+      "window": 10
+    },
+    "data": "msl",
+    "data_params": {
+      "channel": "C-2"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-18T06:55:21+00:00"
+}
