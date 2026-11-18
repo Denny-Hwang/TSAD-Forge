@@ -31,8 +31,12 @@ def load_cards() -> dict[str, dict]:
 
 
 def get_card(name: str) -> dict | None:
-    """모델 이름의 카드. model_alias 변형(예: mamba_tsad_fix_a)은 카드가 없을 수 있다."""
-    return load_cards().get(name)
+    """모델 이름의 카드. `<model>@tuned`는 기반 모델의 카드를 쓴다.
+
+    그 밖의 model_alias 변형(예: mamba_tsad_fix_a)은 카드가 없을 수 있다 (None).
+    """
+    cards = load_cards()
+    return cards.get(name) or cards.get(name.split("@", 1)[0])
 
 
 def validate_card(name: str, card: dict) -> list[str]:

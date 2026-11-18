@@ -20,14 +20,13 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-import yaml
-
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from tsad_forge.runner.matrix import (  # noqa: E402
     build_jobs,
     expand_combos,
     load_failures,
+    load_profile,
     run_matrix,
 )
 
@@ -60,7 +59,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--dry-run", action="store_true", help="list the plan and exit")
     args = p.parse_args(argv)
 
-    profile = yaml.safe_load(args.profile.read_text())
+    profile = load_profile(args.profile)
     results_dir = args.results_dir or profile.get("results_dir", "benchmarks/results")
     seeds = [int(s) for s in _csv(args.seeds)] if args.seeds else None
     jobs, empty = build_jobs(

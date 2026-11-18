@@ -1,0 +1,38 @@
+# 모델별 탐색 공간 (tsad_forge/runner/hpo.py 문법). 키는 생성자 인자와 일치해야 한다
+# (오타는 load_study에서 거부된다). 탐색 예산(n_trials)은 스터디 파일에서 모델 공통.
+# 공간은 의도적으로 좁다: 각 모델의 "흔히 조정하는" 손잡이만 — 공간 폭도 숨은 예산이다.
+
+# --- Gen1 ---
+cusum: { k: { uniform: [0.1, 2.0] } }
+ewma: { lam: { uniform: [0.05, 0.5] } }
+hotelling_t2: { ridge: { log_uniform: [1.0e-8, 1.0e-2] } }
+pca_t2spe: { var_ratio: [0.8, 0.9, 0.95, 0.99], mode: [combined, t2, spe] }
+sub_pca: { window: [20, 50, 100, 200], var_ratio: [0.8, 0.9, 0.95] }
+poly: { window: [10, 20, 50, 100], degree: [1, 2, 3, 5] }
+online_ewma: { alpha: { log_uniform: [0.005, 0.3] } }
+online_cusum: { k: { uniform: [0.1, 2.0] } }
+
+# --- Gen2 ---
+iforest: { window: [1, 10, 50, 100], n_estimators: [100, 200, 400] }
+lof: { window: [1, 10, 50, 100], n_neighbors: [10, 20, 50] }
+knn: { window: [1, 10, 50], k: [1, 5, 10, 20] }
+sub_knn: { window: [20, 50, 100, 200], k: [1, 5, 10] }
+ocsvm: { window: [1, 10, 50], nu: { log_uniform: [0.005, 0.2] } }
+hbos: { window: [1, 10, 50], n_bins: [10, 20, 50] }
+matrix_profile: { window: [20, 50, 100, 200] }
+spectral_residual: { q: [3, 5, 10], z: [11, 21, 41] }
+
+# --- Gen3-4 (학습 예산은 평가 프로파일의 model_params를 상속하고, 여기서는 구조/lr만) ---
+ae: { window: [32, 64, 100], hidden: [32, 64, 128], lr: { log_uniform: [1.0e-4, 3.0e-3] } }
+lstm_ad: { window: [32, 64, 100], hidden: [32, 64, 128], lr: { log_uniform: [1.0e-4, 3.0e-3] } }
+lstm_p: { window: [32, 64, 100], hidden: [32, 64, 128], lr: { log_uniform: [1.0e-4, 3.0e-3] } }
+vae_donut: { window: [32, 64, 100], latent: [4, 8, 16], lr: { log_uniform: [1.0e-4, 3.0e-3] } }
+dagmm: { window: [16, 32, 64], latent: [2, 3, 4], n_gmm: [2, 4, 8] }
+omni_anomaly: { window: [32, 64, 100], hidden: [32, 64], lr: { log_uniform: [1.0e-4, 3.0e-3] } }
+usad: { window: [16, 32, 64, 100], latent: [8, 16, 32], lr: { log_uniform: [1.0e-4, 3.0e-3] } }
+gdn: { window: [16, 32, 64], embed_dim: [16, 32, 64], topk: [3, 5, 10] }
+mtad_gat: { window: [32, 64, 100], hidden: [32, 64], gamma: [0.2, 0.5, 0.8] }
+anomaly_transformer: { window: [32, 64, 100], d_model: [32, 64, 128], lam: [1.0, 3.0, 5.0] }
+tranad: { window: [16, 32, 64], d_model: [32, 64], lr: { log_uniform: [1.0e-4, 3.0e-3] } }
+dcdetector: { window: [32, 64, 100], d_model: [32, 64], patch: [4, 8] }
+timesnet: { window: [32, 64, 100], d_model: [16, 32, 64], lr: { log_uniform: [1.0e-4, 3.0e-3] } }

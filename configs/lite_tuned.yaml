@@ -1,0 +1,5 @@
+# lite 프로파일 + HPO 선택 파라미터 (configs/hpo/selected/lite.yaml).
+# 선택 파일에 있는 모델은 `<model>@tuned` 행으로 기본값 행과 나란히 리더보드에 실린다.
+# 선택 파일이 없으면 먼저: python benchmarks/hpo.py --study configs/hpo/lite.yaml
+extends: lite.yaml
+tuned_params: configs/hpo/selected/lite.yaml

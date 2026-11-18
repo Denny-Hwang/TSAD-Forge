@@ -49,6 +49,50 @@ def import_plugins(plugins: list[str] | None) -> None:
         importlib.import_module(mod)
 
 
+# --- 프로파일 로드 -----------------------------------------------------------
+
+
+def load_profile(path: str | Path) -> dict:
+    """프로파일 YAML 로드. `extends: <path>`로 다른 프로파일을 상속한다.
+
+    상속 규칙: 자식의 최상위 키가 부모를 대체하되, `defaults`는 키 단위로 병합한다.
+    extends 경로는 이 파일 기준 상대 경로 또는 현재 디렉터리 기준 경로.
+    """
+    import yaml
+
+    path = Path(path)
+    profile = yaml.safe_load(path.read_text()) or {}
+    parent = profile.pop("extends", None)
+    if parent is None:
+        return profile
+    cand = path.parent / parent
+    base = load_profile(cand if cand.exists() else Path(parent))
+    merged = {**base, **profile}
+    merged["defaults"] = {**base.get("defaults", {}), **profile.get("defaults", {})}
+    return merged
+
+
+def _apply_tuned(profile: dict, model_spec: dict) -> dict:
+    """tuned_params 파일에 있는 모델이면 선택된 파라미터를 입히고 `<model>@tuned`로 표기.
+
+    프로파일에 직접 적은 model_params가 선택값보다 우선한다. 이미 alias가 있는 항목은
+    건드리지 않는다 (ablation 등 의도적 변형).
+    """
+    path = profile.get("tuned_params")
+    if not path or model_spec.get("model_alias"):
+        return model_spec
+    from tsad_forge.runner.hpo import TUNED_SUFFIX, load_selected
+
+    selected = load_selected(path)
+    if model_spec["model"] not in selected:
+        return model_spec
+    return {
+        **model_spec,
+        "model_alias": model_spec["model"] + TUNED_SUFFIX,
+        "model_params": {**selected[model_spec["model"]], **(model_spec.get("model_params") or {})},
+    }
+
+
 # --- 프로파일 확장 -----------------------------------------------------------
 
 
@@ -89,6 +133,7 @@ def expand_combos(profile: dict) -> list[dict]:
     combos = []
     for model_spec in profile["models"]:
         model_spec = {"model": model_spec} if isinstance(model_spec, str) else dict(model_spec)
+        model_spec = _apply_tuned(profile, model_spec)
         stochastic = model_spec.pop("stochastic", False)
         model_seeds = seeds if stochastic else seeds[:1]
         for data_spec in datasets:

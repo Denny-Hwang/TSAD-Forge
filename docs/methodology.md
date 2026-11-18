@@ -45,7 +45,20 @@ budget is a hidden variable that has flipped rankings in prior TSAD
 comparisons (see TSB-AD's HP-sensitivity discussion). It also means every
 number here is a *default-configuration* result — a tuned deployment may do
 better, and models whose defaults were set on similar data have an inherent
-advantage. A validation-split HP-selection protocol is on the roadmap.
+advantage. The optional tuned track below addresses this without touching the
+default results.
+
+**Tuned track (optional).** `benchmarks/hpo.py` runs an equal-budget, seeded
+random search for every model (`configs/hpo/*.yaml`; default config is always
+trial 0). Selection uses only **tuning entities that are disjoint from the
+evaluation profile**: the study refuses to run if they overlap, following
+TSB-AD's tuning/evaluation split, so no hyperparameter is ever chosen with an
+evaluation entity's labels. Selected parameters are written with their
+provenance to `configs/hpo/selected/`. A profile that references them
+(`tuned_params:`, e.g. `configs/lite_tuned.yaml`) reports `<model>@tuned`
+**next to** the default row, which makes the tuning gain visible instead of
+silently replacing defaults. Search spaces (`configs/hpo/spaces.yaml`) are kept
+deliberately narrow, because the width of a space is itself hidden budget.
 
 **Training budget (DL).** `configs/lite_dl.yaml` is a CPU smoke profile
 (3–5 epochs, window 32) — its DL numbers understate what these models can do
