@@ -19,6 +19,7 @@ DOCS = Path(__file__).resolve().parents[1] / "docs"
 EXEMPT = {
     "leaderboard/lite.md",  # results에서 재생성되는 숫자 표 (언어 중립)
     "models.md",  # cards.yaml에서 재생성되는 모델 카탈로그 표
+    "archive.md",  # archive/papers.yaml에서 재생성되는 연구 아카이브 표
 }
 EXEMPT_DIRS = ("assets/",)
 

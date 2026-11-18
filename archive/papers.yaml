@@ -1,0 +1,174 @@
+# TSAD research archive ledger — every method this repository tracks, from first
+# sighting to benchmark. Rendered to docs/archive.md by `python scripts/archive.py render`;
+# validated by tests/test_archive.py.
+#
+# status pipeline:
+#   candidate      worth evaluating (from the roadmap, a review, or the weekly arXiv scan)
+#   license_audit  official code found; LICENSE being checked (CLAUDE.md §10-2)
+#   implementing   work in progress
+#   implemented    registered model(s) exist (see `models`) but no published results yet
+#   benchmarked    registered model(s) with committed leaderboard results
+#   rejected       decided against — `reason` is required
+#
+# Implemented/benchmarked entries list registered model names; citation, upstream and
+# license details live in tsad_forge/models/cards.yaml (single source of truth).
+# Unverified identifiers are left null rather than guessed.
+
+papers:
+  # ---------------------------------------------------------------- implemented
+  - id: control-charts
+    title: CUSUM / EWMA control charts
+    year: 1954
+    status: benchmarked
+    models: [cusum, ewma, online_cusum, online_ewma]
+  - id: pca-spc
+    title: Hotelling T², PCA T²/SPE, subsequence PCA
+    year: 1947
+    status: benchmarked
+    models: [hotelling_t2, pca_t2spe, sub_pca]
+  - id: decomposition-residuals
+    title: STL / polynomial / S-H-ESD residual detectors
+    year: 1990
+    status: benchmarked
+    models: [stl_residual, poly, sesd]
+  - id: classical-ml
+    title: Isolation Forest, LOF, OC-SVM, k-NN, HBOS
+    year: 2000
+    status: benchmarked
+    models: [iforest, lof, ocsvm, knn, sub_knn, hbos]
+  - id: matrix-profile
+    title: Matrix Profile discords
+    year: 2016
+    status: benchmarked
+    models: [matrix_profile]
+  - id: spectral-residual
+    title: Spectral Residual (Azure Anomaly Detector)
+    year: 2019
+    status: benchmarked
+    models: [spectral_residual]
+  - id: dl-reconstruction-forecast
+    title: AE, LSTM-AD, Telemanom, Donut, DAGMM, OmniAnomaly, USAD
+    year: 2015
+    status: benchmarked
+    models: [ae, lstm_ad, lstm_p, vae_donut, dagmm, omni_anomaly, usad]
+  - id: graph-transformer
+    title: GDN, MTAD-GAT, Anomaly Transformer, TranAD, DCdetector, TimesNet
+    year: 2020
+    status: benchmarked
+    models: [gdn, mtad_gat, anomaly_transformer, tranad, dcdetector, timesnet]
+  - id: mamba-tsad
+    title: MambaTSAD — joint selective SSM and detrending (v2, verified against official code)
+    year: 2024
+    status: implemented
+    models: [mamba_tsad_faithful, mamba_tsad_fixed]
+    notes: v1 results retracted; v2 needs a GPU run (configs/mamba_paper_repro.yaml, mamba_ablation.yaml)
+  - id: foundation-adapters
+    title: MOMENT, Chronos, TimesFM 2.5 / 3.0 adapters
+    year: 2024
+    status: implemented
+    models: [moment, chronos, timesfm, timesfm3, timesfm3_ci, timesfm3_prob]
+    notes: needs `[foundation]` extras and HuggingFace weights; configs/foundation.yaml
+  - id: sanity-baselines
+    title: Uniform random score and per-channel |z| (uninformative floors)
+    year: 2025
+    status: benchmarked
+    models: [dummy, zscore]
+  - id: forge-ensemble
+    title: ForgeEnsemble rank-consensus baseline
+    year: 2025
+    status: benchmarked
+    models: [ensemble_simple]
+
+  # ---------------------------------------------------------------- pipeline
+  - id: anomamba
+    title: AnoMamba — reconstruction aligned with TSAD via selective global dependency modeling
+    authors: Chen et al.
+    venue: IJCAI 2026
+    year: 2026
+    status: license_audit
+    paper_url: https://www.ijcai.org/proceedings/2026/276
+    code_url: https://github.com/aaaceo890/AnoMamba_ijcai
+    code_license: null
+    generation: gen5
+    notes: follow-up of MambaTSAD by the same authors (linked from the official mamba_tsad README)
+  - id: dada
+    title: DADA — general time-series anomaly detector with adaptive bottlenecks and dual adversarial decoders
+    authors: Shentu et al.
+    venue: ICLR 2025
+    year: 2025
+    status: license_audit
+    arxiv: null
+    code_url: null
+    code_license: null
+    generation: gen5
+    notes: zero-shot TSAD foundation model; license unclear at last audit (THIRD_PARTY_NOTICES)
+  - id: damp
+    title: DAMP — streaming left matrix profile discords at scale
+    authors: Lu, Wu, Mueen, Zuluaga, Keogh
+    venue: KDD 2022
+    year: 2022
+    status: candidate
+    code_license: none found (reference MATLAB)
+    generation: gen2
+    notes: reimplement from paper; fits the online track
+  - id: sand
+    title: SAND — streaming subsequence anomaly detection
+    authors: Boniol, Paparrizos, Palpanas, Franklin
+    venue: VLDB 2021
+    year: 2021
+    status: candidate
+    generation: gen2
+    notes: strong on TSB-AD; check the official implementation's license
+  - id: rrcf
+    title: Robust Random Cut Forest
+    authors: Guha, Mishra, Roy, Schrijvers
+    venue: ICML 2016
+    year: 2016
+    status: candidate
+    code_url: https://github.com/kLabUM/rrcf
+    code_license: MIT
+    generation: gen2
+    notes: pip package unmaintained (pkg_resources); reimplement (~150 lines)
+  - id: sr-cnn
+    title: SR-CNN — learned head on spectral-residual saliency
+    authors: Ren et al.
+    venue: KDD 2019
+    year: 2019
+    status: candidate
+    generation: gen3
+    notes: extend spectral_residual with a small conv head
+  - id: carla
+    title: CARLA — contrastive representation learning for TSAD
+    authors: Darban et al.
+    year: 2024
+    status: candidate
+    generation: gen4
+  - id: patch-based
+    title: Patch-tokenized TSAD backbones (PatchTST / PatchAD style)
+    year: 2024
+    status: candidate
+    generation: gen4
+  - id: llm-zero-shot
+    title: LLM-based zero-shot anomaly detection (SigLLM line)
+    year: 2024
+    status: candidate
+    generation: gen5
+    notes: adapter behind the foundation extra; cost-heavy
+  - id: tranad-faithful
+    title: TranAD vendored port (faithful vs our simplified reimplementation)
+    authors: Tuli et al.
+    venue: VLDB 2022
+    year: 2022
+    status: candidate
+    code_url: https://github.com/imperial-qore/TranAD
+    code_license: BSD-3-Clause
+    generation: gen4
+    notes: BSD-3 permits vendoring — quantifies our simplifications, MambaTSAD-style
+  - id: merlin
+    title: MERLIN — parameter-free discord discovery
+    authors: Nakamura et al.
+    venue: ICDM 2020
+    year: 2020
+    status: rejected
+    generation: gen2
+    reason: reference implementation license unclear at audit; revisit if upstream clarifies

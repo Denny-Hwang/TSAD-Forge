@@ -5,6 +5,7 @@ tsad-forge run --model zscore --data path/to/your.csv        # BYOD
 tsad-forge download <dataset>
 tsad-forge list models|datasets
 tsad-forge results pack|verify|fetch   # 결과 스냅샷 (GitHub Release 자산)
+tsad-forge archive validate|render|scan # 연구 아카이브 원장
 """
 
 from __future__ import annotations
@@ -89,6 +90,16 @@ def build_parser() -> argparse.ArgumentParser:
     ft.add_argument("--base-url", required=True, help=".../releases/download/<tag>")
     ft.add_argument("--dest", required=True, help="results dir to unpack into")
 
+    ar = sub.add_parser("archive", help="research archive ledger (archive/papers.yaml)")
+    asub = ar.add_subparsers(dest="action", required=True)
+    asub.add_parser("validate", help="check ledger schema and model/card consistency")
+    rd = asub.add_parser("render", help="write the archive page")
+    rd.add_argument("--out", default="docs/archive.md")
+    sc = asub.add_parser("scan", help="list recent arXiv TSAD papers missing from the ledger")
+    sc.add_argument("--days", type=int, default=8)
+    sc.add_argument("--max-results", type=int, default=100)
+    sc.add_argument("--out", default=None, help="write markdown here (default: stdout)")
+
     viz = sub.add_parser("viz", help="generate all charts + leaderboard from results")
     viz.add_argument("--results-dir", default="benchmarks/results")
     viz.add_argument("--out-dir", default="docs/assets/charts")
@@ -120,6 +131,27 @@ def main(argv: list[str] | None = None) -> int:
 
         subset = args.subset.split(",") if args.subset else None
         download_dataset(args.dataset, data_dir=args.data_dir, subset=subset)
+        return 0
+
+    if args.command == "archive":
+        from tsad_forge import archive
+
+        papers = archive.load_ledger()
+        if args.action == "validate":
+            errors = archive.validate_ledger(papers)
+            print("ledger OK" if not errors else "\n".join(errors))
+            return 1 if errors else 0
+        if args.action == "render":
+            print(f"archive page: {archive.save_render(papers, args.out)}")
+            return 0
+        entries = archive.parse_arxiv_atom(archive.fetch_arxiv(args.max_results))
+        md = archive.candidates_markdown(
+            archive.new_candidates(entries, papers, args.days), args.days
+        )
+        if args.out:
+            Path(args.out).write_text(md)
+        else:
+            print(md or f"no new candidates in the last {args.days} days")
         return 0
 
     if args.command == "results":
