@@ -46,6 +46,17 @@ python benchmarks/run_all.py --profile configs/full.yaml --jobs 6 --timeout 7200
 python benchmarks/run_all.py --profile configs/full.yaml --datasets smd --models iforest,lof
 ```
 
+대용량 결과(`benchmarks/results_*`, HPO trial)는 커밋하지 않는다. 끝난 실행은
+체크섬이 붙은 불변 **스냅샷**으로 GitHub Release에 첨부해 배포하고, 누구나 받아서
+차트를 재생성할 수 있다:
+
+```bash
+tsad-forge results pack --results-dir benchmarks/results_full --name full-v0.3.0 --with-scores
+gh release upload v0.3.0 dist/snapshots/full-v0.3.0/*
+tsad-forge results fetch --base-url https://github.com/Denny-Hwang/TSAD-Forge/releases/download/v0.3.0 --dest benchmarks/results_full
+tsad-forge viz --results-dir benchmarks/results_full
+```
+
 ## 참고문헌 (전체)
 
 - Wu & Keogh, *Current Time Series Anomaly Detection Benchmarks are Flawed...*, TKDE 2021 (arXiv:2009.13807)

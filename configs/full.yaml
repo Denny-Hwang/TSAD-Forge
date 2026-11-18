@@ -11,6 +11,8 @@
 #   python benchmarks/run_all.py --profile configs/full.yaml --jobs 6 --timeout 7200
 # --jobs는 Gen1-2(cpu 레인) 병렬도, torch 모델은 GPU 1장에서 순차(torch 레인)로 동시에 돈다.
 # 중단 후 같은 명령을 다시 실행하면 resume된다. 실패는 results/failures/에 남는다.
+# 결과 디렉터리(benchmarks/results_full)는 gitignore — 끝나면 스냅샷으로 배포:
+#   tsad-forge results pack --results-dir benchmarks/results_full --name full-vX.Y.Z --with-scores
 #
 # 규모 감각: TSB-AD-U(~870) + UCR(250) + SMD(28) + SMAP/MSL(~80) ... × 모델 ~37
 # × (DL은 3시드). 하위집합부터 돌리려면 --datasets smd,smap,msl 또는 아래 limit 사용.

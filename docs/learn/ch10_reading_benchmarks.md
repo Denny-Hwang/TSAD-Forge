@@ -51,6 +51,17 @@ python benchmarks/run_all.py --profile configs/full.yaml --jobs 6 --timeout 7200
 python benchmarks/run_all.py --profile configs/full.yaml --datasets smd --models iforest,lof
 ```
 
+Large results (`benchmarks/results_*`, HPO trials) are not committed. A finished run is
+published as an immutable, checksummed **snapshot** attached to a GitHub Release, and
+anyone can fetch it and regenerate the charts from it:
+
+```bash
+tsad-forge results pack --results-dir benchmarks/results_full --name full-v0.3.0 --with-scores
+gh release upload v0.3.0 dist/snapshots/full-v0.3.0/*
+tsad-forge results fetch --base-url https://github.com/Denny-Hwang/TSAD-Forge/releases/download/v0.3.0 --dest benchmarks/results_full
+tsad-forge viz --results-dir benchmarks/results_full
+```
+
 ## Bibliography (complete)
 
 - Wu & Keogh, *Current Time Series Anomaly Detection Benchmarks are Flawed...*, TKDE 2021 (arXiv:2009.13807)

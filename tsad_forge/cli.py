@@ -4,6 +4,7 @@ tsad-forge run --model dummy --data synthetic
 tsad-forge run --model zscore --data path/to/your.csv        # BYOD
 tsad-forge download <dataset>
 tsad-forge list models|datasets
+tsad-forge results pack|verify|fetch   # 결과 스냅샷 (GitHub Release 자산)
 """
 
 from __future__ import annotations
@@ -75,6 +76,19 @@ def build_parser() -> argparse.ArgumentParser:
     ls = sub.add_parser("list", help="list registered models or datasets")
     ls.add_argument("what", choices=["models", "datasets"])
 
+    rs = sub.add_parser("results", help="pack / verify / fetch result snapshots (release assets)")
+    rsub = rs.add_subparsers(dest="action", required=True)
+    pk = rsub.add_parser("pack", help="bundle a results dir into an immutable snapshot")
+    pk.add_argument("--results-dir", default="benchmarks/results")
+    pk.add_argument("--name", required=True, help="snapshot name, e.g. full-v0.3.0")
+    pk.add_argument("--out", default="dist/snapshots")
+    pk.add_argument("--with-scores", action="store_true", help="include raw score npz files")
+    vf = rsub.add_parser("verify", help="check a snapshot against its MANIFEST sha256")
+    vf.add_argument("snapshot")
+    ft = rsub.add_parser("fetch", help="download + verify + unpack a published snapshot")
+    ft.add_argument("--base-url", required=True, help=".../releases/download/<tag>")
+    ft.add_argument("--dest", required=True, help="results dir to unpack into")
+
     viz = sub.add_parser("viz", help="generate all charts + leaderboard from results")
     viz.add_argument("--results-dir", default="benchmarks/results")
     viz.add_argument("--out-dir", default="docs/assets/charts")
@@ -106,6 +120,22 @@ def main(argv: list[str] | None = None) -> int:
 
         subset = args.subset.split(",") if args.subset else None
         download_dataset(args.dataset, data_dir=args.data_dir, subset=subset)
+        return 0
+
+    if args.command == "results":
+        from tsad_forge.runner import snapshot as snap
+
+        if args.action == "pack":
+            path = snap.pack_snapshot(args.results_dir, args.out, args.name, args.with_scores)
+            print(f"snapshot: {path}")
+            print(f"publish:  gh release upload <tag> {path}/*")
+            return 0
+        if args.action == "verify":
+            problems = snap.verify_snapshot(args.snapshot)
+            print("OK" if not problems else "\n".join(problems))
+            return 1 if problems else 0
+        dest = snap.fetch_snapshot(args.base_url, args.dest)
+        print(f"unpacked into {dest} — run: tsad-forge viz --results-dir {dest}")
         return 0
 
     if args.command == "viz":
