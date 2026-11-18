@@ -57,6 +57,8 @@ HASH_EXCLUDED_KEYS = ("results_dir", "save_raw_scores")
 HASH_EXEMPT_DEFAULTS: dict = {
     "device": "cpu",  # 해석된 실행 장치; 기존 결과는 전부 CPU
     "normalize_params": {},  # std_floor/clip 미사용 = 레거시 z-score
+    "model_version": 1,  # BaseDetector.model_version; 재구현 시 올라간다
+    "model_alias": None,  # 결과 라벨 (ablation 변형 구분); 미지정 시 해시 불변
 }
 
 

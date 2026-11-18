@@ -31,6 +31,10 @@ class BaseDetector(ABC):
     uses_torch: bool = False
     #: 생성자가 `device` 인자를 받는지 (runner가 해석한 장치를 주입할지 결정)
     accepts_device: bool = False
+    #: 구현 버전. 같은 이름의 모델을 의미 있게 재구현하면 올린다 — runner가 config에
+    #: 기록하고 1이 아니면 config_hash에 넣어, 구버전 결과가 resume/집계에서 신버전과
+    #: 같은 실험으로 취급되지 않게 한다.
+    model_version: int = 1
 
     def __init__(self, seed: int = 0, **params) -> None:
         self.seed = seed

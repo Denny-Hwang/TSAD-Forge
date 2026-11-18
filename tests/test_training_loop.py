@@ -141,12 +141,10 @@ def test_weight_decay_uses_adamw_and_changes_weights():
     assert not np.array_equal(a, b)
 
 
-def test_mamba_variants_still_train_with_options():
-    det = get_model(
-        "mamba_tsad_fixed", seed=0, epochs=2, window=16, batch_size=64, val_ratio=0.2, patience=1
-    ).fit(TRAIN)
-    assert np.isfinite(det.score(TEST)).all()
-    assert "diag_val_loss_best" in det.diagnostics_
+def test_mamba_rejects_torchdetector_options():
+    # MambaTSAD는 공식 학습 프로토콜을 따른다 — 지원하지 않는 옵션은 조용히 무시하지 않는다
+    with pytest.raises(TypeError, match="unsupported options"):
+        get_model("mamba_tsad_fixed", seed=0, val_ratio=0.2)
 
 
 def test_runner_stores_training_diagnostics(tmp_path):

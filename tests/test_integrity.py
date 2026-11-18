@@ -240,3 +240,17 @@ def test_cli_flags_do_not_clobber_config_file(tmp_path):
     (js,) = rd.glob("*.json")
     summary = json.loads(js.read_text())
     assert summary["model"] == "zscore" and summary["seed"] == 2
+
+
+def test_model_alias_separates_variants(tmp_path):
+    from tsad_forge.runner.results import load_all_results
+
+    base = {"model": "sub_pca", "results_dir": str(tmp_path)}
+    run_experiment(base, verbose=False)
+    run_experiment(
+        {**base, "model_alias": "sub_pca_w50", "model_params": {"window": 50}}, verbose=False
+    )
+    df = load_all_results(tmp_path)
+    assert set(df["model"]) == {"sub_pca", "sub_pca_w50"}  # 중복 제거로 사라지지 않는다
+    # alias 미지정은 해시에 들어가지 않는다 (레거시 해시 불변)
+    assert experiment_hash(_cpu_cfg(model="dummy")) == GOLDEN_HASHES["dummy/synthetic"]

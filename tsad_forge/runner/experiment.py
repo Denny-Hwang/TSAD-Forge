@@ -30,6 +30,9 @@ from tsad_forge.runner.measure import PeakRssSampler, cuda_peak_mb, reset_cuda_p
 
 DEFAULT_CONFIG = {
     "model": "dummy",
+    # 결과에 기록될 모델 이름 (None = model). 같은 모델의 설정 변형(ablation 등)을
+    # 리더보드·중복 제거에서 별도 행으로 다루기 위한 라벨이다.
+    "model_alias": None,
     "model_params": {},
     "data": "synthetic",
     "data_params": {},
@@ -84,10 +87,13 @@ class RunPlan:
     uses_torch: bool
 
     @property
+    def name(self) -> str:
+        """결과에 기록되는 모델 이름 (model_alias 우선)."""
+        return str(self.cfg.get("model_alias") or self.cfg["model"])
+
+    @property
     def run_id(self) -> str:
-        return res.run_id(
-            self.cfg["model"], self.dataset, self.channel, self.cfg["seed"], self.cfg_hash
-        )
+        return res.run_id(self.name, self.dataset, self.channel, self.cfg["seed"], self.cfg_hash)
 
     @property
     def results_dir(self) -> Path:
@@ -96,7 +102,7 @@ class RunPlan:
     def exists(self) -> bool:
         return res.result_exists(
             self.results_dir,
-            self.cfg["model"],
+            self.name,
             self.dataset,
             self.channel,
             self.cfg["seed"],
@@ -110,6 +116,8 @@ def plan_experiment(overrides: dict | None = None) -> RunPlan:
     model_cls = get_model_class(cfg["model"])
     # 장치는 해시 전에 해석한다: 같은 config라도 cpu/cuda 결과는 다른 실험이다
     cfg["device"] = resolve_device(cfg.get("device"), model_cls.uses_torch)
+    # 구현 버전은 사용자가 고르는 값이 아니라 코드가 정한다 (재구현 시 결과 분리)
+    cfg["model_version"] = int(model_cls.model_version)
     cfg_hash = res.experiment_hash(cfg)
     dataset_name = Path(str(cfg["data"])).stem if "." in str(cfg["data"]) else str(cfg["data"])
     dp = cfg.get("data_params", {})
@@ -210,13 +218,13 @@ def run_experiment(
         metrics[str(k)] = float(v)
 
     if cfg.get("save_raw_scores", True):
-        rid = res.run_id(cfg["model"], dataset_name, channel, cfg["seed"], cfg_hash)
+        rid = plan.run_id
         save_scores(scores, ds.labels, results_dir / "scores" / f"{rid}.npz")
 
     res.write_result(
         results_dir,
         metrics,
-        model=cfg["model"],
+        model=plan.name,
         generation=type(model).generation,
         dataset=dataset_name,
         channel=channel,

@@ -35,6 +35,7 @@ _train: &train
   score_batch_size: 512
 
 models:
+  # MambaTSAD는 &train 예산이 아니라 공식 코드의 학습 프로토콜을 따른다 (mamba_tsad.py)
   - model: ae
     stochastic: true
     model_params: { <<: *train, window: 100 }
@@ -74,12 +75,8 @@ models:
   - model: timesnet
     stochastic: true
     model_params: { <<: *train, window: 100 }
-  - model: mamba_tsad_faithful
-    stochastic: true
-    model_params: { <<: *train, window: 64, batch_size: 64 }
-  - model: mamba_tsad_fixed
-    stochastic: true
-    model_params: { <<: *train, window: 64, batch_size: 64 }
+  - { model: mamba_tsad_faithful, stochastic: true }  # 공식 프로토콜 (7 epoch, window 100)
+  - { model: mamba_tsad_fixed, stochastic: true }  # 공식 프로토콜 (7 epoch, window 100)
 
 datasets:
   # 합성 (항상 가능)

@@ -28,7 +28,7 @@
   수치 일치는 테스트하지 않는다). 실제 사용 폭은 `diag_vus_window`로 기록된다.
 - **실행 장치** (`device: auto | cpu | cuda | cuda:N`): 해시 전에 해석되며 torch
   모델에서는 실험 정체성의 일부다 — 같은 config의 CPU/GPU 실행은 다른 실험이다
-  (`mamba_tsad_faithful`처럼 장치별로 의도적으로 다르게 동작하는 모델도 있다).
+  (혼합정밀도 실행 등은 장치 간 비트 단위로 같지 않다).
   각 실행 JSON에는 환경 지문(Python/라이브러리 버전, CUDA, GPU 이름 — 호스트
   식별 정보 없음)과 `git_dirty`도 기록된다.
 

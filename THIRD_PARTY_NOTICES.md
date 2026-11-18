@@ -56,6 +56,7 @@
 | MGAB 데이터 | https://github.com/MarkusThill/MGAB | master | CC0 1.0 | 다운로드 스크립트 (데이터 미커밋) | |
 | MBA 데이터 | https://github.com/imperial-qore/TranAD (data/MBA) | main | 저장소 BSD-3; PhysioNet ODC-BY | 다운로드 스크립트 (데이터 미커밋) | |
 | MERLIN | 공개 참조 구현 라이선스 불명 | 불명 → 복사 금지 | **도입 보류** (Gen2 목록에서 제외) |
+| MambaTSAD (Chen et al., SPL 2024) | https://github.com/aaaceo890/mamba_tsad @ 08fec0531712 (2026-10-09 확인) | **LICENSE 파일 없음** → 불명, 복사 금지 | 공식 코드를 읽고 동작을 확인한 뒤 독자 재작성 (`gen5_ssm_foundation/mamba_tsad.py`, v2). 코드·재배포 데이터 zip 미사용. 그 저장소의 `model_utils/mamba.py`는 MIT 최소 Mamba 구현을 수정한 것으로 보이나 저장소 자체가 무라이선스라 역시 미사용 |
 
 (M3 이후 stumpy, statsmodels, PyTorch 등 추가 시 이 표를 갱신한다.)
 

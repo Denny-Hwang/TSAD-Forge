@@ -32,8 +32,8 @@ including the policies that could bias results if left implicit.
   The width actually used is recorded as `diag_vus_window`.
 - **Execution device** (`device: auto | cpu | cuda | cuda:N`): resolved before
   hashing and part of the experiment identity for torch models — CPU and GPU
-  runs of the same config are different experiments (and some models, e.g.
-  `mamba_tsad_faithful`, deliberately behave differently per device). Each run
+  runs of the same config are different experiments (GPU kernels and
+  mixed precision are not bit-identical to CPU). Each run
   JSON also records an environment fingerprint (Python/library versions, CUDA,
   GPU name — no host identity) and `git_dirty`.
 

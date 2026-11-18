@@ -127,7 +127,7 @@ def build_jobs(
     jobs: list[Job] = []
     for combo in expand_combos(profile):
         if not (
-            _matches(combo["model"], models)
+            (_matches(combo["model"], models) or _matches(str(combo.get("model_alias")), models))
             and _matches(str(combo["data"]), datasets)
             and (seeds is None or combo["seed"] in seeds)
         ):
@@ -139,7 +139,7 @@ def build_jobs(
                 overrides=overrides,
                 run_id=plan.run_id,
                 lane="torch" if plan.uses_torch else "cpu",
-                tag=(combo["model"], plan.dataset, plan.channel, combo["seed"]),
+                tag=(plan.name, plan.dataset, plan.channel, combo["seed"]),
                 exists=plan.exists(),
             )
         )
