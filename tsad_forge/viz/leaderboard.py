@@ -15,6 +15,7 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
+from tsad_forge.models.cards import get_card
 from tsad_forge.runner.results import (
     add_entity_column,
     load_all_results,
@@ -54,6 +55,21 @@ def _badge(gen: str) -> str:
         f'<span style="display:inline-block;padding:1px 8px;border-radius:10px;'
         f'background:{color};color:#ffffff;font-size:0.72rem;font-weight:600;"'
         f' title="{GEN_LABEL.get(gen, gen)}">{label}</span>'
+    )
+
+
+_FIDELITY_STYLE = {
+    "simplified": "background:#fdecc8;color:#7a4b00;",
+    "upstream_verified": "background:#d7f0e3;color:#0d5c3a;",
+    "variant": "background:#ececea;color:#52514e;",
+}
+
+
+def _fidelity_badge(level: str) -> str:
+    style = _FIDELITY_STYLE.get(level, "background:#eef2f7;color:#26425f;")
+    return (
+        f'<a href="../../models/" style="text-decoration:none;"><span style="padding:1px 7px;'
+        f'border-radius:9px;font-size:0.72rem;{style}">{level}</span></a>'
     )
 
 
@@ -164,6 +180,9 @@ def build_leaderboard(
     ]
     example = pd.Series(example_runs, index=example.index, name="example_run")
     summary = summary.join(example).round(4)
+    summary["fidelity"] = [
+        (get_card(str(model)) or {}).get("fidelity", "variant") for _, model in summary.index
+    ]
     # attrs는 join/round를 거치며 보존이 보장되지 않으므로 마지막에 다시 붙인다
     summary.attrs["n_shared_entities"] = len(shared)
     return pivot.round(4), summary
@@ -175,6 +194,7 @@ def _summary_html(summary: pd.DataFrame, metric: str) -> str:
         for h in [
             "generation",
             "model",
+            "fidelity",
             f"mean {metric} [95% CI]",
             f"shared-entity {metric}",
             "norm. rank",
@@ -198,6 +218,7 @@ def _summary_html(summary: pd.DataFrame, metric: str) -> str:
             f'<tr style="background:{tint}">'
             f'<td style="{_TD}white-space:nowrap;">{_badge(gen)}</td>'
             f'<td style="{_TD}font-weight:600;">{model}</td>'
+            f'<td style="{_TD}">{_fidelity_badge(str(r["fidelity"]))}</td>'
             f'<td style="{_TD}{_shade(r[f"mean_{metric}"])}text-align:right;white-space:nowrap;">'
             f"{r[f'mean_{metric}']:.3f}{ci}</td>"
             f'<td style="{_TD}text-align:right;">'
@@ -300,6 +321,9 @@ def leaderboard_markdown(results_dir: str | Path, metric: str = PRIMARY_METRIC) 
         friedman_line,
         "",
         _coverage_line(summary, metric),
+        "",
+        "`fidelity` (see the [model catalog](../models.md)): **simplified** rows measure"
+        " this repository's simplified reimplementation, not the original method.",
         "",
         "## Model summary (sorted by normalized rank)",
         "",

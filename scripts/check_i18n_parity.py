@@ -18,6 +18,7 @@ DOCS = Path(__file__).resolve().parents[1] / "docs"
 # 언어 쌍을 요구하지 않는 경로 (자동 생성물 / 숫자 표)
 EXEMPT = {
     "leaderboard/lite.md",  # results에서 재생성되는 숫자 표 (언어 중립)
+    "models.md",  # cards.yaml에서 재생성되는 모델 카탈로그 표
 }
 EXEMPT_DIRS = ("assets/",)
 

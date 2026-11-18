@@ -80,6 +80,7 @@ def build_parser() -> argparse.ArgumentParser:
     viz.add_argument("--out-dir", default="docs/assets/charts")
     viz.add_argument("--data-dir", default="data")
     viz.add_argument("--leaderboard-out", default="docs/leaderboard/lite.md")
+    viz.add_argument("--catalog-out", default="docs/models.md", help="model catalog page")
 
     return p
 
@@ -116,6 +117,9 @@ def main(argv: list[str] | None = None) -> int:
         generate_eda(Path(args.out_dir).parent / "eda", args.data_dir)
         lb = save_leaderboard(args.results_dir, args.leaderboard_out)
         print(f"leaderboard: {lb}")
+        from tsad_forge.models.cards import save_catalog
+
+        print(f"model catalog: {save_catalog(args.catalog_out)}")
         return 0
 
     if args.command == "run":
