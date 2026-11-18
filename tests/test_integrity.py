@@ -81,6 +81,24 @@ def test_torch_device_resolution():
         resolve_device("tpu", uses_torch=True)
 
 
+def test_mps_device_resolution_and_hash():
+    torch = pytest.importorskip("torch")
+    # auto는 MPS를 고르지 않는다 — Mac에서 기본 실행이 기존 CPU 결과의 정체성을 유지
+    assert resolve_device("auto", uses_torch=True) != "mps"
+    assert resolve_device("mps", uses_torch=False) == "cpu"
+    if torch.backends.mps.is_available():
+        assert resolve_device("MPS", uses_torch=True) == "mps"
+    else:
+        with pytest.raises(RuntimeError, match="MPS is not available"):
+            resolve_device("mps", uses_torch=True)
+    base = _cpu_cfg(model="dummy")
+    h_cpu = experiment_hash(base)
+    h_mps = experiment_hash({**base, "device": "mps"})
+    h_cuda = experiment_hash({**base, "device": "cuda"})
+    assert len({h_cpu, h_mps, h_cuda}) == 3
+    assert h_cpu == GOLDEN_HASHES["dummy/synthetic"]  # 레거시 device 값 "cpu"는 해시 불변
+
+
 def test_environment_fingerprint_has_no_host_identity():
     env = environment_fingerprint("cpu")
     assert env["device"] == "cpu" and "numpy" in env["packages"]

@@ -8,6 +8,12 @@
 - **다운로드**: `tsad-forge download smap` — S3(`telemanom/data.zip`) + 라벨 csv.
   S3가 차단된 환경에서는 HuggingFace 미러 `appleparan/telemanom`에서 수동으로 받아
   `data/smap_msl/train/<chan>.npy`, `data/smap_msl/test/<chan>.npy`로 배치하세요.
+  2026-11 기준 S3 URL은 HTTP 403을 반환한다. 미러(BSD-3-Clause)에서는 배열이
+  `data/data/train/`, `data/data/test/` 아래에 있다(각 82채널). 예:
+  `https://huggingface.co/datasets/appleparan/telemanom/resolve/main/data/data/train/P-1.npy`.
+  배치한 뒤 `tsad-forge download smap`을 다시 실행하면 라벨 csv를 받고 `MANIFEST.json`을
+  기록한다. SMAP/MSL은 아직 고정 체크섬이 없으므로 manifest는 받은 파일의 기록일 뿐,
+  알려진 정상값과의 대조가 아니다.
 - **로더**: `load_smap(channel="P-1")`, `load_msl(channel="M-6")`
 
 ## 알려진 결함 (숨기지 않음)

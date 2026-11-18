@@ -135,6 +135,28 @@ def test_amp_is_noop_on_cpu():
     np.testing.assert_array_equal(a, b)
 
 
+@pytest.mark.skipif(not torch.backends.mps.is_available(), reason="Apple MPS 없음")
+@pytest.mark.parametrize("amp", [False, "bf16", "fp16"])
+def test_mps_training_and_amp_gate(amp):
+    from tsad_forge.models._torch import _amp_dtype, mps_amp_supported
+
+    det = get_model("ae", seed=0, device="mps", amp=amp, **SMALL)
+    assert det.device.type == "mps"
+    scores = det.fit(TRAIN).score(TEST)
+    assert np.isfinite(scores).all() and scores.shape == (len(TEST),)
+    if amp:
+        # 점검을 통과한 경우에만 autocast가 켜지고, 그 사실이 진단에 남는다
+        expected = mps_amp_supported(_amp_dtype(amp))
+        assert det.diagnostics_["diag_amp_active"] == float(expected)
+    else:
+        assert "diag_amp_active" not in det.diagnostics_
+
+
+def test_amp_inactive_on_cpu_is_recorded():
+    det = get_model("ae", seed=0, device="cpu", amp="bf16", **SMALL).fit(TRAIN)
+    assert det.diagnostics_["diag_amp_active"] == 0.0
+
+
 def test_weight_decay_uses_adamw_and_changes_weights():
     a = get_model("ae", seed=0, weight_decay=0.1, **SMALL).fit(TRAIN).score(TEST)
     b = get_model("ae", seed=0, **SMALL).fit(TRAIN).score(TEST)

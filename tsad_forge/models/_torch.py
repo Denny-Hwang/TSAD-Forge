@@ -13,7 +13,7 @@
 | `val_ratio` | 0.0 | train 시계열의 **마지막** 비율을 시간순 검증 구간으로 분리 (윈도우 겹침 누수 없음) |
 | `patience` | None | 검증 손실이 `patience` epoch 동안 `min_delta` 이상 개선되지 않으면 조기 종료, 최적 가중치 복원 (`val_ratio>0` 필요) |
 | `lr_schedule` | None | `"cosine"`(epoch 단위 cosine annealing) / `"plateau"`(검증 손실 정체 시 LR×0.5) |
-| `amp` | False | CUDA에서만: `"bf16"`(권장, Ampere+) / `"fp16"`(GradScaler) / True(=bf16). CPU에서는 무시 |
+| `amp` | False | CUDA·MPS: `"bf16"`(권장, Ampere+) / `"fp16"`(GradScaler) / True(=bf16). MPS는 런타임 점검(autocast 순전파+역전파)을 통과할 때만 적용하고 아니면 무시. CPU에서는 무시 |
 | `max_train_windows` | 10000 | 학습 윈도우 상한 (None = 무제한). 시드 고정 서브샘플 |
 | `weight_decay` | 0.0 | Adam(W) weight decay (>0이면 AdamW) |
 | `grad_clip` | 5.0 | gradient norm clip (None = 비활성) |
@@ -45,9 +45,14 @@ _LR_SCHEDULES = (None, "cosine", "plateau")
 
 
 def select_device(device: str | None = None) -> torch.device:
-    """None/"auto" -> CUDA 가능하면 cuda, 아니면 cpu. 그 외는 그대로 사용."""
+    """None/"auto" -> CUDA 가능하면 cuda, 아니면 cpu. 그 외("cpu"/"cuda[:N]"/"mps")는 그대로.
+
+    "auto"는 MPS를 고르지 않는다 (runner.environment.resolve_device와 같은 규칙).
+    """
     if device in (None, "auto"):
         return torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    if device == "mps" and not torch.backends.mps.is_available():
+        raise RuntimeError("device='mps' requested but Apple MPS is not available")
     return torch.device(device)
 
 
@@ -59,6 +64,32 @@ def _amp_dtype(amp: bool | str | None) -> torch.dtype | None:
     if amp in ("fp16", "float16"):
         return torch.float16
     raise ValueError(f"unknown amp '{amp}' (expected False | 'bf16' | 'fp16')")
+
+
+_MPS_AMP_OK: dict[torch.dtype, bool] = {}
+
+
+def mps_amp_supported(dtype: torch.dtype) -> bool:
+    """이 torch/macOS 조합에서 MPS autocast(dtype) 학습 1스텝이 되는지 점검 (결과 캐시).
+
+    MPS의 autocast 지원은 torch·macOS 버전에 따라 다르다. 동작이 확인되지 않으면
+    AMP를 무시하고 fp32로 돈다 (조용히 실패하는 대신 확인된 경로만 쓴다).
+    """
+    if dtype not in _MPS_AMP_OK:
+        ok = False
+        if torch.backends.mps.is_available():
+            try:
+                lin = torch.nn.Linear(4, 4).to("mps")
+                x = torch.ones(2, 4, device="mps")
+                with torch.autocast(device_type="mps", dtype=dtype):
+                    y = lin(x)
+                loss = y.float().pow(2).mean()
+                loss.backward()
+                ok = y.dtype == dtype and bool(torch.isfinite(loss).item())
+            except (RuntimeError, TypeError, ValueError):
+                ok = False
+        _MPS_AMP_OK[dtype] = ok
+    return _MPS_AMP_OK[dtype]
 
 
 class TorchDetector(BaseDetector):
@@ -146,6 +177,14 @@ class TorchDetector(BaseDetector):
         self.min_delta = float(min_delta)
         self.lr_schedule = lr_schedule
         self._amp = _amp_dtype(amp)
+        # 실제로 autocast를 켤지: CUDA는 항상, MPS는 런타임 점검 통과 시만, CPU는 끔
+        if self._amp is not None and (
+            self.device.type == "cuda"
+            or (self.device.type == "mps" and mps_amp_supported(self._amp))
+        ):
+            self._amp_active: torch.dtype | None = self._amp
+        else:
+            self._amp_active = None
         if max_train_windows != "class":
             self.max_train_windows = max_train_windows  # type: ignore[assignment]
         self.weight_decay = float(weight_decay)
@@ -177,10 +216,10 @@ class TorchDetector(BaseDetector):
         return torch.from_numpy(arr).float()
 
     def _autocast(self):
-        """CUDA + amp 설정일 때만 autocast. CPU에서는 아무것도 하지 않는다."""
-        if self._amp is None or self.device.type != "cuda":
+        """amp가 활성(CUDA, 또는 점검을 통과한 MPS)일 때만 autocast. 그 외에는 아무것도 안 한다."""
+        if self._amp_active is None:
             return contextlib.nullcontext()
-        return torch.autocast(device_type="cuda", dtype=self._amp)
+        return torch.autocast(device_type=self.device.type, dtype=self._amp_active)
 
     def _split_train_val(self, X: np.ndarray) -> tuple[np.ndarray, np.ndarray | None]:
         """시간순 분할: 앞 (1-val_ratio)는 학습, 뒤는 검증.
@@ -243,8 +282,8 @@ class TorchDetector(BaseDetector):
                 opt, factor=0.5, patience=max((self.patience or 4) // 2, 1)
             )
         # fp16만 loss scaling 필요 (bf16은 지수 범위가 fp32와 같다)
-        use_scaler = self._amp is torch.float16 and self.device.type == "cuda"
-        scaler = torch.amp.GradScaler("cuda") if use_scaler else None
+        use_scaler = self._amp_active is torch.float16
+        scaler = torch.amp.GradScaler(self.device.type) if use_scaler else None
         loader = DataLoader(
             TensorDataset(wins),
             batch_size=self.batch_size,
@@ -304,6 +343,8 @@ class TorchDetector(BaseDetector):
             "diag_train_loss_last": float(last_train_loss),
             "diag_n_train_windows": float(len(wins)),
         }
+        if self._amp is not None:  # amp를 요청했을 때만 실제 적용 여부를 남긴다
+            self.diagnostics_["diag_amp_active"] = float(self._amp_active is not None)
         if val_wins is not None:
             self.diagnostics_["diag_val_loss_best"] = float(best_val)
         self._fitted = True

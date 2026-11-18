@@ -37,7 +37,8 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument(
         "--device",
         default=None,
-        help="auto | cpu | cuda | cuda:N (torch models only; default: auto)",
+        help="auto | cpu | cuda | cuda:N | mps (torch models only; default: auto; "
+        "auto never picks mps)",
     )
     run.add_argument(
         "--sliding-window",

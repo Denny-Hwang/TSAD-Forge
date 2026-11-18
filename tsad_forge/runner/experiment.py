@@ -43,7 +43,7 @@ DEFAULT_CONFIG = {
     "threshold": {"method": "quantile", "q": 0.99},
     # VUS buffer 최대 폭. 정수(레거시 100) 또는 "auto"(시계열별 ACF 주기 — TSB-AD 관례)
     "sliding_window": 100,
-    # 실행 장치: "auto" | "cpu" | "cuda" | "cuda:N". torch 모델에만 의미가 있고,
+    # 실행 장치: "auto" | "cpu" | "cuda" | "cuda:N" | "mps". torch 모델에만 의미가 있고,
     # 해석된 값이 config에 기록된다 (runner/environment.py)
     "device": "auto",
     "legacy_pa": False,

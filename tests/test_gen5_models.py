@@ -126,3 +126,30 @@ def test_model_version_enters_config_hash():
     assert plan.cfg["model_version"] == 2
     zs = plan_experiment({"model": "zscore", "results_dir": "x"})
     assert zs.cfg["model_version"] == 1  # 레거시 값 → 해시 불변 (test_integrity 골든 해시)
+
+
+_MPS = pytest.mark.skipif(not torch.backends.mps.is_available(), reason="Apple MPS 없음")
+
+
+@_MPS
+@pytest.mark.parametrize("name", ["mamba_tsad_faithful", "mamba_tsad_fixed"])
+def test_mamba_runs_on_mps(name):
+    """MPS에서 학습·추론이 동작하고 CPU 결과와 근사한다 (비트 일치는 기대하지 않음)."""
+    model = get_model(name, seed=0, device="mps", **SMALL)
+    assert model.device.type == "mps"
+    s_mps = model.fit(TRAIN).score(TEST)
+    assert s_mps.shape == (T_TE,) and np.isfinite(s_mps).all()
+    assert s_mps[80:100].mean() > np.median(s_mps)
+    s_cpu = get_model(name, seed=0, device="cpu", **SMALL).fit(TRAIN).score(TEST)
+    assert np.corrcoef(s_cpu, s_mps)[0, 1] > 0.99
+
+
+@_MPS
+def test_mamba_mps_run_gets_its_own_hash():
+    from tsad_forge.runner.experiment import plan_experiment
+
+    cfg = {"model": "mamba_tsad_fixed", "results_dir": "x"}
+    mps = plan_experiment({**cfg, "device": "mps"})
+    cpu = plan_experiment({**cfg, "device": "cpu"})
+    assert mps.cfg["device"] == "mps" and cpu.cfg["device"] == "cpu"
+    assert mps.cfg_hash != cpu.cfg_hash

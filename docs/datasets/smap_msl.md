@@ -10,6 +10,12 @@
   If S3 is blocked in your environment, download the HuggingFace mirror
   `appleparan/telemanom` manually and place files under
   `data/smap_msl/train/<chan>.npy` and `data/smap_msl/test/<chan>.npy`.
+  As of 2026-11 the S3 URL returns HTTP 403. The mirror (BSD-3-Clause) keeps the arrays
+  under `data/data/train/` and `data/data/test/` (82 channels each), for example
+  `https://huggingface.co/datasets/appleparan/telemanom/resolve/main/data/data/train/P-1.npy`.
+  After placing them, re-run `tsad-forge download smap` to fetch the label CSV and write
+  `MANIFEST.json`. No pinned checksums exist for SMAP/MSL yet, so the manifest is a
+  record of what you received, not a verification against known-good values.
 - **Loader**: `load_smap(channel="P-1")`, `load_msl(channel="M-6")`
 
 ## Known flaws (stated openly)

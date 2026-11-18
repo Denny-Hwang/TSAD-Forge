@@ -46,6 +46,7 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
+from tsad_forge.models._torch import select_device
 from tsad_forge.models.base import BaseDetector
 from tsad_forge.models.registry import register_model
 
@@ -336,9 +337,7 @@ class _MambaTSADBase(BaseDetector):
         self.epochs, self.batch_size, self.lr = epochs, batch_size, lr
         self.weight_decay, self.lr_decay, self.lr_step = weight_decay, lr_decay, lr_step
         self.flags = {**flags, "pre_filter": pre_filter, "decomp": decomp, "hp_lambda": hp_lambda}
-        if device in (None, "auto"):
-            device = "cuda" if torch.cuda.is_available() else "cpu"
-        self.device = torch.device(device)
+        self.device = select_device(device)
 
     def _build(self, n_features: int, window: int) -> None:
         self.net_ = _MambaTSADNet(n_features, window, *self.arch, self.flags).to(self.device)

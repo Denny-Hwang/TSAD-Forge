@@ -10,7 +10,9 @@
 장치 규칙:
 - torch를 쓰지 않는 모델(uses_torch=False)은 항상 "cpu" — GPU 머신에서 돌려도
   Gen1-2 결과의 정체성(해시)이 바뀌지 않는다.
-- torch 모델의 "auto"는 CUDA가 있으면 "cuda", 없으면 "cpu"로 해석된다.
+- torch 모델의 "auto"는 CUDA가 있으면 "cuda", 없으면 "cpu"로 해석된다. Apple MPS는
+  "auto"로 고르지 않는다 — MPS 수치는 CPU/CUDA와 다르므로, 명시적으로 "mps"를
+  요청했을 때만 쓴다 (Mac에서 기본 실행이 기존 CPU 결과와 같은 정체성을 유지).
 - 해석된 장치는 config에 기록되고, "cpu"가 아닐 때만 config_hash에 들어간다
   (runner.results.HASH_EXEMPT_DEFAULTS — 기존 CPU 결과의 해시 하위호환).
 """
@@ -23,7 +25,7 @@ import subprocess
 import sys
 from importlib import metadata
 
-VALID_DEVICES = ("auto", "cpu", "cuda")
+VALID_DEVICES = ("auto", "cpu", "cuda", "mps")
 
 
 def _cuda_available() -> bool:
@@ -34,8 +36,16 @@ def _cuda_available() -> bool:
     return bool(torch.cuda.is_available())
 
 
+def _mps_available() -> bool:
+    try:
+        import torch
+    except ImportError:
+        return False
+    return bool(torch.backends.mps.is_available())
+
+
 def resolve_device(requested: str | None, uses_torch: bool) -> str:
-    """config의 device 요청을 실제 실행 장치("cpu" | "cuda" | "cuda:N")로 해석한다."""
+    """config의 device 요청을 실제 실행 장치("cpu" | "cuda" | "cuda:N" | "mps")로 해석한다."""
     requested = (requested or "auto").lower()
     if not uses_torch:
         return "cpu"
@@ -47,6 +57,10 @@ def resolve_device(requested: str | None, uses_torch: bool) -> str:
         if not _cuda_available():
             raise RuntimeError(f"device='{requested}' requested but CUDA is not available")
         return requested
+    if requested == "mps":
+        if not _mps_available():
+            raise RuntimeError("device='mps' requested but Apple MPS is not available")
+        return "mps"
     raise ValueError(f"unknown device '{requested}' (expected one of {VALID_DEVICES} or cuda:N)")
 
 
@@ -104,4 +118,7 @@ def environment_fingerprint(device: str) -> dict:
             env["gpu"] = torch.cuda.get_device_name(idx)
             env["cudnn"] = torch.backends.cudnn.version()
             env["cudnn_deterministic"] = bool(torch.backends.cudnn.deterministic)
+        if device == "mps":
+            env["gpu"] = f"Apple MPS ({platform.machine()})"
+            env["macos"] = platform.mac_ver()[0]
     return env
