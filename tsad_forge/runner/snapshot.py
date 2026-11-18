@@ -60,8 +60,16 @@ def pack_snapshot(
     snap.mkdir(parents=True)
 
     df.to_parquet(snap / "results.parquet", index=False)
+    # run_model = 실행 JSON의 model (집계 이름의 `@mps` 같은 장치 접미사 없음)
     kept = set(
-        zip(df["model"], df["dataset"], df["channel"], df["seed"], df["config_hash"], strict=True)
+        zip(
+            df["run_model"],
+            df["dataset"],
+            df["channel"],
+            df["seed"],
+            df["config_hash"],
+            strict=True,
+        )
     )
     n_runs = 0
     with open(snap / "runs.jsonl", "w") as f:

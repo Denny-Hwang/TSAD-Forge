@@ -1,0 +1,11 @@
+# mamba_paper_repro.yaml(faithful vs fixed, 논문 엔티티)을 Apple MPS에서 실행.
+# device: mps는 명시적으로 요청해야 한다 ("auto"는 MPS를 고르지 않는다).
+# 집계(load_all_results)는 MPS 행을 `<model>@mps`라는 별도 모델로 표시하므로 공개
+# 결과와 섞여도 CPU/CUDA 행을 대체하지 않는다. 공개 여부를 정하기 전까지는 별도
+# 디렉터리(gitignore 대상 results_*)에 쓴다.
+# MPS 수치는 CPU/CUDA와 비트 단위로 같지 않고, 논문(CUDA) 수치와 비교할 수 없다.
+# SWaT는 로컬 데이터가 없으면 no_data로 건너뛴다.
+extends: mamba_paper_repro.yaml
+results_dir: benchmarks/results_mps
+defaults:
+  device: mps

@@ -26,9 +26,13 @@
 - **VUS 버퍼 폭** (`sliding_window`): 레거시 고정값 `100`, 또는 자기상관으로
   시계열별 주기를 추정하는 `"auto"`(TSB-AD 관례; 자체 구현이며 TSB-AD 함수와의
   수치 일치는 테스트하지 않는다). 실제 사용 폭은 `diag_vus_window`로 기록된다.
-- **실행 장치** (`device: auto | cpu | cuda | cuda:N`): 해시 전에 해석되며 torch
+- **실행 장치** (`device: auto | cpu | cuda | cuda:N | mps`): 해시 전에 해석되며 torch
   모델에서는 실험 정체성의 일부다 — 같은 config의 CPU/GPU 실행은 다른 실험이다
-  (혼합정밀도 실행 등은 장치 간 비트 단위로 같지 않다).
+  (혼합정밀도 실행 등은 장치 간 비트 단위로 같지 않다). `mps`(Apple Silicon)는
+  명시했을 때만 쓰며 `auto`는 MPS를 고르지 않는다. 집계에서 MPS 실행은
+  `<model>@mps`라는 별도 모델로 표시되어, 같은 모델·엔티티·시드의 CPU/CUDA 행을
+  대체하지 않는다. CPU와 CUDA는 모델 이름이 같으므로 더 최신의 CUDA 실행이 이전
+  CPU 실행을 대체하는 규칙은 그대로다.
   각 실행 JSON에는 환경 지문(Python/라이브러리 버전, CUDA, GPU 이름 — 호스트
   식별 정보 없음)과 `git_dirty`도 기록된다.
 

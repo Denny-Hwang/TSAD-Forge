@@ -100,3 +100,37 @@ def test_cli_pack_and_verify(results, tmp_path, capsys):
     )
     assert "gh release upload" in capsys.readouterr().out
     assert main(["results", "verify", str(tmp_path / "snaps" / "c1")]) == 0
+
+
+def test_snapshot_keeps_mps_runs_and_labels(tmp_path):
+    """`@mps` 행의 실행 JSON도 runs.jsonl에 들어가고, 복원 후 이름이 유지된다."""
+    from tsad_forge.runner.results import write_result
+
+    rd = tmp_path / "results"
+    for device, h in (("cpu", "cpuhash00000"), ("mps", "mpshash00000")):
+        write_result(
+            rd,
+            {"vus_pr": 0.5},
+            model="m",
+            generation="gen5",
+            dataset="d",
+            channel="all",
+            seed=0,
+            runtime_s=1.0,
+            runtime_fit_s=0.5,
+            runtime_score_s=0.5,
+            peak_mem_mb=1.0,
+            data_hash="data00000000",
+            cfg_hash=h,
+            config={"device": device},
+        )
+    snap = pack_snapshot(rd, tmp_path / "snaps", "mps-test")
+    runs = [json.loads(line) for line in (snap / "runs.jsonl").read_text().splitlines()]
+    assert {r["config_hash"] for r in runs} == {"cpuhash00000", "mpshash00000"}
+    restored = load_all_results(unpack_snapshot(snap, tmp_path / "restored"))
+    assert set(restored["model"]) == {"m", "m@mps"}
+    # 리더보드의 재현 링크는 `@mps` 행도 실제 파일명(run_id)을 가리킨다
+    _, summary = build_leaderboard(rd)
+    links = dict(zip(summary.index.get_level_values("model"), summary["example_run"], strict=True))
+    assert links["m@mps"] == "m__d__all__seed0__mpshash00000"
+    assert (rd / f"{links['m@mps']}.json").exists()

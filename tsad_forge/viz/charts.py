@@ -28,7 +28,12 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from tsad_forge.runner.results import add_entity_column, load_all_results
+from tsad_forge.runner.results import (
+    add_entity_column,
+    config_hash,
+    frame_run_ids,
+    load_all_results,
+)
 
 GEN_ORDER = ["gen0", "gen1", "gen2", "gen3", "gen4", "gen5"]
 GEN_LABEL = {
@@ -448,25 +453,17 @@ def metric_divergence(results_dir: str | Path, df: pd.DataFrame, out_dir: Path) 
     from tsad_forge.evaluation.protocol import load_scores
 
     m = df[df["metric"] == PRIMARY].copy()
-    m["run_id"] = (
-        m["model"]
-        + "__"
-        + m["dataset"]
-        + "__"
-        + m["channel"]
-        + "__seed"
-        + m["seed"].astype(str)
-        + "__"
-        + m["config_hash"]
-    )
+    m["run_id"] = frame_run_ids(m)
     vus_by_run = m.set_index("run_id")["value"].to_dict()
+    # 표시 이름은 집계 이름(`<model>@mps` 포함) — 파일명의 원래 이름이 아니다
+    name_by_run = m.set_index("run_id")["model"].to_dict()
 
     rows = []
     for npz in sorted(Path(results_dir).glob("scores/*.npz")):
-        model = npz.stem.split("__")[0]
         vus_pr = vus_by_run.get(npz.stem)
         if vus_pr is None:
             continue
+        model = name_by_run[npz.stem]
         try:
             scores, labels = load_scores(npz)
         except Exception:
@@ -554,23 +551,27 @@ def case_viewer(results_dir: str | Path, df: pd.DataFrame, out_dir: Path) -> Pat
 
     # Representative = the BEST model per generation on this entity (by VUS-PR),
     # not the first file found — a random baseline as "representative" is noise.
-    m = df[(df["metric"] == PRIMARY) & (df["dataset"] == "synthetic") & (df["seed"] == 0)]
-    best = (
-        m.sort_values("value", ascending=False)
-        .drop_duplicates("generation")
-        .set_index("generation")["model"]
-        .to_dict()
-    )
-    npz_by_model = {
-        p.stem.split("__")[0]: p
-        for p in sorted(Path(results_dir).glob("scores/*__synthetic__all__seed0__*.npz"))
-    }
+    # 그려지는 계열(generate_synthetic 기본값)과 같은 데이터 변형의 행만 — channel이 같은
+    # 다른 변형(예: n_dims=5)의 점수를 이 계열 위에 겹치면 안 된다
+    plotted = config_hash({"data": "synthetic", "data_params": {}})
+    m = df[
+        (df["metric"] == PRIMARY)
+        & (df["dataset"] == "synthetic")
+        & (df["seed"] == 0)
+        & (df["data_hash"] == plotted)
+    ]
+    best = m.sort_values("value", ascending=False).drop_duplicates("generation").copy()
+    best["run_id"] = frame_run_ids(best)
+    best = best.set_index("generation")
     for gen in GEN_ORDER:
         if gen == "gen0":
             continue  # the uninformed baseline is pure noise here — skip for legibility
-        model = best.get(gen)
-        npz = npz_by_model.get(model) if model is not None else None
-        if npz is None:
+        if gen not in best.index:
+            continue
+        model = str(best.at[gen, "model"])
+        # 최고 행의 정확한 run_id로 점수 파일을 찾는다 (같은 모델의 다른 config/장치 혼동 방지)
+        npz = Path(results_dir) / "scores" / f"{str(best.at[gen, 'run_id'])}.npz"
+        if not npz.exists():
             continue
         scores, _ = load_scores(npz)
         if len(scores) != len(ds.test):

@@ -18,6 +18,7 @@ from scipy import stats
 from tsad_forge.models.cards import get_card
 from tsad_forge.runner.results import (
     add_entity_column,
+    frame_run_ids,
     load_all_results,
     normalized_ranks,
     shared_entities,
@@ -164,21 +165,9 @@ def build_leaderboard(
     )
     summary = summary.join(cfg)
     # 대표 run_id — config 셀이 실제 재현 설정(run JSON)으로 링크되게 (CLAUDE.md §9)
+    # run_model 기준 → `<model>@mps` 행도 실제 파일명으로 링크된다
     first = df.sort_values(["dataset", "channel", "seed"]).groupby(["generation", "model"]).first()
-    example = (
-        first["dataset"]
-        + "__"
-        + first["channel"]
-        + "__seed"
-        + first["seed"].astype(str)
-        + "__"
-        + first["config_hash"]
-    )
-    example_runs: list[str] = [
-        f"{idx[1]}__{rest}"  # type: ignore[index]  # MultiIndex(gen, model)
-        for idx, rest in example.items()
-    ]
-    example = pd.Series(example_runs, index=example.index, name="example_run")
+    example = frame_run_ids(first).rename("example_run")
     summary = summary.join(example).round(4)
     summary["fidelity"] = [
         (get_card(str(model)) or {}).get("fidelity", "variant") for _, model in summary.index

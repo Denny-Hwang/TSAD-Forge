@@ -1,9 +1,9 @@
 # mamba_compare.yaml을 Apple MPS에서 실행 (Apple Silicon Mac 전용).
 # device: mps는 명시적으로 요청해야 한다 ("auto"는 MPS를 고르지 않는다).
 # MPS 결과는 cpu/cuda 결과와 다른 config_hash를 가지므로 같은 results_dir에 섞여도
-# 별도 실험이다. 단, 리더보드 집계의 중복 제거 키(model, dataset, channel, seed,
-# data_hash, metric)에는 장치가 없어서 같은 results_dir에 두면 최신 timestamp인
-# MPS 행이 CPU 행을 대체한다 → 별도 디렉터리(gitignore 대상 results_*)에 쓴다.
+# 별도 실험이다. 집계(load_all_results)는 MPS 행을 `<model>@mps`라는 별도 모델로
+# 표시하므로 같은 results_dir에 섞여도 CPU 행을 대체하지 않는다. 그래도 공개 여부를
+# 정하기 전까지는 별도 디렉터리(gitignore 대상 results_*)에 쓴다.
 # MPS 수치는 CPU/CUDA와 비트 단위로 같지 않다.
 extends: mamba_compare.yaml
 results_dir: benchmarks/results_mps

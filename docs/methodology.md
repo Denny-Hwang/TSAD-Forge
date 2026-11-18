@@ -30,10 +30,14 @@ including the policies that could bias results if left implicit.
   per-series period estimated from the autocorrelation (the TSB-AD convention;
   own implementation, numerical parity with TSB-AD's helper is not tested).
   The width actually used is recorded as `diag_vus_window`.
-- **Execution device** (`device: auto | cpu | cuda | cuda:N`): resolved before
+- **Execution device** (`device: auto | cpu | cuda | cuda:N | mps`): resolved before
   hashing and part of the experiment identity for torch models — CPU and GPU
   runs of the same config are different experiments (GPU kernels and
-  mixed precision are not bit-identical to CPU). Each run
+  mixed precision are not bit-identical to CPU). `mps` (Apple Silicon) is used
+  only when requested explicitly; `auto` never picks it. In aggregation, MPS runs
+  are reported as a separate model, `<model>@mps`, so they never replace a
+  CPU/CUDA row of the same model, entity and seed. CPU and CUDA runs share the
+  model name, so a newer CUDA run still supersedes an older CPU run. Each run
   JSON also records an environment fingerprint (Python/library versions, CUDA,
   GPU name — no host identity) and `git_dirty`.
 

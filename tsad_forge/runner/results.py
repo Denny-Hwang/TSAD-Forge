@@ -9,7 +9,8 @@
 - resume: 동일 (model, dataset, channel, seed, config_hash) 결과가 있으면 건너뜀
 - 집계(load_all_results)는 동일 (model, dataset, channel, seed)에 config_hash가
   다른 결과가 공존하면 최신 timestamp만 취한다 — 기본 config 변경 후 재실행 시
-  구결과가 리더보드에 이중 집계되는 것을 방지 (리뷰 P0-3)
+  구결과가 리더보드에 이중 집계되는 것을 방지 (리뷰 P0-3). 단, MPS 실행은
+  `<model>@mps`라는 별도 모델로 집계된다 (DEVICE_SUFFIX).
 """
 
 from __future__ import annotations
@@ -39,6 +40,19 @@ RESULT_COLUMNS = [
     "config_hash",
     "timestamp",
 ]
+
+#: 집계 시 별도 행으로 표기하는 실행 장치 → 모델 이름 접미사.
+#: 리더보드 중복 제거 키는 장치를 직접 포함하지 않고 모델 이름(접미사 포함)으로
+#: 장치를 구분한다. cpu와 cuda는 의도적으로 같은 이름을 쓴다 — 같은 모델·엔티티·
+#: 시드를 GPU 예산으로 다시 돌리면(예: lite_dl → lite_dl_gpu) 최신 결과가 대체하는
+#: 기존 규칙(CLAUDE.md §5)을 유지한다. MPS는 수치가 CPU/CUDA와 다르고 공개
+#: 결과와 섞일 때 CPU 행을 조용히 대체하면 안 되므로 `<model>@mps`로 분리한다.
+DEVICE_SUFFIX: dict[str, str] = {"mps": "@mps"}
+
+#: load_all_results가 RESULT_COLUMNS 뒤에 덧붙이는 집계용 열.
+#: device = 실행 JSON의 config.device (없으면 레거시 cpu),
+#: run_model = 파일명(run_id)에 쓰인 원래 모델 이름 (장치 접미사 없음).
+LOADED_COLUMNS = [*RESULT_COLUMNS, "device", "run_model"]
 
 
 def config_hash(config: dict) -> str:
@@ -85,6 +99,22 @@ def utc_now() -> str:
 
 def run_id(model: str, dataset: str, channel: str, seed: int, cfg_hash: str) -> str:
     return f"{model}__{dataset}__{channel}__seed{seed}__{cfg_hash}"
+
+
+def frame_run_ids(df: pd.DataFrame) -> pd.Series:
+    """load_all_results 행 → 실제 결과/점수 파일의 run_id (장치 접미사 없는 원래 이름 기준)."""
+    model = df["run_model"] if "run_model" in df.columns else df["model"]
+    return (
+        model.astype(str)
+        + "__"
+        + df["dataset"].astype(str)
+        + "__"
+        + df["channel"].astype(str)
+        + "__seed"
+        + df["seed"].astype(str)
+        + "__"
+        + df["config_hash"].astype(str)
+    )
 
 
 def write_result(
@@ -176,6 +206,27 @@ def result_exists(
     return (Path(results_dir) / f"{rid}.parquet").exists()
 
 
+def _run_device(parquet: Path) -> str:
+    """실행 JSON의 config.device. JSON이나 키가 없으면 레거시 결과 = cpu."""
+    js = parquet.with_suffix(".json")
+    if not js.exists():
+        return "cpu"
+    config = json.loads(js.read_text()).get("config") or {}
+    return str(config.get("device") or "cpu")
+
+
+def _label_devices(df: pd.DataFrame) -> pd.DataFrame:
+    """DEVICE_SUFFIX 장치의 행에 모델 이름 접미사를 붙인다 (이미 붙어 있으면 그대로)."""
+    df["device"] = df["device"].fillna("cpu").astype(str)
+    if "run_model" not in df.columns:
+        df["run_model"] = df["model"]
+    df["run_model"] = df["run_model"].fillna(df["model"])
+    for device, suffix in DEVICE_SUFFIX.items():
+        mask = (df["device"] == device) & ~df["model"].astype(str).str.endswith(suffix)
+        df.loc[mask, "model"] = df.loc[mask, "model"].astype(str) + suffix
+    return df
+
+
 def load_all_results(results_dir: str | Path, dedup: bool = True) -> pd.DataFrame:
     """results 디렉터리의 모든 parquet을 합쳐 반환 (없으면 빈 DataFrame).
 
@@ -184,12 +235,23 @@ def load_all_results(results_dir: str | Path, dedup: bool = True) -> pd.DataFram
     timestamp만 남긴다. 구결과가 남아 리더보드에 이중 집계되는 것을 막는다 (리뷰
     P0-3). data_hash는 (data, data_params)의 해시 — channel로 구분되지 않는 정당한
     데이터 변형(예: synthetic n_dims)을 실수로 합치지 않기 위한 정체성 축이다.
+
+    장치: 각 parquet 옆 JSON의 config.device를 `device` 열로 붙이고, DEVICE_SUFFIX에
+    있는 장치(mps)의 행은 모델 이름에 접미사를 붙인다 (`mamba_tsad_fixed@mps`).
+    그래서 MPS 행은 같은 키의 CPU/CUDA 행을 대체하지 않고 별도 행이 된다.
+    원래 이름은 `run_model`에 남는다 (run_id·점수 파일 역참조용).
     """
     results_dir = Path(results_dir)
     files = sorted(results_dir.glob("*.parquet")) if results_dir.exists() else []
     if not files:
-        return pd.DataFrame(columns=RESULT_COLUMNS)
-    df = pd.concat([pd.read_parquet(f) for f in files], ignore_index=True)
+        return pd.DataFrame(columns=LOADED_COLUMNS)
+    frames = []
+    for f in files:
+        frame = pd.read_parquet(f)
+        if "device" not in frame.columns:  # 스냅샷 parquet에는 이미 있다
+            frame["device"] = _run_device(f)
+        frames.append(frame)
+    df = _label_devices(pd.concat(frames, ignore_index=True))
     if dedup:
         key = ["model", "dataset", "channel", "seed", "data_hash", "metric"]
         deduped = df.sort_values("timestamp", kind="stable").drop_duplicates(key, keep="last")
