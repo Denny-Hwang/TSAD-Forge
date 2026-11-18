@@ -1,0 +1,75 @@
+{
+  "run_id": "usad__nab__realAWSCloudwatch_ec2_cpu_utilization_24ae8d.csv__seed0__95e6690b20be",
+  "model": "usad",
+  "generation": "gen3",
+  "dataset": "nab",
+  "channel": "realAWSCloudwatch_ec2_cpu_utilization_24ae8d.csv",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.6022120067211859,
+    "auc_pr": 0.24463588034193473,
+    "vus_roc": 0.6772631481900315,
+    "vus_pr": 0.2708715705036253,
+    "best_f1": 0.30550621669627,
+    "standard_f1": 0.14645308924485126,
+    "event_f1": 0.646464646464646,
+    "range_f1": 0.1978352375225496,
+    "affiliation_f1": 0.6441937443234396,
+    "mean_detection_delay": 150.5,
+    "threshold": 9.690525846481323,
+    "n_predicted_anomalies": 35.0,
+    "diag_test_input_absmax": 26.14417660407832,
+    "diag_vus_window": 100.0,
+    "diag_epochs_run": 5.0,
+    "diag_train_loss_last": 0.41871390251172985,
+    "diag_n_train_windows": 573.0
+  },
+  "runtime_s": 0.5817,
+  "runtime_fit_s": 0.5795,
+  "runtime_score_s": 0.0022,
+  "peak_mem_mb": 89.78,
+  "commit_hash": "a2fbe3fbda10",
+  "git_dirty": true,
+  "config_hash": "95e6690b20be",
+  "config": {
+    "model": "usad",
+    "model_alias": null,
+    "model_params": {
+      "epochs": 5,
+      "window": 32
+    },
+    "data": "nab",
+    "data_params": {
+      "rel_path": "realAWSCloudwatch/ec2_cpu_utilization_24ae8d.csv"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-18T07:49:33+00:00"
+}

@@ -286,6 +286,22 @@ def _coverage_line(summary: pd.DataFrame, metric: str) -> str:
     return head + tail
 
 
+_DL_BUDGET_NOTE = [
+    '!!! warning "Gen3–4 rows are under-trained DL"',
+    "    Deep-learning rows come from `configs/lite_dl.yaml`, a CPU smoke budget"
+    " (3–5 epochs, window 32, no early stopping or tuning). Read them as"
+    " **under-trained DL**: they understate what these models can do, and a Gen1–2"
+    " model ranking above them here is not a generation verdict. The equal-budget"
+    " profile is `configs/lite_dl_gpu.yaml` (see [methodology](../methodology.md)).",
+    "",
+]
+
+
+def _has_dl_rows(summary: pd.DataFrame) -> bool:
+    gens = {str(g) for g, _ in summary.index}
+    return bool(gens & {"gen3", "gen4", "gen5"})
+
+
 def leaderboard_markdown(results_dir: str | Path, metric: str = PRIMARY_METRIC) -> str:
     pivot, summary = build_leaderboard(results_dir, metric)
     # keep pivot rows in summary (rank) order
@@ -314,6 +330,7 @@ def leaderboard_markdown(results_dir: str | Path, metric: str = PRIMARY_METRIC) 
         " with a wide CI is weak evidence. Do not quote ranks from this page without"
         " those qualifiers.",
         "",
+        *(_DL_BUDGET_NOTE if _has_dl_rows(summary) else []),
         "Primary metric: **VUS-PR** (Paparrizos et al., VLDB 2022). Values are seed"
         " averages; cell shading follows the metric value, row tint and badge follow"
         " the generation. PA-F1 is intentionally not shown (CLAUDE.md §4).",
@@ -334,6 +351,7 @@ def leaderboard_markdown(results_dir: str | Path, metric: str = PRIMARY_METRIC) 
         _pivot_html(pivot),
         "",
         "Reproduce with `python benchmarks/run_all.py --profile configs/lite.yaml`"
+        " (Gen0–2) and `--profile configs/lite_dl.yaml` (Gen3–4)"
         " — each row's config hash resolves to its full configuration in the results JSON.",
     ]
     return "\n".join(lines)

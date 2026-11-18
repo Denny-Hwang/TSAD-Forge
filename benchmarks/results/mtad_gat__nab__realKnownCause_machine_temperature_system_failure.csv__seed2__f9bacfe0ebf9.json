@@ -1,0 +1,75 @@
+{
+  "run_id": "mtad_gat__nab__realKnownCause_machine_temperature_system_failure.csv__seed2__f9bacfe0ebf9",
+  "model": "mtad_gat",
+  "generation": "gen4",
+  "dataset": "nab",
+  "channel": "realKnownCause_machine_temperature_system_failure.csv",
+  "seed": 2,
+  "metrics": {
+    "auc_roc": 0.8295303835920349,
+    "auc_pr": 0.45663706075579363,
+    "vus_roc": 0.8449618900031662,
+    "vus_pr": 0.4356399437524695,
+    "best_f1": 0.42559652928416486,
+    "standard_f1": 0.17634635691657866,
+    "event_f1": 0.7531003382187141,
+    "range_f1": 0.2575071334791078,
+    "affiliation_f1": 0.7669957532251989,
+    "mean_detection_delay": 363.0,
+    "threshold": 1.284177768230435,
+    "n_predicted_anomalies": 193.0,
+    "diag_test_input_absmax": 6.177753584385521,
+    "diag_vus_window": 100.0,
+    "diag_epochs_run": 3.0,
+    "diag_train_loss_last": 0.0924919938567552,
+    "diag_n_train_windows": 3373.0
+  },
+  "runtime_s": 3.5567,
+  "runtime_fit_s": 2.6549,
+  "runtime_score_s": 0.9018,
+  "peak_mem_mb": 40.85,
+  "commit_hash": "a2fbe3fbda10",
+  "git_dirty": true,
+  "config_hash": "f9bacfe0ebf9",
+  "config": {
+    "model": "mtad_gat",
+    "model_alias": null,
+    "model_params": {
+      "epochs": 3,
+      "window": 32
+    },
+    "data": "nab",
+    "data_params": {
+      "rel_path": "realKnownCause/machine_temperature_system_failure.csv"
+    },
+    "seed": 2,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-18T07:59:18+00:00"
+}
