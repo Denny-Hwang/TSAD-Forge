@@ -1,0 +1,11 @@
+# lite_dl_gpu.yaml(Gen3-5, 실제 학습 예산)을 Apple MPS에서 실행 — 맥미니 상대 비교 캠페인
+# (benchmarks/CAMPAIGN_MPS.md). device: mps는 명시해야 한다 ("auto"는 MPS를 고르지 않는다).
+# 모델·학습 예산·엔티티는 부모와 같고 장치만 다르다. amp: bf16은 MPS 런타임 점검을
+# 통과할 때만 적용된다. 집계에서 이 결과는 `<model>@mps`로 표시되어 CPU 행을 대체하지
+# 않는다. MPS 수치는 CUDA/논문 수치와 비교할 수 없다 — 같은 장치 안의 상대 비교용.
+# MambaTSAD 행은 mamba_paper_repro_mps.yaml과 같은 config_hash라 그 결과를 재사용한다.
+# 결과는 공개 여부를 정하기 전까지 gitignore 대상 디렉터리에 쓴다.
+extends: lite_dl_gpu.yaml
+results_dir: benchmarks/results_mps
+defaults:
+  device: mps
