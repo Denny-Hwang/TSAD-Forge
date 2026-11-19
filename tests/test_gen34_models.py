@@ -60,3 +60,26 @@ def test_reconstruction_models_learn_sine():
         anom = scores[200:250].mean()
         normal = np.concatenate([scores[50:150], scores[300:390]]).mean()
         assert anom > normal, f"{name}: anomaly {anom:.4f} <= normal {normal:.4f}"
+
+
+def test_timesnet_period_fft_accepts_bf16():
+    """bf16 autocast(amp: bf16)에서 TimesBlock 입력은 bf16이다 — torch.fft는 bf16을 받지
+    않으므로 FFT는 fp32로 계산해야 한다 (MPS 캠페인 p0 스모크에서 발견, CUDA도 동일)."""
+    import torch
+
+    from tsad_forge.models.gen4_graph_transformer.timesnet import _TimesBlock
+
+    block = _TimesBlock(8).to(torch.bfloat16)
+    out = block(torch.randn(4, 32, 8, dtype=torch.bfloat16))
+    assert out.dtype == torch.bfloat16 and torch.isfinite(out.float()).all()
+
+
+@pytest.mark.parametrize("name", GEN3 + GEN4)
+def test_mps_bf16_amp_smoke(name):
+    """MPS + amp: bf16(lite_dl_gpu_mps 설정)에서 모든 Gen3-4 모델이 학습·채점된다."""
+    import torch
+
+    if not torch.backends.mps.is_available():
+        pytest.skip("Apple MPS 없음")
+    scores = get_model(name, seed=0, device="mps", amp="bf16", **SMALL).fit(TRAIN).score(TEST)
+    assert scores.shape == (len(TEST),) and np.isfinite(scores).all()
