@@ -25,6 +25,10 @@ pip install -e ".[dev]"
 tsad-forge run --model dummy --data synthetic
 ```
 
+On macOS (Apple Silicon) use uv instead of `environment.yml` (CUDA-only):
+`uv venv --python 3.11 .venv && source .venv/bin/activate && uv pip install -e ".[dev,dl]"`.
+See the [docs home](docs/index.md) for MPS notes.
+
 This runs a dummy detector on synthetic data end-to-end (generate → fit → score → threshold →
 metrics → results parquet/JSON under `benchmarks/results/`).
 

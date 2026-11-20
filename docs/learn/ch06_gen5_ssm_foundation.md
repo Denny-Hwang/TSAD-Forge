@@ -1,6 +1,6 @@
 # ch06 — Gen5 SSM/Mamba and Foundation Models (2023–)
 
-> Companion notebook: `notebooks/ch06_gen5.ipynb` — MambaTSAD faithful vs fixed
+> Companion notebook: `notebooks/ch06_gen5.ipynb` — MambaTSAD faithful vs fixed (v2)
 
 ## State-space models and selective gating
 
@@ -16,45 +16,41 @@ irregularly sampled data (the industrial reality of ch09) breaks this assumption
 
 ## MambaTSAD and the faithful/fixed experiment
 
-The public implementation of MambaTSAD (Chen et al., IEEE SPL 2024) has four known
-issues. This repository ships both variants side by side to **quantify how much
-implementation quality moves benchmark numbers**
-(`mamba_tsad_faithful` vs `mamba_tsad_fixed`):
+> **Correction (v2).** An earlier version of this page described four "known issues"
+> and a faithful-vs-fixed result table (mean VUS-PR 0.251 → 0.502). That v1
+> implementation was written **without reading the official code**, and most of its
+> "issues" turn out not to exist upstream: for example, the official model feeds the HP
+> *cycle*, not the trend, and there is no CPU branch that drops selectivity. Those
+> results are retracted, moved to `benchmarks/results/_superseded/mamba_tsad_v1/`, and
+> must not be cited. The lesson stands, aimed at us: **check the source before claiming
+> a reproduction.**
 
-| Issue | Description |
-|---|---|
-| hidden-state indexing | the output reads \(h_{t-1}\) — an off-by-one |
-| CPU/GPU branch | the CPU path loses selectivity → a different model per device |
-| HP-filter objective | feeds the trend instead of the cycle component |
-| global-FFT AMA | one FFT over the whole series → a fixed window that ignores local period changes |
+The v2 implementation was rebuilt after reading the official repository
+(aaaceo890/mamba_tsad @ `08fec05`). It is a behavioral reimplementation (the repository
+has no license, so no code was copied):
 
-Reproduce: `python benchmarks/run_all.py --profile configs/mamba_compare.yaml`
-The two variants appear as separate models on the leaderboard. **The lesson: a
-substantial part of reported performance can hinge on implementation details —
-which is exactly why reproduction studies matter.**
+- **Model.** HP pre-filter, then three RMSNorm→S6 blocks without residuals, with
+  FFT-period moving-average (AMA) decomposition after each block.
+- **Training.** Sequential, unshuffled batches that carry hidden state across batches.
+- **Scoring.** Non-overlapping test windows.
 
-### Paper-setting reproduction (SPL 2024 entities)
+Issues verified in the official code:
 
-`configs/mamba_paper_repro.yaml` runs both variants on the exact entities the
-paper's official code uses (SMD ×5, SMAP A-4/T-1, MSL C-2, SWaT). Differences
-from the paper: original-source data (not the repo's redistributed zip), and the
-VUS-PR protocol instead of PA-F1 — so absolute numbers are **not** comparable
-with the paper's table; the faithful-vs-fixed *relative* comparison is the point.
-Results on the SMD portion (3 seeds; NASA/SWaT data must be placed locally):
+| Issue | Official behavior | Flag (faithful → fixed) |
+|---|---|---|
+| (a) inference hidden-state indexing | the state carried to the next test window is `hs[:, b-1]`, which indexes time by the batch size. With test batch 1 it passes the state of the **first** step, not the last | `state_index: upstream → last` |
+| (b) CPU/GPU branch | the CPU branch of the training loop still calls `.cuda()`, so the official code cannot train on CPU (its results are GPU-only) | none (this implementation is device-invariant) |
+| (c) HP objective | solves `(I + 2λD₁ᵀD₁ + λD₂ᵀD₂)τ = y`, an extra first-difference term, instead of the HP definition `(I + λD₂ᵀD₂)τ = y` | `hp_objective: upstream → standard` |
+| (d) AMA period | the PSD is averaged over the **whole batch** and all channels, giving one period per batch. Training (batch 128) and inference (batch 1) therefore estimate it from different populations | `ama_period: batch → sample` |
 
-| SMD machine | faithful (VUS-PR ± seed std) | fixed | Δ |
-|---|---|---|---|
-| machine-1-1 | 0.340 ± 0.042 | **0.748** ± 0.015 | +0.408 |
-| machine-1-6 | 0.384 ± 0.015 | **0.663** ± 0.029 | +0.279 |
-| machine-2-1 | 0.324 ± 0.017 | **0.429** ± 0.003 | +0.105 |
-| machine-3-2 | 0.099 ± 0.013 | **0.192** ± 0.010 | +0.092 |
-| machine-3-7 | 0.109 ± 0.110 | **0.477** ± 0.015 | +0.368 |
-| **mean** | 0.251 | **0.502** | +0.251 |
+Reproduce:
 
-The fixed variant wins on **all five machines**, doubles the mean VUS-PR, and
-cuts the mean seed standard deviation from 0.039 to 0.014 (event-F1: 0.092 →
-0.337) at identical runtime — the four implementation issues account for half
-of the achievable score in the paper's own setting.
+- `configs/mamba_paper_repro.yaml`: paper entities and official hyperparameters.
+- `configs/mamba_ablation.yaml`: faithful, then each issue fixed alone, then all fixed, as separate leaderboard rows via `model_alias`.
+- `configs/mamba_compare.yaml`: small CPU smoke run.
+
+No v2 results are published yet — the official protocol needs a GPU, about one hour
+per epoch per SMD machine on CPU.
 
 ## Foundation models and zero-shot
 

@@ -1,0 +1,76 @@
+{
+  "run_id": "omni_anomaly__mgab__1__seed1__d8d360ac86b4",
+  "model": "omni_anomaly",
+  "generation": "gen3",
+  "dataset": "mgab",
+  "channel": "1",
+  "seed": 1,
+  "metrics": {
+    "auc_roc": 0.494785917461234,
+    "auc_pr": 0.05738459368522979,
+    "vus_roc": 0.5290786977718994,
+    "vus_pr": 0.06316294347352848,
+    "best_f1": 0.10861006272231122,
+    "standard_f1": 0.018259023354564755,
+    "event_f1": 0.11500742942050508,
+    "range_f1": 0.09332311196123817,
+    "affiliation_f1": 0.6718438738547183,
+    "mean_detection_delay": 114.3,
+    "threshold": 2.2348635625839224,
+    "n_predicted_anomalies": 700.0,
+    "diag_test_input_absmax": 2.175545230131049,
+    "diag_vus_window": 100.0,
+    "diag_epochs_run": 3.0,
+    "diag_train_loss_last": -0.7549213802337646,
+    "diag_n_train_windows": 10000.0
+  },
+  "runtime_s": 8.3171,
+  "runtime_fit_s": 5.5286,
+  "runtime_score_s": 2.7884,
+  "peak_mem_mb": 145.08,
+  "commit_hash": "a2fbe3fbda10",
+  "git_dirty": true,
+  "config_hash": "d8d360ac86b4",
+  "config": {
+    "model": "omni_anomaly",
+    "model_alias": null,
+    "model_params": {
+      "epochs": 3,
+      "window": 32,
+      "hidden": 32
+    },
+    "data": "mgab",
+    "data_params": {
+      "series": 1
+    },
+    "seed": 1,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-18T07:47:55+00:00"
+}

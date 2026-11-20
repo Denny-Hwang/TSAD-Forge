@@ -7,6 +7,13 @@
 - 현재 수치 테이블: **[lite 리더보드](lite.md)** (lite 프로파일, 자동 생성)
 - 아래 차트는 `tsad-forge viz`로 results parquet에서 자동 생성됩니다.
 
+!!! warning "Gen3–4 수치는 덜 학습된 DL(under-trained DL)입니다"
+    Gen3–4 행과 박스는 `configs/lite_dl.yaml`(CPU 스모크용 학습 예산: 3–5 epoch,
+    window 32, 조기 종료·튜닝 없음)의 결과이며, Gen0–2 `configs/lite.yaml`과 같은 21개
+    엔티티에서 실행했습니다. 이 모델들의 실제 성능을 과소평가하므로, 여기서 Gen1–2가
+    앞선다고 해서 세대에 대한 결론으로 읽으면 **안 됩니다**. 동일 예산 프로파일은
+    `configs/lite_dl_gpu.yaml`입니다 ([방법론](../methodology.md)).
+
 ## 세대별 성능 진화 — 세대가 오르면 성능이 오르는가?
 
 <iframe src="../../assets/charts/generation_evolution.html" width="100%" height="520" frameborder="0"></iframe>

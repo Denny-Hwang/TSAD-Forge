@@ -1,0 +1,27 @@
+# HPO 스터디 — Gen0-2 (lite 프로파일 대상). 실행: python benchmarks/hpo.py --study configs/hpo/lite.yaml
+# 모든 모델에 같은 예산(n_trials, trial 0 = 기본값). 튜닝 entity의 데이터가 로컬에 없으면
+# 그 entity의 trial이 no_data가 되고, entity를 전부 채우지 못한 trial은 선택에서 빠진다
+# — 먼저 tsad-forge download smd / smap / ucr / skab / mgab.
+name: lite
+eval_profile: configs/lite.yaml
+spaces: configs/hpo/spaces.yaml
+n_trials: 16
+seed: 0
+metric: vus_pr
+results_dir: benchmarks/hpo/lite
+output: configs/hpo/selected/lite.yaml
+models: [cusum, ewma, hotelling_t2, pca_t2spe, sub_pca, poly, online_ewma, online_cusum,
+         iforest, lof, knn, sub_knn, ocsvm, hbos, matrix_profile, spectral_residual]
+tuning_datasets:
+  # lite 평가 entity와 겹치지 않는 같은 데이터셋군의 다른 entity (load_study가 겹침 검사)
+  - { data: synthetic, data_params: { seed: 101 } }
+  - { data: synthetic, data_params: { seed: 102, n_dims: 5, n_events: 8 } }
+  - { data: smd, data_params: { machine: machine-1-2 } }
+  - { data: smd, data_params: { machine: machine-2-2 } }
+  - { data: smd, data_params: { machine: machine-3-1 } }
+  - { data: smap, data_params: { channel: E-2 } }
+  - { data: smap, data_params: { channel: A-1 } }
+  - { data: ucr, data_params: { series: 2 } }
+  - { data: ucr, data_params: { series: 3 } }
+  - { data: skab, data_params: { experiment: valve1/1 } }
+  - { data: mgab, data_params: { series: 3 } }

@@ -1,5 +1,9 @@
 # Research Roadmap & Proposals
 
+> The live, status-tracked pipeline of methods (candidate → license audit →
+> implemented → benchmarked) is the [research archive](archive.md), generated from
+> `archive/papers.yaml` and fed by a weekly arXiv scan. This page keeps the reasoning.
+
 What we researched, what we added, and what we recommend adding next — with the
 license verdict for each candidate. Everything here follows the repository's rules:
 permissive licenses only for vendored code/data, restricted data gets application

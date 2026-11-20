@@ -47,6 +47,7 @@ class MOMENTDetector(BaseDetector):
     """MOMENT zero-shot 재구성: 윈도우(길이 512 고정) 재구성 오차를 점수로 사용."""
 
     generation = "gen5"
+    uses_torch = True
 
     def __init__(self, seed: int = 0, model_name: str = "AutonLab/MOMENT-1-large", **params):
         super().__init__(seed=seed, model_name=model_name, **params)
@@ -103,6 +104,7 @@ class _ForecastResidualBase(BaseDetector):
     """
 
     generation = "gen5"
+    uses_torch = True
     default_context = 256
     default_horizon = 16
     quantile_levels: tuple[float, ...] = DEFAULT_QUANTILE_LEVELS

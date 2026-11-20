@@ -30,7 +30,8 @@ NAB_LITE_FILES = [
     "artificialWithAnomaly/art_daily_jumpsup.csv",
 ]
 
-SKAB_GROUPS = {"valve1": 16, "valve2": 4, "other": 15}  # 그룹별 파일 수 (0..n-1.csv)
+# 그룹별 파일 번호 (업스트림 waico/SKAB 실제 목록: other는 1..14, 0.csv 없음)
+SKAB_GROUPS = {"valve1": range(16), "valve2": range(4), "other": range(1, 15)}
 
 URLS = {
     "smd": "https://raw.githubusercontent.com/NetManAIOps/OmniAnomaly/master/ServerMachineDataset",
@@ -246,7 +247,7 @@ def download_skab(data_dir: Path, subset: list[str] | None = None) -> None:
     for group in groups:
         if group not in SKAB_GROUPS:
             raise ValueError(f"unknown SKAB group '{group}'. Available: {sorted(SKAB_GROUPS)}")
-        for i in range(SKAB_GROUPS[group]):
+        for i in SKAB_GROUPS[group]:
             _fetch(f"{URLS['skab']}/{group}/{i}.csv", root / group / f"{i}.csv")
     _write_manifest(root)
 

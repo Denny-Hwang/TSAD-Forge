@@ -1,0 +1,69 @@
+{
+  "run_id": "spectral_residual__smap__A-4__seed0__3955fc6ed10a",
+  "model": "spectral_residual",
+  "generation": "gen2",
+  "dataset": "smap",
+  "channel": "A-4",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.47602703720158857,
+    "auc_pr": 0.01284862827722531,
+    "vus_roc": 0.5702335209033648,
+    "vus_pr": 0.017250474357466402,
+    "best_f1": 0.028224742811922974,
+    "standard_f1": 0.010416666666666666,
+    "event_f1": 0.024390243902438994,
+    "range_f1": 0.02330293819655522,
+    "affiliation_f1": 0.6623058753383858,
+    "mean_detection_delay": 99.0,
+    "threshold": 10.02387882835865,
+    "n_predicted_anomalies": 81.0,
+    "diag_test_input_absmax": 51.8555686498574,
+    "diag_vus_window": 100.0
+  },
+  "runtime_s": 0.0206,
+  "runtime_fit_s": 0.0,
+  "runtime_score_s": 0.0206,
+  "peak_mem_mb": 2.98,
+  "commit_hash": "959a3af7f828",
+  "git_dirty": true,
+  "config_hash": "3955fc6ed10a",
+  "config": {
+    "model": "spectral_residual",
+    "model_alias": null,
+    "model_params": {},
+    "data": "smap",
+    "data_params": {
+      "channel": "A-4"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-18T05:14:51+00:00"
+}

@@ -1,0 +1,164 @@
+_provenance:
+  study: lite
+  eval_profile: configs/lite.yaml
+  metric: vus_pr
+  n_trials_budget: 16
+  search_seed: 0
+  tuning_entities:
+  - data: synthetic
+    data_params:
+      seed: 101
+  - data: synthetic
+    data_params:
+      seed: 102
+      n_dims: 5
+      n_events: 8
+  - data: smd
+    data_params:
+      machine: machine-1-2
+  - data: smd
+    data_params:
+      machine: machine-2-2
+  - data: smd
+    data_params:
+      machine: machine-3-1
+  - data: smap
+    data_params:
+      channel: E-2
+  - data: smap
+    data_params:
+      channel: A-1
+  - data: ucr
+    data_params:
+      series: 2
+  - data: ucr
+    data_params:
+      series: 3
+  - data: skab
+    data_params:
+      experiment: valve1/1
+  - data: mgab
+    data_params:
+      series: 3
+  note: selected on tuning entities disjoint from the evaluation profile
+cusum:
+  params: {}
+  trial: 0
+  tuning_vus_pr: 0.227131
+  default_vus_pr: 0.227131
+  n_trials_completed: 16
+ewma:
+  params:
+    lam: 0.06843808577128761
+  trial: 3
+  tuning_vus_pr: 0.409047
+  default_vus_pr: 0.36754
+  n_trials_completed: 16
+hotelling_t2:
+  params:
+    ridge: 0.004077880949334378
+  trial: 10
+  tuning_vus_pr: 0.319363
+  default_vus_pr: 0.303417
+  n_trials_completed: 16
+pca_t2spe:
+  params:
+    mode: combined
+    var_ratio: 0.99
+  trial: 4
+  tuning_vus_pr: 0.337465
+  default_vus_pr: 0.318299
+  n_trials_completed: 16
+sub_pca:
+  params:
+    var_ratio: 0.8
+    window: 20
+  trial: 3
+  tuning_vus_pr: 0.372678
+  default_vus_pr: 0.338751
+  n_trials_completed: 16
+poly:
+  params:
+    degree: 5
+    window: 20
+  trial: 15
+  tuning_vus_pr: 0.336111
+  default_vus_pr: 0.324422
+  n_trials_completed: 16
+online_ewma:
+  params:
+    alpha: 0.005056377287082075
+  trial: 12
+  tuning_vus_pr: 0.226683
+  default_vus_pr: 0.162553
+  n_trials_completed: 16
+online_cusum:
+  params:
+    k: 1.8342355968276711
+  trial: 6
+  tuning_vus_pr: 0.191655
+  default_vus_pr: 0.152073
+  n_trials_completed: 16
+iforest:
+  params:
+    n_estimators: 400
+    window: 10
+  trial: 11
+  tuning_vus_pr: 0.257083
+  default_vus_pr: 0.251135
+  n_trials_completed: 16
+lof:
+  params:
+    n_neighbors: 10
+    window: 10
+  trial: 10
+  tuning_vus_pr: 0.467165
+  default_vus_pr: 0.461539
+  n_trials_completed: 16
+knn:
+  params:
+    k: 1
+    window: 10
+  trial: 11
+  tuning_vus_pr: 0.396543
+  default_vus_pr: 0.309779
+  n_trials_completed: 16
+sub_knn:
+  params:
+    k: 1
+    window: 20
+  trial: 3
+  tuning_vus_pr: 0.401352
+  default_vus_pr: 0.37713
+  n_trials_completed: 16
+ocsvm:
+  params:
+    nu: 0.05241080612639499
+    window: 10
+  trial: 1
+  tuning_vus_pr: 0.345837
+  default_vus_pr: 0.34583
+  n_trials_completed: 16
+hbos:
+  params:
+    n_bins: 50
+    window: 50
+  trial: 7
+  tuning_vus_pr: 0.262696
+  default_vus_pr: 0.21639
+  n_trials_completed: 16
+matrix_profile:
+  params:
+    window: 200
+  trial: 1
+  tuning_vus_pr: 0.406801
+  default_vus_pr: 0.304174
+  n_trials_completed: 16
+spectral_residual:
+  params:
+    q: 3
+    z: 41
+  trial: 4
+  tuning_vus_pr: 0.128108
+  default_vus_pr: 0.118698
+  n_trials_completed: 16

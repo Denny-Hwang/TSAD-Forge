@@ -1,0 +1,72 @@
+{
+  "run_id": "iforest@tuned__msl__C-2__seed0__4d4b02b13b88",
+  "model": "iforest@tuned",
+  "generation": "gen2",
+  "dataset": "msl",
+  "channel": "C-2",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.5320058119579891,
+    "auc_pr": 0.06355647639051865,
+    "vus_roc": 0.6059882659172893,
+    "vus_pr": 0.09325694960846893,
+    "best_f1": 0.15221579961464354,
+    "standard_f1": 0.0,
+    "event_f1": 0.0,
+    "range_f1": 0.0,
+    "affiliation_f1": 0.45954482582194967,
+    "mean_detection_delay": 68.5,
+    "threshold": 0.4519058239829589,
+    "n_predicted_anomalies": 21.0,
+    "diag_test_input_absmax": 19.519221295943247,
+    "diag_vus_window": 100.0
+  },
+  "runtime_s": 0.3243,
+  "runtime_fit_s": 0.283,
+  "runtime_score_s": 0.0413,
+  "peak_mem_mb": 14.47,
+  "commit_hash": "959a3af7f828",
+  "git_dirty": true,
+  "config_hash": "4d4b02b13b88",
+  "config": {
+    "model": "iforest",
+    "model_alias": "iforest@tuned",
+    "model_params": {
+      "n_estimators": 400,
+      "window": 10
+    },
+    "data": "msl",
+    "data_params": {
+      "channel": "C-2"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-18T06:56:00+00:00"
+}

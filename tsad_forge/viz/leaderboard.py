@@ -15,7 +15,14 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
-from tsad_forge.runner.results import load_all_results
+from tsad_forge.models.cards import get_card
+from tsad_forge.runner.results import (
+    add_entity_column,
+    frame_run_ids,
+    load_all_results,
+    normalized_ranks,
+    shared_entities,
+)
 from tsad_forge.viz.charts import GEN_COLOR, GEN_LABEL
 
 PRIMARY_METRIC = "vus_pr"
@@ -49,6 +56,21 @@ def _badge(gen: str) -> str:
         f'<span style="display:inline-block;padding:1px 8px;border-radius:10px;'
         f'background:{color};color:#ffffff;font-size:0.72rem;font-weight:600;"'
         f' title="{GEN_LABEL.get(gen, gen)}">{label}</span>'
+    )
+
+
+_FIDELITY_STYLE = {
+    "simplified": "background:#fdecc8;color:#7a4b00;",
+    "upstream_verified": "background:#d7f0e3;color:#0d5c3a;",
+    "variant": "background:#ececea;color:#52514e;",
+}
+
+
+def _fidelity_badge(level: str) -> str:
+    style = _FIDELITY_STYLE.get(level, "background:#eef2f7;color:#26425f;")
+    return (
+        f'<a href="../../models/" style="text-decoration:none;"><span style="padding:1px 7px;'
+        f'border-radius:9px;font-size:0.72rem;{style}">{level}</span></a>'
     )
 
 
@@ -105,26 +127,30 @@ def build_leaderboard(
     df = load_all_results(results_dir)
     if df.empty:
         raise FileNotFoundError(f"no results under {results_dir}")
-    m = df[df["metric"] == metric].copy()
+    m = df[df["metric"] == metric]
     if m.empty:
         raise ValueError(f"metric '{metric}' not found in results")
-    m["entity"] = m["dataset"] + "/" + m["channel"]
-    m.loc[m["channel"] == "all", "entity"] = m.loc[m["channel"] == "all", "dataset"]
+    m = add_entity_column(m)
 
     pivot = m.pivot_table(
         index=["generation", "model"], columns="entity", values="value", aggfunc="mean"
     )
-    ranks = pivot.rank(ascending=False, axis=0)
     ci = pivot.apply(_bootstrap_ci, axis=1)
+    shared = shared_entities(pivot)
     summary = pd.DataFrame(
         {
             f"mean_{metric}": pivot.mean(axis=1),
             "ci_lo": ci.str[0],
             "ci_hi": ci.str[1],
-            "mean_rank": ranks.mean(axis=1),
+            # 원시 평균 순위는 entity별 참가 모델 수가 달라 척도가 섞인다 — 참고용
+            "mean_rank": pivot.rank(ascending=False, axis=0).mean(axis=1),
+            # 정렬 기준: entity별 [0,1] 정규화 순위의 평균 (0=최고)
+            "norm_rank": normalized_ranks(pivot).mean(axis=1),
+            # 전 모델 공통 entity에서의 평균 — 커버리지 편향 없는 유일한 직접 비교
+            f"shared_{metric}": pivot[shared].mean(axis=1) if shared else np.nan,
             "n_entities": pivot.notna().sum(axis=1),
         }
-    ).sort_values("mean_rank")
+    ).sort_values(["norm_rank", "mean_rank"])
     runtime = (
         df[df["metric"] == metric]
         .groupby(["generation", "model"])["runtime_s"]
@@ -139,23 +165,16 @@ def build_leaderboard(
     )
     summary = summary.join(cfg)
     # 대표 run_id — config 셀이 실제 재현 설정(run JSON)으로 링크되게 (CLAUDE.md §9)
+    # run_model 기준 → `<model>@mps` 행도 실제 파일명으로 링크된다
     first = df.sort_values(["dataset", "channel", "seed"]).groupby(["generation", "model"]).first()
-    example = (
-        first["dataset"]
-        + "__"
-        + first["channel"]
-        + "__seed"
-        + first["seed"].astype(str)
-        + "__"
-        + first["config_hash"]
-    )
-    example_runs: list[str] = [
-        f"{idx[1]}__{rest}"  # type: ignore[index]  # MultiIndex(gen, model)
-        for idx, rest in example.items()
+    example = frame_run_ids(first).rename("example_run")
+    summary = summary.join(example).round(4)
+    summary["fidelity"] = [
+        (get_card(str(model)) or {}).get("fidelity", "variant") for _, model in summary.index
     ]
-    example = pd.Series(example_runs, index=example.index, name="example_run")
-    summary = summary.join(example)
-    return pivot.round(4), summary.round(4)
+    # attrs는 join/round를 거치며 보존이 보장되지 않으므로 마지막에 다시 붙인다
+    summary.attrs["n_shared_entities"] = len(shared)
+    return pivot.round(4), summary
 
 
 def _summary_html(summary: pd.DataFrame, metric: str) -> str:
@@ -164,8 +183,10 @@ def _summary_html(summary: pd.DataFrame, metric: str) -> str:
         for h in [
             "generation",
             "model",
+            "fidelity",
             f"mean {metric} [95% CI]",
-            "mean rank",
+            f"shared-entity {metric}",
+            "norm. rank",
             "entities",
             "runtime (s)",
             "config",
@@ -186,9 +207,13 @@ def _summary_html(summary: pd.DataFrame, metric: str) -> str:
             f'<tr style="background:{tint}">'
             f'<td style="{_TD}white-space:nowrap;">{_badge(gen)}</td>'
             f'<td style="{_TD}font-weight:600;">{model}</td>'
+            f'<td style="{_TD}">{_fidelity_badge(str(r["fidelity"]))}</td>'
             f'<td style="{_TD}{_shade(r[f"mean_{metric}"])}text-align:right;white-space:nowrap;">'
             f"{r[f'mean_{metric}']:.3f}{ci}</td>"
-            f'<td style="{_TD}text-align:right;">{r["mean_rank"]:.2f}</td>'
+            f'<td style="{_TD}text-align:right;">'
+            + ("–" if pd.isna(r[f"shared_{metric}"]) else f'{r[f"shared_{metric}"]:.3f}')
+            + "</td>"
+            f'<td style="{_TD}text-align:right;">{r["norm_rank"]:.2f}</td>'
             f'<td style="{_TD}text-align:right;">{int(r["n_entities"])}</td>'
             f'<td style="{_TD}text-align:right;">{r["mean_runtime_s"]:.2f}</td>'
             f'<td style="{_TD}"><a href="{_RESULTS_BLOB_URL}/{r["example_run"]}.json" '
@@ -230,6 +255,42 @@ def _pivot_html(pivot: pd.DataFrame) -> str:
     )
 
 
+def _coverage_line(summary: pd.DataFrame, metric: str) -> str:
+    n_shared = summary.attrs.get("n_shared_entities", 0)
+    cov = summary["n_entities"]
+    if cov.min() == cov.max():
+        return f"Every model was run on the same {int(cov.max())} entities."
+    head = (
+        f"**Coverage differs across models** ({int(cov.min())}–{int(cov.max())} entities)."
+        f" `mean {metric}` averages over *each model's own* entities and is not a fair"
+        " cross-model comparison; `shared-entity` averages only over the"
+        f" **{n_shared}** entities every model was run on"
+    )
+    tail = (
+        ", and `norm. rank` is the per-entity rank rescaled to [0, 1] (0 = best) so that"
+        " entities with different numbers of competitors are comparable."
+    )
+    if n_shared == 0:
+        head += " (none here — no model set is fully comparable on this page)"
+    return head + tail
+
+
+_DL_BUDGET_NOTE = [
+    '!!! warning "Gen3–4 rows are under-trained DL"',
+    "    Deep-learning rows come from `configs/lite_dl.yaml`, a CPU smoke budget"
+    " (3–5 epochs, window 32, no early stopping or tuning). Read them as"
+    " **under-trained DL**: they understate what these models can do, and a Gen1–2"
+    " model ranking above them here is not a generation verdict. The equal-budget"
+    " profile is `configs/lite_dl_gpu.yaml` (see [methodology](../methodology.md)).",
+    "",
+]
+
+
+def _has_dl_rows(summary: pd.DataFrame) -> bool:
+    gens = {str(g) for g, _ in summary.index}
+    return bool(gens & {"gen3", "gen4", "gen5"})
+
+
 def leaderboard_markdown(results_dir: str | Path, metric: str = PRIMARY_METRIC) -> str:
     pivot, summary = build_leaderboard(results_dir, metric)
     # keep pivot rows in summary (rank) order
@@ -258,13 +319,19 @@ def leaderboard_markdown(results_dir: str | Path, metric: str = PRIMARY_METRIC) 
         " with a wide CI is weak evidence. Do not quote ranks from this page without"
         " those qualifiers.",
         "",
+        *(_DL_BUDGET_NOTE if _has_dl_rows(summary) else []),
         "Primary metric: **VUS-PR** (Paparrizos et al., VLDB 2022). Values are seed"
         " averages; cell shading follows the metric value, row tint and badge follow"
         " the generation. PA-F1 is intentionally not shown (CLAUDE.md §4).",
         "",
         friedman_line,
         "",
-        "## Model summary (sorted by mean rank)",
+        _coverage_line(summary, metric),
+        "",
+        "`fidelity` (see the [model catalog](../models.md)): **simplified** rows measure"
+        " this repository's simplified reimplementation, not the original method.",
+        "",
+        "## Model summary (sorted by normalized rank)",
         "",
         _summary_html(summary, metric),
         "",
@@ -273,6 +340,7 @@ def leaderboard_markdown(results_dir: str | Path, metric: str = PRIMARY_METRIC) 
         _pivot_html(pivot),
         "",
         "Reproduce with `python benchmarks/run_all.py --profile configs/lite.yaml`"
+        " (Gen0–2) and `--profile configs/lite_dl.yaml` (Gen3–4)"
         " — each row's config hash resolves to its full configuration in the results JSON.",
     ]
     return "\n".join(lines)

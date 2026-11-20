@@ -1,0 +1,75 @@
+{
+  "run_id": "tranad__mgab__2__seed0__5824060c143d",
+  "model": "tranad",
+  "generation": "gen4",
+  "dataset": "mgab",
+  "channel": "2",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.5147383549007464,
+    "auc_pr": 0.05959665764284679,
+    "vus_roc": 0.5391843630381539,
+    "vus_pr": 0.06327208136045523,
+    "best_f1": 0.10935786256416256,
+    "standard_f1": 0.02038216560509554,
+    "event_f1": 0.12743362831858396,
+    "range_f1": 0.1025999161883229,
+    "affiliation_f1": 0.6535585206440704,
+    "mean_detection_delay": 146.9,
+    "threshold": 0.0015184276876971123,
+    "n_predicted_anomalies": 700.0,
+    "diag_test_input_absmax": 2.176470944852125,
+    "diag_vus_window": 100.0,
+    "diag_epochs_run": 5.0,
+    "diag_train_loss_last": 0.0008869457482360303,
+    "diag_n_train_windows": 10000.0
+  },
+  "runtime_s": 32.916,
+  "runtime_fit_s": 27.3187,
+  "runtime_score_s": 5.5973,
+  "peak_mem_mb": 232.14,
+  "commit_hash": "a2fbe3fbda10",
+  "git_dirty": true,
+  "config_hash": "5824060c143d",
+  "config": {
+    "model": "tranad",
+    "model_alias": null,
+    "model_params": {
+      "epochs": 5,
+      "window": 32
+    },
+    "data": "mgab",
+    "data_params": {
+      "series": 2
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-18T08:08:44+00:00"
+}

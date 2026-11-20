@@ -24,7 +24,7 @@ def test_peak_rss_sampler_short_block_is_nonnegative():
     assert mem.peak_mb >= 0.0
 
 
-def _write(results_dir, cfg_hash, ts_offset=0, value=0.5, data_hash="samedata0000"):
+def _write(results_dir, cfg_hash, ts_offset=0, value=0.5, data_hash="samedata0000", device=None):
     """동일 (model, dataset, channel, seed) 결과를 다른 config_hash로 기록."""
     import time as _t
     from unittest import mock
@@ -47,7 +47,7 @@ def _write(results_dir, cfg_hash, ts_offset=0, value=0.5, data_hash="samedata000
             peak_mem_mb=10.0,
             data_hash=data_hash,
             cfg_hash=cfg_hash,
-            config={},
+            config={} if device is None else {"device": device},
         )
     _t.sleep(0)  # noop — mock 컨텍스트 종료 명시
 
@@ -77,6 +77,54 @@ def test_dedup_keeps_distinct_data_variants(tmp_path):
         warnings.simplefilter("error")  # 경고 없이
         df = load_all_results(tmp_path)
     assert len(df) == 2
+
+
+def test_mps_rows_are_labeled_and_do_not_supersede_cpu(tmp_path):
+    """MPS 결과는 `<model>@mps`로 분리되어, 더 최신이어도 CPU 행을 대체하지 않는다."""
+    from tsad_forge.runner.results import frame_run_ids
+
+    _write(tmp_path, "cpuhash00000", ts_offset=0, value=0.1, device="cpu")
+    _write(tmp_path, "mpshash00000", ts_offset=1, value=0.9, device="mps")
+
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")  # superseded 경고 없이
+        df = load_all_results(tmp_path)
+    by_model = df.set_index("model")
+    assert set(df["model"]) == {"m", "m@mps"}
+    assert by_model.at["m", "value"] == 0.1 and by_model.at["m@mps", "value"] == 0.9
+    assert by_model.at["m@mps", "device"] == "mps" and by_model.at["m", "device"] == "cpu"
+    assert set(df["run_model"]) == {"m"}  # 파일명의 원래 이름은 그대로
+    # run_id 역참조는 접미사 없는 실제 파일명이어야 한다
+    for rid in frame_run_ids(df):
+        assert (tmp_path / f"{rid}.parquet").exists()
+
+
+def test_cuda_still_supersedes_cpu(tmp_path):
+    """cpu/cuda는 접미사가 없다 — 같은 키의 최신 결과가 대체하는 기존 규칙 유지."""
+    _write(tmp_path, "cpuhash00000", ts_offset=0, value=0.1, device="cpu")
+    _write(tmp_path, "cudahash0000", ts_offset=1, value=0.9, device="cuda")
+    with pytest.warns(UserWarning, match="superseded"):
+        df = load_all_results(tmp_path)
+    assert list(df["model"]) == ["m"] and df["value"].iloc[0] == 0.9
+
+
+def test_results_without_json_or_device_are_legacy_cpu(tmp_path):
+    _write(tmp_path, "legacyhash00", device=None)  # config에 device 키 없음
+    _write(tmp_path, "nojsonhash00", data_hash="otherdata000", device="mps")
+    (tmp_path / "m__d__all__seed0__nojsonhash00.json").unlink()  # JSON 없는 parquet
+    df = load_all_results(tmp_path)
+    assert set(df["device"]) == {"cpu"} and set(df["model"]) == {"m"}
+
+
+def test_device_label_is_idempotent_on_reload(tmp_path):
+    """스냅샷처럼 이미 device/접미사가 붙은 parquet을 다시 읽어도 두 번 붙지 않는다."""
+    _write(tmp_path, "mpshash00000", device="mps")
+    first = load_all_results(tmp_path)
+    out = tmp_path / "again"
+    out.mkdir()
+    first.to_parquet(out / "snapshot.parquet", index=False)
+    again = load_all_results(out)
+    assert list(again["model"]) == ["m@mps"] and list(again["run_model"]) == ["m"]
 
 
 def test_write_manifest_verifies_pinned_checksums(tmp_path, monkeypatch):

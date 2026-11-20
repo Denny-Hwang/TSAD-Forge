@@ -34,7 +34,32 @@ JSON (`benchmarks/results/*.json`). At the same commit:
 python benchmarks/run_all.py --profile configs/lite.yaml      # Gen0-2
 python benchmarks/run_all.py --profile configs/lite_dl.yaml   # Gen3-4
 python benchmarks/run_all.py --profile configs/mamba_compare.yaml  # Gen5 comparison
+python benchmarks/run_all.py --profile configs/lite_dl_gpu.yaml  # Gen3-5, real training budget (GPU)
 tsad-forge viz                                                 # regenerate charts + leaderboard
+```
+
+On a workstation or server, the full matrix runs every locally downloaded entity.
+Non-torch models run in parallel worker processes (`--jobs`), torch models share
+the GPU sequentially, every run is isolated with a timeout, and failures
+(`timeout`, `oom`, `score_health`, `crashed`, `error`) are written to
+`<results_dir>/failures/` instead of stopping the matrix. Re-running the same
+command resumes.
+
+```bash
+python benchmarks/run_all.py --profile configs/full.yaml --dry-run   # plan + status
+python benchmarks/run_all.py --profile configs/full.yaml --jobs 6 --timeout 7200
+python benchmarks/run_all.py --profile configs/full.yaml --datasets smd --models iforest,lof
+```
+
+Large results (`benchmarks/results_*`, HPO trials) are not committed. A finished run is
+published as an immutable, checksummed **snapshot** attached to a GitHub Release, and
+anyone can fetch it and regenerate the charts from it:
+
+```bash
+tsad-forge results pack --results-dir benchmarks/results_full --name full-v0.3.0 --with-scores
+gh release upload v0.3.0 dist/snapshots/full-v0.3.0/*
+tsad-forge results fetch --base-url https://github.com/Denny-Hwang/TSAD-Forge/releases/download/v0.3.0 --dest benchmarks/results_full
+tsad-forge viz --results-dir benchmarks/results_full
 ```
 
 ## Bibliography (complete)

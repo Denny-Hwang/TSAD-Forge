@@ -6,6 +6,9 @@
 
 # 벤치마크 결과: parquet+JSON은 커밋 (재현 추적), 원본 스코어 npz는 제외 (용량)
 benchmarks/results/scores/
+# 대용량 결과는 git이 아니라 릴리스 스냅샷으로 배포한다 (tsad-forge results pack)
+benchmarks/results_*/
+benchmarks/hpo/
 
 # Python
 __pycache__/

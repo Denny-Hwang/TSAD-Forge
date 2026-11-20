@@ -1,0 +1,72 @@
+{
+  "run_id": "spectral_residual@tuned__nab__realKnownCause_machine_temperature_system_failure.csv__seed0__fc32c80e7c1a",
+  "model": "spectral_residual@tuned",
+  "generation": "gen2",
+  "dataset": "nab",
+  "channel": "realKnownCause_machine_temperature_system_failure.csv",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.494491485629127,
+    "auc_pr": 0.09098997961823137,
+    "vus_roc": 0.5197869634723906,
+    "vus_pr": 0.09582968098850182,
+    "best_f1": 0.16206173780487804,
+    "standard_f1": 0.03167898627243928,
+    "event_f1": 0.2690582959641253,
+    "range_f1": 0.16887985101561528,
+    "affiliation_f1": 0.7039139757175118,
+    "mean_detection_delay": 66.66666666666667,
+    "threshold": 1.8959546181655709,
+    "n_predicted_anomalies": 193.0,
+    "diag_test_input_absmax": 6.177753584385521,
+    "diag_vus_window": 100.0
+  },
+  "runtime_s": 0.0058,
+  "runtime_fit_s": 0.0,
+  "runtime_score_s": 0.0058,
+  "peak_mem_mb": 3.11,
+  "commit_hash": "959a3af7f828",
+  "git_dirty": true,
+  "config_hash": "fc32c80e7c1a",
+  "config": {
+    "model": "spectral_residual",
+    "model_alias": "spectral_residual@tuned",
+    "model_params": {
+      "q": 3,
+      "z": 41
+    },
+    "data": "nab",
+    "data_params": {
+      "rel_path": "realKnownCause/machine_temperature_system_failure.csv"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-18T06:54:56+00:00"
+}

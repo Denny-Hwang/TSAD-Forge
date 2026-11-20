@@ -26,8 +26,10 @@ class _TimesBlock(nn.Module):
 
     def forward(self, x):  # [B, w, d]
         B, w, d = x.shape
-        # FFT로 지배 주기 추정 (배치 평균 진폭)
-        amp = torch.fft.rfft(x, dim=1).abs().mean(dim=(0, 2))
+        # FFT로 지배 주기 추정 (배치 평균 진폭). FFT는 fp32로 계산한다 — bf16 autocast
+        # (amp: bf16) 아래에서는 x가 bf16인데 torch.fft는 bf16을 받지 않는다 (CPU·MPS·CUDA
+        # 모두). 주기 선택(argmax)에만 쓰이므로 fp32 입력(기존 결과)에서는 동작이 같다.
+        amp = torch.fft.rfft(x.float(), dim=1).abs().mean(dim=(0, 2))
         amp[0] = 0
         k = int(amp.argmax().clamp(min=1))
         period = max(w // max(k, 1), 2)

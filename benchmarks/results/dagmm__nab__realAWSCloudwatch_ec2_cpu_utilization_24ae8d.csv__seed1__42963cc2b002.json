@@ -1,0 +1,75 @@
+{
+  "run_id": "dagmm__nab__realAWSCloudwatch_ec2_cpu_utilization_24ae8d.csv__seed1__42963cc2b002",
+  "model": "dagmm",
+  "generation": "gen3",
+  "dataset": "nab",
+  "channel": "realAWSCloudwatch_ec2_cpu_utilization_24ae8d.csv",
+  "seed": 1,
+  "metrics": {
+    "auc_roc": 0.6286331067728114,
+    "auc_pr": 0.15099883824774632,
+    "vus_roc": 0.6732990189090335,
+    "vus_pr": 0.17358414662986618,
+    "best_f1": 0.26379647749510765,
+    "standard_f1": 0.018306636155606407,
+    "event_f1": 0.18604651162790667,
+    "range_f1": 0.10926049300466356,
+    "affiliation_f1": 0.5455639883645316,
+    "mean_detection_delay": 153.0,
+    "threshold": 5.387289900779725,
+    "n_predicted_anomalies": 35.0,
+    "diag_test_input_absmax": 26.14417660407832,
+    "diag_vus_window": 100.0,
+    "diag_epochs_run": 5.0,
+    "diag_train_loss_last": 2.305672764570093,
+    "diag_n_train_windows": 573.0
+  },
+  "runtime_s": 0.6209,
+  "runtime_fit_s": 0.6146,
+  "runtime_score_s": 0.0063,
+  "peak_mem_mb": 91.03,
+  "commit_hash": "a2fbe3fbda10",
+  "git_dirty": true,
+  "config_hash": "42963cc2b002",
+  "config": {
+    "model": "dagmm",
+    "model_alias": null,
+    "model_params": {
+      "epochs": 5,
+      "window": 32
+    },
+    "data": "nab",
+    "data_params": {
+      "rel_path": "realAWSCloudwatch/ec2_cpu_utilization_24ae8d.csv"
+    },
+    "seed": 1,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-18T07:45:52+00:00"
+}

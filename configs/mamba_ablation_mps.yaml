@@ -1,0 +1,8 @@
+# mamba_ablation.yaml(수정 a/c/d 단독 적용 변형)을 Apple MPS에서 실행 — 맥미니 상대 비교
+# 캠페인 (benchmarks/CAMPAIGN_MPS.md). faithful/fixed 행은 mamba_paper_repro_mps.yaml과 같은
+# config_hash라 그 결과를 재사용한다. (b) CPU/GPU 분기 수정은 이 구현에서 연산을 바꾸지
+# 않으므로 별도 변형이 없다. MPS 수치는 CUDA/논문 수치와 비교할 수 없다.
+extends: mamba_ablation.yaml
+results_dir: benchmarks/results_mps
+defaults:
+  device: mps

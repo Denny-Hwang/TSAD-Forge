@@ -1,0 +1,72 @@
+{
+  "run_id": "lof@tuned__nab__realKnownCause_machine_temperature_system_failure.csv__seed0__e3c56d442f08",
+  "model": "lof@tuned",
+  "generation": "gen2",
+  "dataset": "nab",
+  "channel": "realKnownCause_machine_temperature_system_failure.csv",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.7372276415672284,
+    "auc_pr": 0.4857130406088587,
+    "vus_roc": 0.7599196272747284,
+    "vus_pr": 0.4714653516257483,
+    "best_f1": 0.47058823529411764,
+    "standard_f1": 0.20380147835269272,
+    "event_f1": 0.7999999999999995,
+    "range_f1": 0.2917684865932447,
+    "affiliation_f1": 0.7846528520482527,
+    "mean_detection_delay": 358.6666666666667,
+    "threshold": 25.500108708727446,
+    "n_predicted_anomalies": 193.0,
+    "diag_test_input_absmax": 6.177753584385521,
+    "diag_vus_window": 100.0
+  },
+  "runtime_s": 0.1228,
+  "runtime_fit_s": 0.025,
+  "runtime_score_s": 0.0978,
+  "peak_mem_mb": 10.32,
+  "commit_hash": "959a3af7f828",
+  "git_dirty": true,
+  "config_hash": "e3c56d442f08",
+  "config": {
+    "model": "lof",
+    "model_alias": "lof@tuned",
+    "model_params": {
+      "n_neighbors": 10,
+      "window": 10
+    },
+    "data": "nab",
+    "data_params": {
+      "rel_path": "realKnownCause/machine_temperature_system_failure.csv"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-18T06:55:25+00:00"
+}
