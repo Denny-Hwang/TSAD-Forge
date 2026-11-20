@@ -56,3 +56,18 @@ def test_bootstrap_ci_needs_three_values(camp):
     assert all(np.isnan(camp._boot_ci(np.array([0.1, 0.2]))))
     lo, hi = camp._boot_ci(np.array([0.1, 0.2, 0.3, 0.4]))
     assert 0.1 <= lo <= 0.25 <= hi <= 0.4
+
+
+def test_job_data_hash_separates_synthetic_variants(camp):
+    """회귀: 보고서가 (model, dataset, channel, seed)로 data_hash를 찾아 synthetic 두 변형이
+    한 엔티티로 합쳐졌고, 그래서 @mps 모델이 21개 중 20개 엔티티만 가진 것으로 보였다."""
+    from tsad_forge.runner.results import config_hash
+
+    plain = SimpleNamespace(overrides={"data": "synthetic"})  # data_params 키 자체가 없음
+    multi = _job("synthetic", n_dims=5, n_events=8)
+    # 러너(experiment.py)가 parquet에 쓰는 규칙과 같아야 CPU 행과 엔티티가 맞는다
+    assert camp._job_data_hash(plain) == config_hash({"data": "synthetic", "data_params": {}})
+    assert camp._job_data_hash(multi) == config_hash(
+        {"data": "synthetic", "data_params": {"n_dims": 5, "n_events": 8}}
+    )
+    assert camp._job_data_hash(plain) != camp._job_data_hash(multi)

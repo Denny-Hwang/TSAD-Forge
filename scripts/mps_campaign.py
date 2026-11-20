@@ -348,8 +348,18 @@ def write_status() -> None:
 # --- 비교 보고서 --------------------------------------------------------------
 
 
+def _job_data_hash(job) -> str:
+    """CPU parquet의 data_hash와 같은 규칙. (model, dataset, channel, seed)만으로는 synthetic의
+    두 변형(기본 / n_dims=5)이 겹치므로 실행마다 직접 계산해 붙인다."""
+    from tsad_forge.runner.results import config_hash
+
+    o = job.overrides
+    return config_hash({"data": o["data"], "data_params": o.get("data_params") or {}})
+
+
 def _load_runs(jobs: list) -> pd.DataFrame:
-    """완료된 실행의 JSON 요약 → (model, generation, dataset, channel, seed, vus_pr, runtime_s)."""
+    """완료된 실행의 JSON 요약 → (model, generation, dataset, channel, seed, vus_pr, runtime_s,
+    data_hash)."""
     rows = []
     for j in jobs:
         js = RESULTS_DIR / f"{j.run_id}.json"
@@ -365,9 +375,10 @@ def _load_runs(jobs: list) -> pd.DataFrame:
                 "seed": d["seed"],
                 "value": d["metrics"].get("vus_pr"),
                 "runtime_s": d.get("runtime_s"),
+                "data_hash": _job_data_hash(j),
             }
         )
-    cols = ["model", "generation", "dataset", "channel", "seed", "value", "runtime_s"]
+    cols = ["model", "generation", "dataset", "channel", "seed", "value", "runtime_s", "data_hash"]
     return pd.DataFrame(rows, columns=cols)
 
 
@@ -496,17 +507,6 @@ def report_lite_dl_gpu() -> str:
         cpu = load_all_results(CPU_RESULTS)
     cpu = cpu[cpu["metric"] == "vus_pr"]
     mps = mps.assign(model=mps["model"] + "@mps")
-    # data_hash는 parquet에만 있다 — synthetic 변형 구분을 위해 CPU 쪽과 같은 규칙으로 맞춘다
-    from tsad_forge.runner.results import config_hash
-
-    def _dh(job) -> str:
-        o = job.overrides
-        return config_hash({"data": o["data"], "data_params": o.get("data_params", {})})
-
-    dh = {(j.tag[0] + "@mps", j.tag[1], j.tag[2], j.tag[3]): _dh(j) for j in jobs}
-    mps["data_hash"] = [
-        dh.get((r.model, r.dataset, r.channel, r.seed), "") for r in mps.itertuples()
-    ]
     cols = ["model", "generation", "dataset", "channel", "seed", "data_hash", "value"]
     both = add_entity_column(pd.concat([cpu[cols], mps[cols]], ignore_index=True))
     pivot = both.pivot_table(index=["generation", "model"], columns="entity", values="value")
