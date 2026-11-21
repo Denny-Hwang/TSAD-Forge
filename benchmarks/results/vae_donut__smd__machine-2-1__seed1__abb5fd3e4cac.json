@@ -1,0 +1,75 @@
+{
+  "run_id": "vae_donut__smd__machine-2-1__seed1__abb5fd3e4cac",
+  "model": "vae_donut",
+  "generation": "gen3",
+  "dataset": "smd",
+  "channel": "machine-2-1",
+  "seed": 1,
+  "metrics": {
+    "auc_roc": 0.9072774415741918,
+    "auc_pr": 0.31024022468378254,
+    "vus_roc": 0.9331860827394666,
+    "vus_pr": 0.4458155634677448,
+    "best_f1": 0.38565629228687415,
+    "standard_f1": 0.14498933901918976,
+    "event_f1": 0.30044182621502163,
+    "range_f1": 0.17208326036428026,
+    "affiliation_f1": 0.5822634288775219,
+    "mean_detection_delay": 59.23076923076923,
+    "threshold": 9.658756389617896,
+    "n_predicted_anomalies": 237.0,
+    "diag_test_input_absmax": 733.4346056045242,
+    "diag_vus_window": 100.0,
+    "diag_epochs_run": 5.0,
+    "diag_train_loss_last": -984.098534375,
+    "diag_n_train_windows": 10000.0
+  },
+  "runtime_s": 3.6082,
+  "runtime_fit_s": 2.4742,
+  "runtime_score_s": 1.134,
+  "peak_mem_mb": 498.22,
+  "commit_hash": "a2fbe3fbda10",
+  "git_dirty": true,
+  "config_hash": "abb5fd3e4cac",
+  "config": {
+    "model": "vae_donut",
+    "model_alias": null,
+    "model_params": {
+      "epochs": 5,
+      "window": 32
+    },
+    "data": "smd",
+    "data_params": {
+      "machine": "machine-2-1"
+    },
+    "seed": 1,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-18T07:43:48+00:00"
+}

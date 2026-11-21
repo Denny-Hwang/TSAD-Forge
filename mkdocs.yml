@@ -22,6 +22,8 @@ nav:
       - ch10 Reading benchmarks: learn/ch10_reading_benchmarks.md
   - Roadmap: roadmap.md
   - Methodology: methodology.md
+  - Model catalog: models.md
+  - Research archive: archive.md
   - Forecasting benchmarks: benchmarks/forecasting-benchmarks.md
   - Leaderboard:
       - Charts: leaderboard/index.md
@@ -57,6 +59,8 @@ plugins:
           nav_translations:
             Home: 홈
             Learn: 학습 트랙
+            Model catalog: 모델 카탈로그
+            Research archive: 연구 아카이브
             Overview: 개요
             ch01 Problem definition: ch01 문제 정의
             ch02 Gen1 Statistical: ch02 Gen1 통계

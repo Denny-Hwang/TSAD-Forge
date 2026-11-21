@@ -9,6 +9,23 @@ pip install -e ".[dev]"
 tsad-forge run --model dummy --data synthetic
 ```
 
+!!! note "macOS (Apple Silicon) with uv"
+    `environment.yml` pins a CUDA build of PyTorch and is for Linux/NVIDIA machines only.
+    On Apple Silicon use [uv](https://docs.astral.sh/uv/) and the default PyPI wheels:
+
+    ```bash
+    uv venv --python 3.11 .venv && source .venv/bin/activate
+    uv pip install -e ".[dev,dl]"
+    python -c "import torch; print(torch.backends.mps.is_available())"  # True on M-series
+    python -m pytest -q
+    ```
+
+    Torch models run on CPU by default (`device: auto` picks CUDA only). Pass
+    `device: mps` in a config to use the Apple GPU — results get their own `config_hash`
+    and are **not** numerically identical to CPU/CUDA runs. AMP is ignored on MPS.
+    The heavy GPU profiles (`lite_dl_gpu`, `mamba_ablation`, `full`) target an 8 GB CUDA
+    GPU; on a Mac use `lite` (Gen0-2) and `mamba_compare` (small).
+
 - **[Learn](learn/index.md)** — theory track ch01–ch10 with companion notebooks
 - **[Leaderboard](leaderboard/index.md)** — VUS-PR primary metric, 8 interactive charts
 - **[Datasets](datasets/index.md)** — dataset cards: sources, licenses, known flaws

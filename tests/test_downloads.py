@@ -91,3 +91,24 @@ def test_restricted_datasets_refuse_download(tmp_path):
     for name in ("yahoo_s5", "swat", "wadi"):
         with pytest.raises(SystemExit, match="재배포 금지"):
             download_dataset(name, data_dir=tmp_path)
+
+
+def test_skab_requests_upstream_file_numbers(tmp_path, monkeypatch):
+    """업스트림 waico/SKAB의 other 그룹은 1..14.csv다 (0.csv 없음 → 404로 전체 실패)."""
+    from tsad_forge.data import download as dl
+
+    requested: list[str] = []
+
+    def fake_fetch(url, dest, expected_sha256=None):
+        requested.append(url.rsplit("/data/", 1)[1])
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text("x")
+        return dest
+
+    monkeypatch.setattr(dl, "_fetch", fake_fetch)
+    monkeypatch.setattr(dl, "load_pinned_checksums", lambda name: None)
+    dl.download_skab(tmp_path)
+    other = sorted(int(u.split("/")[1][:-4]) for u in requested if u.startswith("other/"))
+    assert other == list(range(1, 15))
+    assert sum(u.startswith("valve1/") for u in requested) == 16
+    assert sum(u.startswith("valve2/") for u in requested) == 4

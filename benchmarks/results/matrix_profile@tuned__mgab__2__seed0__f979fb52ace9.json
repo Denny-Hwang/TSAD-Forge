@@ -1,0 +1,71 @@
+{
+  "run_id": "matrix_profile@tuned__mgab__2__seed0__f979fb52ace9",
+  "model": "matrix_profile@tuned",
+  "generation": "gen2",
+  "dataset": "mgab",
+  "channel": "2",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.9698753041626877,
+    "auc_pr": 0.9017736430434147,
+    "vus_roc": 0.979315104375783,
+    "vus_pr": 0.8875913220362824,
+    "best_f1": 0.87000634115409,
+    "standard_f1": 0.35385878489326766,
+    "event_f1": 0.4615384615384611,
+    "range_f1": 0.3765839439698798,
+    "affiliation_f1": 0.4601897701649098,
+    "mean_detection_delay": 297.2,
+    "threshold": 3.9443809759299215,
+    "n_predicted_anomalies": 862.0,
+    "diag_test_input_absmax": 2.176470944852125,
+    "diag_vus_window": 100.0
+  },
+  "runtime_s": 20.0203,
+  "runtime_fit_s": 0.0,
+  "runtime_score_s": 20.0203,
+  "peak_mem_mb": 386.5,
+  "commit_hash": "959a3af7f828",
+  "git_dirty": true,
+  "config_hash": "f979fb52ace9",
+  "config": {
+    "model": "matrix_profile",
+    "model_alias": "matrix_profile@tuned",
+    "model_params": {
+      "window": 200
+    },
+    "data": "mgab",
+    "data_params": {
+      "series": 2
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-18T06:58:23+00:00"
+}

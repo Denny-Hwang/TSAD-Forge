@@ -63,7 +63,7 @@ Repository = "https://github.com/Denny-Hwang/TSAD-Forge"
 include = ["tsad_forge*"]
 
 [tool.setuptools.package-data]
-tsad_forge = ["data/checksums/*.json"]
+tsad_forge = ["data/checksums/*.json", "models/cards.yaml"]
 
 [tool.ruff]
 line-length = 100

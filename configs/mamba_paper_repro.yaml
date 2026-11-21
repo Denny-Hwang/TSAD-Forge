@@ -9,6 +9,8 @@
 # faithful vs fixed 비교가 성립한다. 원 논문과의 차이: 우리는 원 출처 원본 데이터를
 # 쓰고(원 저장소의 재배포 zip 미사용), 평가는 PA-F1이 아닌 VUS-PR 프로토콜이다 —
 # 따라서 논문 표의 절대 수치와는 비교 불가하고, faithful/fixed 상대 비교가 목적이다.
+# 원 코드는 SPOT 임계값 + affiliation-F1로 보고한다 — 우리 결과의 affiliation_f1은
+# quantile 임계값 기반이므로 역시 직접 비교 불가.
 results_dir: benchmarks/results
 seeds: [0, 1, 2]
 defaults:
@@ -17,8 +19,10 @@ defaults:
   sliding_window: 100
 
 models:
-  - { model: mamba_tsad_faithful, stochastic: true, model_params: { epochs: 3, window: 32 } }
-  - { model: mamba_tsad_fixed, stochastic: true, model_params: { epochs: 3, window: 32 } }
+  # 기본값 = 공식 코드 설정 (window 100, d_model 32, 3 블록, 7 epoch, batch 128,
+  # AdamW 1e-3/wd 1e-5, 5 epoch마다 lr×0.9). GPU 권장 — CPU는 SMD 1머신당 수 시간.
+  - { model: mamba_tsad_faithful, stochastic: true }
+  - { model: mamba_tsad_fixed, stochastic: true }
 
 datasets:
   - { data: smd, data_params: { machine: machine-1-1 } }

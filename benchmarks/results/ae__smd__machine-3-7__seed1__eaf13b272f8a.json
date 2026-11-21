@@ -1,0 +1,75 @@
+{
+  "run_id": "ae__smd__machine-3-7__seed1__eaf13b272f8a",
+  "model": "ae",
+  "generation": "gen3",
+  "dataset": "smd",
+  "channel": "machine-3-7",
+  "seed": 1,
+  "metrics": {
+    "auc_roc": 0.7554673276600226,
+    "auc_pr": 0.24019769686849082,
+    "vus_roc": 0.7900779885597841,
+    "vus_pr": 0.17612854974268058,
+    "best_f1": 0.3070539419087137,
+    "standard_f1": 0.3074792243767313,
+    "event_f1": 0.4693446088794922,
+    "range_f1": 0.10969116981551029,
+    "affiliation_f1": 0.6901113425148759,
+    "mean_detection_delay": 37.2,
+    "threshold": 110.01460205078125,
+    "n_predicted_anomalies": 288.0,
+    "diag_test_input_absmax": 35552.16787663228,
+    "diag_vus_window": 100.0,
+    "diag_epochs_run": 5.0,
+    "diag_train_loss_last": 0.3509864500045776,
+    "diag_n_train_windows": 10000.0
+  },
+  "runtime_s": 2.6379,
+  "runtime_fit_s": 2.1278,
+  "runtime_score_s": 0.51,
+  "peak_mem_mb": 424.36,
+  "commit_hash": "a2fbe3fbda10",
+  "git_dirty": true,
+  "config_hash": "eaf13b272f8a",
+  "config": {
+    "model": "ae",
+    "model_alias": null,
+    "model_params": {
+      "epochs": 5,
+      "window": 32
+    },
+    "data": "smd",
+    "data_params": {
+      "machine": "machine-3-7"
+    },
+    "seed": 1,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-18T07:39:06+00:00"
+}

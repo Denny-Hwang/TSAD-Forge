@@ -50,7 +50,7 @@ def test_all_eight_charts_generated(results, tmp_path):
 def test_leaderboard_build_and_save(results, tmp_path):
     pivot, summary = build_leaderboard(results)
     assert "mean_vus_pr" in summary.columns
-    assert summary["mean_rank"].is_monotonic_increasing
+    assert summary["norm_rank"].is_monotonic_increasing
     # dummy(무정보)는 정보 있는 모델보다 순위가 나빠야 한다
     models_by_rank = [m for _, m in summary.index]
     assert models_by_rank.index("dummy") > models_by_rank.index("sub_pca")
@@ -82,3 +82,18 @@ def test_charts_numeric_sanity(results, tmp_path):
     v = df[df["metric"] == "vus_pr"]
     assert np.isfinite(v["value"]).all()
     assert (v["value"] >= 0).all() and (v["value"] <= 1).all()
+
+
+def test_case_viewer_only_overlays_the_plotted_series(tmp_path):
+    """case viewer는 기본 synthetic 계열을 그리므로, 같은 channel('all')인 다른 데이터
+    변형(n_dims)의 점수를 그 위에 겹치면 안 된다 (이전에는 파일명 정렬 순서로 골랐다)."""
+    rd = tmp_path / "res"
+    run_experiment({"model": "zscore", "data": "synthetic", "results_dir": str(rd)}, verbose=False)
+    run_experiment(  # gen2 모델은 다른 변형에만 있다 → 그려지면 안 된다
+        {"model": "lof", "data": "synthetic", "data_params": {"n_dims": 3}, "results_dir": str(rd)},
+        verbose=False,
+    )
+    paths = generate_all(rd, tmp_path / "charts", data_dir=tmp_path / "nodata")
+    html = next(p for p in paths if p.stem == "case_viewer").read_text()
+    assert ": zscore" in html
+    assert ": lof" not in html

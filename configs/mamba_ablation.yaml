@@ -1,0 +1,41 @@
+# MambaTSAD 이슈별 ablation — 공식 코드에서 확인한 이슈 (a)(c)(d)를 하나씩 수정해
+# 각각의 효과를 분리 측정한다 (tsad_forge/models/gen5_ssm_foundation/mamba_tsad.py 표).
+#   faithful            : 공식 동작 그대로
+#   fix_a / fix_c / fix_d: 해당 이슈 하나만 수정
+#   fixed               : 세 이슈 모두 수정
+# 이슈 (b)(CPU 분기)는 공식 코드가 CPU에서 학습 자체가 불가한 문제라 플래그가 없다.
+# 각 변형은 model_alias로 별도 모델 행이 된다 (같은 모델 이름이면 집계 시 "구버전"으로
+# 중복 제거되기 때문).
+# GPU 권장 (논문 설정).
+results_dir: benchmarks/results
+seeds: [0, 1, 2]
+defaults:
+  normalize: zscore
+  threshold: { method: quantile, q: 0.99 }
+  sliding_window: 100
+
+models:
+  - { model: mamba_tsad_faithful, stochastic: true }
+  - model: mamba_tsad_faithful
+    model_alias: mamba_tsad_fix_a
+    stochastic: true
+    model_params: { state_index: last }
+  - model: mamba_tsad_faithful
+    model_alias: mamba_tsad_fix_c
+    stochastic: true
+    model_params: { hp_objective: standard }
+  - model: mamba_tsad_faithful
+    model_alias: mamba_tsad_fix_d
+    stochastic: true
+    model_params: { ama_period: sample }
+  - { model: mamba_tsad_fixed, stochastic: true }
+
+datasets:
+  - { data: smd, data_params: { machine: machine-1-1 } }
+  - { data: smd, data_params: { machine: machine-2-1 } }
+  - { data: smd, data_params: { machine: machine-3-2 } }
+  - { data: smd, data_params: { machine: machine-3-7 } }
+  - { data: smd, data_params: { machine: machine-1-6 } }
+  - { data: smap, data_params: { channel: A-4 } }
+  - { data: smap, data_params: { channel: T-1 } }
+  - { data: msl, data_params: { channel: C-2 } }

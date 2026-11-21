@@ -1,0 +1,75 @@
+{
+  "run_id": "gdn__nab__realKnownCause_machine_temperature_system_failure.csv__seed0__6f9abaf9d5c5",
+  "model": "gdn",
+  "generation": "gen4",
+  "dataset": "nab",
+  "channel": "realKnownCause_machine_temperature_system_failure.csv",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.49855870154966864,
+    "auc_pr": 0.0893922509386263,
+    "vus_roc": 0.5236031214451525,
+    "vus_pr": 0.09358020528321372,
+    "best_f1": 0.16206173780487804,
+    "standard_f1": 0.022175290390707498,
+    "event_f1": 0.19626168224299045,
+    "range_f1": 0.11713767872726052,
+    "affiliation_f1": 0.6630793749393757,
+    "mean_detection_delay": 289.0,
+    "threshold": 3.112951421737665,
+    "n_predicted_anomalies": 193.0,
+    "diag_test_input_absmax": 6.177753584385521,
+    "diag_vus_window": 100.0,
+    "diag_epochs_run": 5.0,
+    "diag_train_loss_last": 0.02398778663618502,
+    "diag_n_train_windows": 3373.0
+  },
+  "runtime_s": 2.5392,
+  "runtime_fit_s": 2.4579,
+  "runtime_score_s": 0.0813,
+  "peak_mem_mb": 72.43,
+  "commit_hash": "a2fbe3fbda10",
+  "git_dirty": true,
+  "config_hash": "6f9abaf9d5c5",
+  "config": {
+    "model": "gdn",
+    "model_alias": null,
+    "model_params": {
+      "epochs": 5,
+      "window": 32
+    },
+    "data": "nab",
+    "data_params": {
+      "rel_path": "realKnownCause/machine_temperature_system_failure.csv"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-18T07:55:09+00:00"
+}

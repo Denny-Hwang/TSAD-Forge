@@ -1,0 +1,75 @@
+{
+  "run_id": "timesnet__mgab__1__seed0__278d1306ccc7",
+  "model": "timesnet",
+  "generation": "gen4",
+  "dataset": "mgab",
+  "channel": "1",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.4874311455789984,
+    "auc_pr": 0.05393990189787166,
+    "vus_roc": 0.5220609712256271,
+    "vus_pr": 0.05962853628515578,
+    "best_f1": 0.10841999511254717,
+    "standard_f1": 0.010615711252653927,
+    "event_f1": 0.06382978723404235,
+    "range_f1": 0.04512667938088125,
+    "affiliation_f1": 0.6350948383903465,
+    "mean_detection_delay": 319.3,
+    "threshold": 0.0006943790573859584,
+    "n_predicted_anomalies": 700.0,
+    "diag_test_input_absmax": 2.175545230131049,
+    "diag_vus_window": 100.0,
+    "diag_epochs_run": 5.0,
+    "diag_train_loss_last": 0.00036171979394275695,
+    "diag_n_train_windows": 10000.0
+  },
+  "runtime_s": 12.6452,
+  "runtime_fit_s": 8.802,
+  "runtime_score_s": 3.8431,
+  "peak_mem_mb": 60.1,
+  "commit_hash": "a2fbe3fbda10",
+  "git_dirty": true,
+  "config_hash": "278d1306ccc7",
+  "config": {
+    "model": "timesnet",
+    "model_alias": null,
+    "model_params": {
+      "epochs": 5,
+      "window": 32
+    },
+    "data": "mgab",
+    "data_params": {
+      "series": 1
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-18T08:12:02+00:00"
+}

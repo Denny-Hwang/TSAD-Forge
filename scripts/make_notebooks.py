@@ -182,9 +182,10 @@ print("\\nMind the gap to the simple baseline (sub_pca) — the leaderboard's co
     ],
     "ch06_gen5": [
         md(
-            "# ch06 — Gen5: MambaTSAD faithful vs fixed\n\nQuantify the effect of the four "
-            "implementation issues (state indexing, CPU branch, HP-filter objective, "
-            "global-FFT AMA)."
+            "# ch06 — Gen5: MambaTSAD faithful vs fixed (v2)\n\nIssues verified in the official "
+            "code (aaaceo890/mamba_tsad @ 08fec05): (a) inference state indexing, (c) HP "
+            "objective, (d) batch-global AMA period. Small CPU settings — illustrative only; "
+            "paper settings need a GPU (configs/mamba_paper_repro.yaml)."
         ),
         code(SETUP),
         code("""
@@ -197,20 +198,22 @@ train, test = zscore_normalize(ds.train, ds.test)
 for name in ["mamba_tsad_faithful", "mamba_tsad_fixed"]:
     vals = []
     for seed in range(3):
-        s = get_model(name, seed=seed, epochs=3, window=32).fit(train).score(test)
+        s = get_model(name, seed=seed, epochs=2, window=32, d_model=16).fit(train).score(test)
         vals.append(compute_metrics(s, ds.labels)["vus_pr"])
     print(f"{name:22s} VUS-PR = {np.mean(vals):.3f} +/- {np.std(vals):.3f} (3 seeds)")
 """),
         code("""
-# HP-filter decomposition — faithful feeds the trend, fixed feeds the cycle
+# Issue (c): the official HP objective adds a first-difference term 2λD1'D1.
+# Both variants feed the cycle (x - trend) to the model; only the trend differs.
 from tsad_forge.models.gen5_ssm_foundation.mamba_tsad import hp_filter
-trend, cycle = hp_filter(ds.test)
-fig, axes = plt.subplots(3, 1, figsize=(12, 6), sharex=True)
-for ax, (y, ttl) in zip(axes, [(ds.test[:, 0], "original"),
-                               (trend[:, 0], "trend (faithful input)"),
-                               (cycle[:, 0], "cycle (fixed input)")]):
-    ax.plot(y, lw=0.6)
-    ax.set_title(ttl)
+y = ds.test[:300, :1]
+trend_std, _ = hp_filter(y, lam=1e4, objective="standard")
+trend_up, _ = hp_filter(y, lam=1e4, objective="upstream")
+fig, ax = plt.subplots(figsize=(12, 3.5))
+ax.plot(y[:, 0], lw=0.6, color="0.6", label="original")
+ax.plot(trend_std[:, 0], lw=1.4, label="trend — standard HP (fixed)")
+ax.plot(trend_up[:, 0], lw=1.4, ls="--", label="trend — official objective (faithful)")
+ax.legend(loc="upper right")
 plt.tight_layout()
 """),
     ],

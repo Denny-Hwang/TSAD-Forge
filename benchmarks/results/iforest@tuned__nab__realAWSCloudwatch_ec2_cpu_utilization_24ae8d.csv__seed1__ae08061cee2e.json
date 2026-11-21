@@ -1,0 +1,72 @@
+{
+  "run_id": "iforest@tuned__nab__realAWSCloudwatch_ec2_cpu_utilization_24ae8d.csv__seed1__ae08061cee2e",
+  "model": "iforest@tuned",
+  "generation": "gen2",
+  "dataset": "nab",
+  "channel": "realAWSCloudwatch_ec2_cpu_utilization_24ae8d.csv",
+  "seed": 1,
+  "metrics": {
+    "auc_roc": 0.5063126206377234,
+    "auc_pr": 0.13797344207571527,
+    "vus_roc": 0.5784410264005178,
+    "vus_pr": 0.17137292570658597,
+    "best_f1": 0.21038824763903463,
+    "standard_f1": 0.036613272311212815,
+    "event_f1": 0.37209302325581356,
+    "range_f1": 0.26788432267884327,
+    "affiliation_f1": 0.7826814302967434,
+    "mean_detection_delay": 8.5,
+    "threshold": 0.5358204271394061,
+    "n_predicted_anomalies": 35.0,
+    "diag_test_input_absmax": 26.14417660407832,
+    "diag_vus_window": 100.0
+  },
+  "runtime_s": 0.274,
+  "runtime_fit_s": 0.229,
+  "runtime_score_s": 0.045,
+  "peak_mem_mb": 4.85,
+  "commit_hash": "959a3af7f828",
+  "git_dirty": true,
+  "config_hash": "ae08061cee2e",
+  "config": {
+    "model": "iforest",
+    "model_alias": "iforest@tuned",
+    "model_params": {
+      "n_estimators": 400,
+      "window": 10
+    },
+    "data": "nab",
+    "data_params": {
+      "rel_path": "realAWSCloudwatch/ec2_cpu_utilization_24ae8d.csv"
+    },
+    "seed": 1,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-18T06:56:06+00:00"
+}

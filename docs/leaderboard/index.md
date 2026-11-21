@@ -7,6 +7,13 @@ row can be resolved back to its full configuration in `benchmarks/results/*.json
 - Current numbers: **[lite leaderboard table](lite.md)** (auto-generated from the lite profile)
 - The charts below are auto-generated from the results parquet by `tsad-forge viz`.
 
+!!! warning "Gen3–4 numbers are under-trained DL"
+    The Gen3–4 rows and boxes come from `configs/lite_dl.yaml`, a CPU smoke budget
+    (3–5 epochs, window 32, no early stopping or tuning), run on the same 21 entities as
+    the Gen0–2 `configs/lite.yaml` profile. They understate what these models can do:
+    a Gen1–2 method beating them here is **not** a verdict on the generation. The
+    equal-budget profile is `configs/lite_dl_gpu.yaml` ([methodology](../methodology.md)).
+
 ## Performance by generation — does newer mean better?
 
 <iframe src="../assets/charts/generation_evolution.html" width="100%" height="520" frameborder="0"></iframe>

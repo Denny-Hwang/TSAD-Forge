@@ -17,6 +17,29 @@ including the policies that could bias results if left implicit.
   are always reported alongside.
 - **Raw scores are stored** (`benchmarks/results/scores/*.npz`) so every metric
   can be recomputed without re-running models.
+- **Normalization options** (`normalize_params`): `std_floor` lower-bounds the
+  train standard deviation and `clip` truncates z-scores. Channels that are
+  *nearly* constant in train (e.g. SMD machine-1-1 channel 33, std 1.5e-5) reach
+  |z| ≈ 7×10⁴ in test and make squared reconstruction errors explode to ~10⁸;
+  `std_floor: 0.01` is a safe floor for min-max-scaled data. The default (empty)
+  keeps the legacy behavior so existing results stay comparable. Every run
+  records `diag_test_input_absmax` so the problem is visible after the fact.
+- **Score health**: NaN/inf anomaly scores fail the run instead of being
+  coerced into a metric — a numerically collapsed model must not get a score.
+- **VUS buffer width** (`sliding_window`): legacy fixed `100`, or `"auto"` for a
+  per-series period estimated from the autocorrelation (the TSB-AD convention;
+  own implementation, numerical parity with TSB-AD's helper is not tested).
+  The width actually used is recorded as `diag_vus_window`.
+- **Execution device** (`device: auto | cpu | cuda | cuda:N | mps`): resolved before
+  hashing and part of the experiment identity for torch models — CPU and GPU
+  runs of the same config are different experiments (GPU kernels and
+  mixed precision are not bit-identical to CPU). `mps` (Apple Silicon) is used
+  only when requested explicitly; `auto` never picks it. In aggregation, MPS runs
+  are reported as a separate model, `<model>@mps`, so they never replace a
+  CPU/CUDA row of the same model, entity and seed. CPU and CUDA runs share the
+  model name, so a newer CUDA run still supersedes an older CPU run. Each run
+  JSON also records an environment fingerprint (Python/library versions, CUDA,
+  GPU name — no host identity) and `git_dirty`.
 
 ## Hyperparameter policy
 
@@ -26,7 +49,30 @@ budget is a hidden variable that has flipped rankings in prior TSAD
 comparisons (see TSB-AD's HP-sensitivity discussion). It also means every
 number here is a *default-configuration* result — a tuned deployment may do
 better, and models whose defaults were set on similar data have an inherent
-advantage. A validation-split HP-selection protocol is on the roadmap.
+advantage. The optional tuned track below addresses this without touching the
+default results.
+
+**Tuned track (optional).** `benchmarks/hpo.py` runs an equal-budget, seeded
+random search for every model (`configs/hpo/*.yaml`; default config is always
+trial 0). Selection uses only **tuning entities that are disjoint from the
+evaluation profile**: the study refuses to run if they overlap, following
+TSB-AD's tuning/evaluation split, so no hyperparameter is ever chosen with an
+evaluation entity's labels. Selected parameters are written with their
+provenance to `configs/hpo/selected/`. A profile that references them
+(`tuned_params:`, e.g. `configs/lite_tuned.yaml`) reports `<model>@tuned`
+**next to** the default row, which makes the tuning gain visible instead of
+silently replacing defaults. Search spaces (`configs/hpo/spaces.yaml`) are kept
+deliberately narrow, because the width of a space is itself hidden budget.
+
+**Training budget (DL).** `configs/lite_dl.yaml` is a CPU smoke profile
+(3–5 epochs, window 32) — its DL numbers understate what these models can do
+and must not be read as a generation verdict. `configs/lite_dl_gpu.yaml` gives
+every Gen3–5 model the same budget: up to 50 epochs with **early stopping on a
+temporal validation split** (the last 20% of *train* — test labels are never
+used), learning-rate reduction on plateau, and bf16 autocast on CUDA. It uses
+the same entity list as `configs/lite.yaml`, so DL and Gen1–2 results are
+comparable entity by entity. The number of epochs actually run is recorded per
+run (`diag_epochs_run`).
 
 ## Measurement
 
@@ -50,6 +96,15 @@ advantage. A validation-split HP-selection protocol is on the roadmap.
 - A **Friedman test** over the complete-coverage entity set gates the ranking
   claim: if it does not reject, adjacent ranks must be read as ties. The
   critical-difference diagram shows which pairs are separable.
+- **Coverage-aware comparison**: models are not all run on the same entities
+  (the DL profile covers far fewer). The leaderboard therefore sorts by
+  **normalized rank** — each entity's rank rescaled to [0, 1] so entities with
+  different numbers of competitors are comparable — and adds a
+  **shared-entity** mean over only the entities *every* model ran on. The
+  generation chart likewise draws only entities covered by every generation,
+  one point per (model, entity).
+- Data variants without a channel key (e.g. `synthetic` with different
+  `n_dims`) are separate entities, suffixed with their data hash.
 - Results are deduplicated by experiment identity
   (model, dataset, channel, seed, data-hash): when a default-config change
   causes a re-run, only the latest result counts — stale runs can never be

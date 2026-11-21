@@ -1,0 +1,72 @@
+{
+  "run_id": "iforest@tuned__nab__realKnownCause_machine_temperature_system_failure.csv__seed2__066061303c19",
+  "model": "iforest@tuned",
+  "generation": "gen2",
+  "dataset": "nab",
+  "channel": "realKnownCause_machine_temperature_system_failure.csv",
+  "seed": 2,
+  "metrics": {
+    "auc_roc": 0.8683073762917107,
+    "auc_pr": 0.5784321833505065,
+    "vus_roc": 0.8918895850544599,
+    "vus_pr": 0.5746204582699388,
+    "best_f1": 0.5258171482709616,
+    "standard_f1": 0.46422182468694095,
+    "event_f1": 0.7902550437761701,
+    "range_f1": 0.44893530448935304,
+    "affiliation_f1": 0.7882271193497189,
+    "mean_detection_delay": 295.0,
+    "threshold": 0.6808842809690627,
+    "n_predicted_anomalies": 535.0,
+    "diag_test_input_absmax": 6.177753584385521,
+    "diag_vus_window": 100.0
+  },
+  "runtime_s": 0.527,
+  "runtime_fit_s": 0.3403,
+  "runtime_score_s": 0.1867,
+  "peak_mem_mb": 10.58,
+  "commit_hash": "959a3af7f828",
+  "git_dirty": true,
+  "config_hash": "066061303c19",
+  "config": {
+    "model": "iforest",
+    "model_alias": "iforest@tuned",
+    "model_params": {
+      "n_estimators": 400,
+      "window": 10
+    },
+    "data": "nab",
+    "data_params": {
+      "rel_path": "realKnownCause/machine_temperature_system_failure.csv"
+    },
+    "seed": 2,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-18T06:56:08+00:00"
+}

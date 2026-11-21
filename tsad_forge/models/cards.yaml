@@ -1,0 +1,459 @@
+# Model cards — one entry per registered model (tests/test_model_cards.py enforces coverage).
+#
+# fidelity: how close this repository's implementation is to the cited method.
+#   library            delegates to a maintained library / official package (sklearn, stumpy,
+#                      statsmodels, pretrained-model packages)
+#   reference          classical algorithm implemented from its textbook definition
+#   upstream_verified  behavior checked line-by-line against the official code
+#   paper              follows the paper's method; omitted parts are protocol-level only
+#                      (e.g. thresholding handled by our thresholding module)
+#   simplified         paper-based reimplementation with documented simplifications that can
+#                      change accuracy — do NOT read its leaderboard row as the original
+#                      method's performance
+#   baseline           sanity / proposed baselines defined by this repository
+#
+# implementation: own | library | adapter (pip dependency, no code copied in any case)
+# deviations: what differs from the cited method (mirrors the module docstrings).
+
+ae:
+  title: Dense autoencoder (window reconstruction)
+  citation: Sakurada & Yairi, MLSDA workshop 2014
+  year: 2014
+  implementation: own
+  fidelity: reference
+  deviations: []
+
+anomaly_transformer:
+  title: Anomaly Transformer
+  citation: Xu et al., ICLR 2022
+  year: 2022
+  arxiv: "2110.02642"
+  upstream: https://github.com/thuml/Anomaly-Transformer
+  upstream_license: MIT
+  implementation: own
+  fidelity: simplified
+  deviations:
+    - single loss (reconstruction + association-discrepancy regularizer) instead of the minimax two-phase training
+    - one layer, small hidden size
+
+chronos:
+  title: Chronos-Bolt forecast-residual adapter
+  citation: Ansari et al., TMLR 2024
+  year: 2024
+  arxiv: "2403.07815"
+  upstream: https://github.com/amazon-science/chronos-forecasting
+  upstream_license: Apache-2.0
+  implementation: adapter
+  fidelity: library
+  deviations:
+    - anomaly score is the forecast residual — a TSAD use of a forecasting model, not a method from the paper
+
+cusum:
+  title: Two-sided CUSUM control chart
+  citation: Page, Biometrika 1954
+  year: 1954
+  implementation: own
+  fidelity: reference
+  deviations: []
+
+dagmm:
+  title: Deep Autoencoding Gaussian Mixture Model
+  citation: Zong et al., ICLR 2018
+  year: 2018
+  upstream_license: no official implementation
+  implementation: own
+  fidelity: simplified
+  deviations:
+    - flattened windows instead of point-wise inputs
+    - covariance regularization simplified to a diagonal clamp
+
+dcdetector:
+  title: DCdetector (dual-attention contrastive)
+  citation: Yang et al., KDD 2023
+  year: 2023
+  arxiv: "2306.10347"
+  upstream: https://github.com/DAMO-DI-ML/KDD2023-DCdetector
+  upstream_license: unclear
+  implementation: own
+  fidelity: simplified
+  deviations:
+    - single patch size instead of multiple
+    - channel-averaged representation instead of channel independence
+    - simplified stop-gradient
+
+dummy:
+  title: Uniform random score (uninformative floor)
+  citation: TSAD-Forge
+  year: 2025
+  implementation: own
+  fidelity: baseline
+  deviations: []
+
+ensemble_simple:
+  title: ForgeEnsemble — rank consensus of cheap diverse detectors
+  citation: TSAD-Forge (proposed baseline)
+  year: 2025
+  implementation: own
+  fidelity: baseline
+  deviations: []
+
+ewma:
+  title: EWMA control chart
+  citation: Roberts, Technometrics 1959
+  year: 1959
+  implementation: own
+  fidelity: reference
+  deviations: []
+
+gdn:
+  title: Graph Deviation Network
+  citation: Deng & Hooi, AAAI 2021
+  year: 2021
+  arxiv: "2106.06947"
+  upstream: https://github.com/d-ailin/GDN
+  upstream_license: MIT
+  implementation: own
+  fidelity: simplified
+  deviations:
+    - graph recomputed from embeddings at every forward pass
+    - univariate input falls back to a temporal MLP forecaster
+
+hbos:
+  title: Histogram-Based Outlier Score
+  citation: Goldstein & Dengel, KI 2012
+  year: 2012
+  implementation: own
+  fidelity: reference
+  deviations: []
+
+hotelling_t2:
+  title: Hotelling T²
+  citation: Hotelling, 1947
+  year: 1947
+  implementation: own
+  fidelity: reference
+  deviations:
+    - ridge-regularized train covariance
+
+iforest:
+  title: Isolation Forest
+  citation: Liu et al., ICDM 2008
+  year: 2008
+  upstream: https://github.com/scikit-learn/scikit-learn
+  upstream_license: BSD-3-Clause
+  implementation: library
+  fidelity: library
+  deviations: []
+
+knn:
+  title: k-NN distance
+  citation: Ramaswamy et al., SIGMOD 2000
+  year: 2000
+  upstream: https://github.com/scikit-learn/scikit-learn
+  upstream_license: BSD-3-Clause
+  implementation: library
+  fidelity: library
+  deviations: []
+
+lof:
+  title: Local Outlier Factor (novelty mode)
+  citation: Breunig et al., SIGMOD 2000
+  year: 2000
+  upstream: https://github.com/scikit-learn/scikit-learn
+  upstream_license: BSD-3-Clause
+  implementation: library
+  fidelity: library
+  deviations: []
+
+lstm_ad:
+  title: Stacked-LSTM multi-step forecaster
+  citation: Malhotra et al., ESANN 2015
+  year: 2015
+  upstream_license: no official implementation
+  implementation: own
+  fidelity: simplified
+  deviations:
+    - squared-error score instead of the multivariate Gaussian likelihood of errors (needs a validation set)
+
+lstm_p:
+  title: Telemanom-style LSTM predictor + EWMA error smoothing
+  citation: Hundman et al., KDD 2018
+  year: 2018
+  arxiv: "1802.04431"
+  upstream: https://github.com/khundman/telemanom
+  upstream_license: custom (NASA) — not used
+  implementation: own
+  fidelity: paper
+  deviations:
+    - nonparametric dynamic thresholding is delegated to the thresholding module
+
+mamba_tsad_faithful:
+  title: MambaTSAD — official behavior (issues a, c, d reproduced)
+  citation: Chen et al., IEEE SPL 2024
+  year: 2024
+  arxiv: "2405.19823"
+  upstream: https://github.com/aaaceo890/mamba_tsad
+  upstream_commit: 08fec0531712
+  upstream_license: none (no LICENSE file) — code not copied
+  implementation: own
+  fidelity: upstream_verified
+  deviations:
+    - pure-PyTorch parallel scan instead of the official pscan (same recurrence)
+    - device-invariant (the official training loop cannot run on CPU)
+
+mamba_tsad_fixed:
+  title: MambaTSAD — issues a, c, d fixed
+  citation: Chen et al., IEEE SPL 2024
+  year: 2024
+  arxiv: "2405.19823"
+  upstream: https://github.com/aaaceo890/mamba_tsad
+  upstream_commit: 08fec0531712
+  upstream_license: none (no LICENSE file) — code not copied
+  implementation: own
+  fidelity: upstream_verified
+  deviations:
+    - last-step state carry, standard HP objective, per-window AMA period (see mamba_tsad.py)
+
+matrix_profile:
+  title: Matrix Profile discord
+  citation: Yeh et al., ICDM 2016
+  year: 2016
+  upstream: https://github.com/TDAmeritrade/stumpy
+  upstream_license: BSD-3-Clause
+  implementation: library
+  fidelity: library
+  deviations: []
+
+moment:
+  title: MOMENT zero-shot reconstruction adapter
+  citation: Goswami et al., ICML 2024
+  year: 2024
+  arxiv: "2402.03885"
+  upstream: https://github.com/moment-timeseries-foundation-model/moment
+  upstream_license: MIT
+  implementation: adapter
+  fidelity: library
+  deviations:
+    - zero-shot (no fine-tuning); fixed 512-step context with half-overlapping segments
+
+mtad_gat:
+  title: MTAD-GAT
+  citation: Zhao et al., ICDM 2020
+  year: 2020
+  arxiv: "2009.02040"
+  upstream_license: no official implementation
+  implementation: own
+  fidelity: simplified
+  deviations:
+    - deterministic decoder instead of the VAE reconstruction path
+    - gamma-weighted score combination (default 0.5)
+    - 1D-conv preprocessing omitted
+
+ocsvm:
+  title: One-Class SVM (RBF)
+  citation: Schölkopf et al., Neural Computation 2001
+  year: 2001
+  upstream: https://github.com/scikit-learn/scikit-learn
+  upstream_license: BSD-3-Clause
+  implementation: library
+  fidelity: library
+  deviations:
+    - training windows capped at 5000 (O(n²) kernel)
+
+omni_anomaly:
+  title: OmniAnomaly
+  citation: Su et al., KDD 2019
+  year: 2019
+  upstream: https://github.com/NetManAIOps/OmniAnomaly
+  upstream_license: MIT
+  implementation: own
+  fidelity: simplified
+  deviations:
+    - no planar normalizing flow (diagonal Gaussian posterior)
+    - standard-normal prior instead of the linear Gaussian state-space prior
+
+online_cusum:
+  title: Online CUSUM (prequential, Welford statistics)
+  citation: Page, Biometrika 1954
+  year: 1954
+  implementation: own
+  fidelity: reference
+  deviations:
+    - streaming protocol (score then update); experimental track
+
+online_ewma:
+  title: Online EWMA (prequential)
+  citation: Roberts, Technometrics 1959
+  year: 1959
+  implementation: own
+  fidelity: reference
+  deviations:
+    - streaming protocol (score then update); experimental track
+
+pca_t2spe:
+  title: PCA T² + SPE (Q statistic)
+  citation: Jackson & Mudholkar, Technometrics 1979
+  year: 1979
+  implementation: own
+  fidelity: reference
+  deviations: []
+
+poly:
+  title: Local polynomial one-step residual
+  citation: TSB-UAD POLY baseline (Paparrizos et al., VLDB 2022)
+  year: 2022
+  implementation: own
+  fidelity: simplified
+  deviations:
+    - simplified sliding-window polynomial fit
+
+sesd:
+  title: S-H-ESD-style seasonal hybrid ESD
+  citation: Hochenbaum, Vallis & Kejariwal, 2017
+  year: 2017
+  arxiv: "1704.07706"
+  upstream: https://github.com/twitter/AnomalyDetection
+  upstream_license: GPL-3.0 — not used
+  implementation: own
+  fidelity: paper
+  deviations:
+    - the continuous robust statistic |x - median| / MAD is the score; the ESD decision is left to the thresholding module
+
+spectral_residual:
+  title: Spectral Residual (Azure Anomaly Detector)
+  citation: Ren et al., KDD 2019
+  year: 2019
+  arxiv: "1906.03821"
+  implementation: own
+  fidelity: paper
+  deviations:
+    - estimated end points and the SR-CNN learned threshold omitted; channels max-aggregated
+
+stl_residual:
+  title: STL decomposition residual
+  citation: Cleveland et al., J. Official Statistics 1990
+  year: 1990
+  upstream: https://github.com/statsmodels/statsmodels
+  upstream_license: BSD-3-Clause
+  implementation: library
+  fidelity: library
+  deviations:
+    - period estimated automatically; channel-wise |z| of residuals, max-aggregated
+
+sub_knn:
+  title: Subsequence k-NN
+  citation: TSB-AD baseline (Liu & Paparrizos, NeurIPS 2024)
+  year: 2024
+  implementation: own
+  fidelity: reference
+  deviations: []
+
+sub_pca:
+  title: Subsequence PCA reconstruction
+  citation: TSB-AD baseline (Liu & Paparrizos, NeurIPS 2024)
+  year: 2024
+  implementation: own
+  fidelity: reference
+  deviations: []
+
+timesfm:
+  title: TimesFM 2.5 forecast-residual adapter
+  citation: Das et al., ICML 2024
+  year: 2024
+  arxiv: "2310.10688"
+  upstream: https://github.com/google-research/timesfm
+  upstream_license: Apache-2.0 (code and 2.5 weights)
+  implementation: adapter
+  fidelity: library
+  deviations:
+    - forecast residual as anomaly score; channel-independent
+
+timesfm3:
+  title: TimesFM 3.0 multivariate forecast-residual adapter
+  citation: Das et al., ICML 2024; TimesFM 3.0 (2026)
+  year: 2026
+  upstream: https://github.com/google-research/timesfm
+  upstream_license: code Apache-2.0; 3.0 weights NON-COMMERCIAL
+  implementation: adapter
+  fidelity: library
+  deviations:
+    - forecast residual as anomaly score; joint multivariate forecasting
+
+timesfm3_ci:
+  title: TimesFM 3.0 channel-independent control
+  citation: Das et al., ICML 2024; TimesFM 3.0 (2026)
+  year: 2026
+  upstream: https://github.com/google-research/timesfm
+  upstream_license: code Apache-2.0; 3.0 weights NON-COMMERCIAL
+  implementation: adapter
+  fidelity: library
+  deviations:
+    - forecast residual as anomaly score; channels forecast independently
+
+timesfm3_prob:
+  title: TimesFM 3.0 probabilistic (quantile) score
+  citation: Das et al., ICML 2024; TimesFM 3.0 (2026)
+  year: 2026
+  upstream: https://github.com/google-research/timesfm
+  upstream_license: code Apache-2.0; 3.0 weights NON-COMMERCIAL
+  implementation: adapter
+  fidelity: library
+  deviations:
+    - quantile-forecast-based score (crps/interval modes)
+
+timesnet:
+  title: TimesNet (anomaly detection task)
+  citation: Wu et al., ICLR 2023
+  year: 2023
+  arxiv: "2210.02186"
+  upstream: https://github.com/thuml/Time-Series-Library
+  upstream_license: MIT
+  implementation: own
+  fidelity: simplified
+  deviations:
+    - one TimesBlock, top-1 period only
+    - two 3×3 conv layers instead of the inception block
+    - small embedding
+
+tranad:
+  title: TranAD
+  citation: Tuli et al., VLDB 2022
+  year: 2022
+  arxiv: "2201.07284"
+  upstream: https://github.com/imperial-qore/TranAD
+  upstream_license: BSD-3-Clause
+  implementation: own
+  fidelity: simplified
+  deviations:
+    - the two-decoder min-max game simplified to an epoch-weighted combined loss
+
+usad:
+  title: USAD
+  citation: Audibert et al., KDD 2020
+  year: 2020
+  upstream_license: no official public implementation
+  implementation: own
+  fidelity: simplified
+  deviations:
+    - alternating losses within an epoch instead of separate per-decoder optimizers
+
+vae_donut:
+  title: Donut-style window VAE
+  citation: Xu et al., WWW 2018
+  year: 2018
+  arxiv: "1802.03903"
+  upstream: https://github.com/NetManAIOps/donut
+  upstream_license: none (no LICENSE file) — code not used
+  implementation: own
+  fidelity: simplified
+  deviations:
+    - no modified ELBO (missing-data injection) and no MCMC imputation
+    - generalized from univariate to flattened multivariate windows
+
+zscore:
+  title: Per-channel |z| maximum
+  citation: TSAD-Forge
+  year: 2025
+  implementation: own
+  fidelity: baseline
+  deviations: []

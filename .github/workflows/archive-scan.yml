@@ -1,0 +1,46 @@
+# 주간 arXiv 스캔 → 원장(archive/papers.yaml)에 없는 TSAD 논문을 GitHub 이슈로 제안.
+# 원장 수정은 하지 않는다 — 분류(candidate/rejected/무시)는 사람이 한다.
+name: Archive scan
+
+on:
+  schedule:
+    - cron: "17 3 * * 1" # 매주 월요일 03:17 UTC
+  workflow_dispatch:
+    inputs:
+      days:
+        description: "Look-back window in days"
+        required: false
+        default: "8"
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install
+        run: pip install -e .
+      - name: Validate ledger
+        run: tsad-forge archive validate
+      - name: Scan arXiv
+        run: tsad-forge archive scan --days "${{ inputs.days || '8' }}" --out scan.md
+      - name: Open an issue with new candidates
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ ! -s scan.md ]; then
+            echo "no new candidates"; exit 0
+          fi
+          gh label create archive-scan --color 5319e7 \
+            --description "Weekly arXiv scan for the research archive" --force
+          gh issue create \
+            --title "Archive scan $(date -u +%F): new TSAD papers to triage" \
+            --label archive-scan \
+            --body-file scan.md
