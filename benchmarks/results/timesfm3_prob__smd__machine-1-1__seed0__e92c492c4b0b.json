@@ -1,0 +1,77 @@
+{
+  "run_id": "timesfm3_prob__smd__machine-1-1__seed0__e92c492c4b0b",
+  "model": "timesfm3_prob",
+  "generation": "gen5",
+  "dataset": "smd",
+  "channel": "machine-1-1",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.8290843173930275,
+    "auc_pr": 0.40099659697945106,
+    "vus_roc": 0.8569771545436389,
+    "vus_pr": 0.4493500459023112,
+    "best_f1": 0.4248246416590424,
+    "standard_f1": 0.15240013427324606,
+    "event_f1": 0.8867187499999994,
+    "range_f1": 0.5180181176825529,
+    "affiliation_f1": 0.9680557975275473,
+    "mean_detection_delay": 3.375,
+    "threshold": 2.56798944205484,
+    "n_predicted_anomalies": 285.0,
+    "diag_test_input_absmax": 68130.8541893324,
+    "diag_vus_window": 100.0,
+    "fc_mase": 6.2299949665564185,
+    "fc_mae": 1.353957257755838,
+    "fc_wql": 0.44384868060376065,
+    "fc_crps": 1.0691476568088754
+  },
+  "runtime_s": 2537.4006,
+  "runtime_fit_s": 0.9479,
+  "runtime_score_s": 2536.4528,
+  "peak_mem_mb": 2252.9,
+  "commit_hash": "725bbd687a24",
+  "git_dirty": true,
+  "config_hash": "e92c492c4b0b",
+  "config": {
+    "model": "timesfm3_prob",
+    "model_alias": null,
+    "model_params": {
+      "context": 512,
+      "horizon": 32,
+      "batch_size": 8
+    },
+    "data": "smd",
+    "data_params": {
+      "machine": "machine-1-1"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-22T04:57:24+00:00"
+}

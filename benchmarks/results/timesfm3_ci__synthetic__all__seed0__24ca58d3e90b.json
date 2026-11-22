@@ -1,0 +1,78 @@
+{
+  "run_id": "timesfm3_ci__synthetic__all__seed0__24ca58d3e90b",
+  "model": "timesfm3_ci",
+  "generation": "gen5",
+  "dataset": "synthetic",
+  "channel": "all",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.8415318903872918,
+    "auc_pr": 0.2849037259859404,
+    "vus_roc": 0.9178800795765455,
+    "vus_pr": 0.4136720978346359,
+    "best_f1": 0.4207650273224044,
+    "standard_f1": 0.03896103896103896,
+    "event_f1": 0.14634146341463364,
+    "range_f1": 0.06153846153846154,
+    "affiliation_f1": 0.22603695839267926,
+    "mean_detection_delay": 15.857142857142858,
+    "threshold": 1.4464476494991032,
+    "n_predicted_anomalies": 20.0,
+    "diag_test_input_absmax": 8.506162210468686,
+    "diag_vus_window": 100.0,
+    "fc_mase": 1.3739797459738547,
+    "fc_mae": 0.21358780294006346,
+    "fc_wql": 0.20128479496744567,
+    "fc_crps": 0.18225081991796352
+  },
+  "runtime_s": 23.2921,
+  "runtime_fit_s": 1.0388,
+  "runtime_score_s": 22.2533,
+  "peak_mem_mb": 2521.78,
+  "commit_hash": "725bbd687a24",
+  "git_dirty": true,
+  "config_hash": "24ca58d3e90b",
+  "config": {
+    "model": "timesfm3_ci",
+    "model_alias": null,
+    "model_params": {
+      "context": 512,
+      "horizon": 32,
+      "batch_size": 8
+    },
+    "data": "synthetic",
+    "data_params": {
+      "n_dims": 5,
+      "n_events": 8
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-22T02:54:28+00:00"
+}

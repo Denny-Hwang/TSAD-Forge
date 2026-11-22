@@ -1,0 +1,76 @@
+{
+  "run_id": "chronos__nab__realKnownCause_machine_temperature_system_failure.csv__seed0__5885ac26f590",
+  "model": "chronos",
+  "generation": "gen5",
+  "dataset": "nab",
+  "channel": "realKnownCause_machine_temperature_system_failure.csv",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.5791462668349788,
+    "auc_pr": 0.14368114626400713,
+    "vus_roc": 0.6111467183655191,
+    "vus_pr": 0.14319569776930288,
+    "best_f1": 0.19203664552501762,
+    "standard_f1": 0.06441393875395987,
+    "event_f1": 0.42882249560632646,
+    "range_f1": 0.17763770503545592,
+    "affiliation_f1": 0.6996549592451613,
+    "mean_detection_delay": 382.3333333333333,
+    "threshold": 1.3710796310388016,
+    "n_predicted_anomalies": 193.0,
+    "diag_test_input_absmax": 6.177753584385521,
+    "diag_vus_window": 100.0,
+    "fc_mase": 3.1266364622058145,
+    "fc_mae": 0.19600064610097925,
+    "fc_wql": 0.19116160751424519,
+    "fc_crps": 0.158966151037501
+  },
+  "runtime_s": 19.5217,
+  "runtime_fit_s": 1.8803,
+  "runtime_score_s": 17.6414,
+  "peak_mem_mb": 174.16,
+  "commit_hash": "725bbd687a24",
+  "git_dirty": true,
+  "config_hash": "5885ac26f590",
+  "config": {
+    "model": "chronos",
+    "model_alias": null,
+    "model_params": {
+      "context": 512,
+      "horizon": 32
+    },
+    "data": "nab",
+    "data_params": {
+      "rel_path": "realKnownCause/machine_temperature_system_failure.csv"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-22T08:04:58+00:00"
+}

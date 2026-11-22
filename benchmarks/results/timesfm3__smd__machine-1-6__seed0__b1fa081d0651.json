@@ -1,0 +1,77 @@
+{
+  "run_id": "timesfm3__smd__machine-1-6__seed0__b1fa081d0651",
+  "model": "timesfm3",
+  "generation": "gen5",
+  "dataset": "smd",
+  "channel": "machine-1-6",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.8618959046693064,
+    "auc_pr": 0.7003545113843569,
+    "vus_roc": 0.905717627665299,
+    "vus_pr": 0.7456299191426744,
+    "best_f1": 0.6425690350605027,
+    "standard_f1": 0.11711026615969582,
+    "event_f1": 0.8582505451902103,
+    "range_f1": 0.5202812751346936,
+    "affiliation_f1": 0.8578956332119863,
+    "mean_detection_delay": 3.533333333333333,
+    "threshold": 2.78662895989024,
+    "n_predicted_anomalies": 237.0,
+    "diag_test_input_absmax": 213.43783758971765,
+    "diag_vus_window": 100.0,
+    "fc_mase": 2.223808553419056,
+    "fc_mae": 0.5105685087399812,
+    "fc_wql": 0.1863006068788058,
+    "fc_crps": 0.4022902927840404
+  },
+  "runtime_s": 3008.8788,
+  "runtime_fit_s": 1.3828,
+  "runtime_score_s": 3007.496,
+  "peak_mem_mb": 2659.22,
+  "commit_hash": "725bbd687a24",
+  "git_dirty": true,
+  "config_hash": "b1fa081d0651",
+  "config": {
+    "model": "timesfm3",
+    "model_alias": null,
+    "model_params": {
+      "context": 512,
+      "horizon": 32,
+      "batch_size": 8
+    },
+    "data": "smd",
+    "data_params": {
+      "machine": "machine-1-6"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-22T02:46:46+00:00"
+}

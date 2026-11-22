@@ -1,0 +1,69 @@
+{
+  "run_id": "moment__skab__valve1_0__seed0__c8382f78030f",
+  "model": "moment",
+  "generation": "gen5",
+  "dataset": "skab",
+  "channel": "valve1_0",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.5213741784947818,
+    "auc_pr": 0.3577996024643634,
+    "vus_roc": 0.5752513855083433,
+    "vus_pr": 0.39799022592669786,
+    "best_f1": 0.5263157894736842,
+    "standard_f1": 0.01937046004842615,
+    "event_f1": 0.4999999999999996,
+    "range_f1": 0.2515527950310559,
+    "affiliation_f1": 0.6881638005827149,
+    "mean_detection_delay": 2.0,
+    "threshold": 1.3766360961589144,
+    "n_predicted_anomalies": 12.0,
+    "diag_test_input_absmax": 58.70610357920883,
+    "diag_vus_window": 100.0
+  },
+  "runtime_s": 13.2484,
+  "runtime_fit_s": 5.7467,
+  "runtime_score_s": 7.5017,
+  "peak_mem_mb": 2760.52,
+  "commit_hash": "725bbd687a24",
+  "git_dirty": true,
+  "config_hash": "c8382f78030f",
+  "config": {
+    "model": "moment",
+    "model_alias": null,
+    "model_params": {},
+    "data": "skab",
+    "data_params": {
+      "experiment": "valve1/0"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "1.26.4",
+      "scipy": "1.15.3",
+      "scikit-learn": "1.7.2",
+      "pandas": "2.3.3",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-22T02:33:27+00:00"
+}

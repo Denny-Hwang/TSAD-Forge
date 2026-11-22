@@ -1,0 +1,77 @@
+{
+  "run_id": "timesfm3__smd__machine-3-2__seed0__e936ab4e4b19",
+  "model": "timesfm3",
+  "generation": "gen5",
+  "dataset": "smd",
+  "channel": "machine-3-2",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.4840586642814674,
+    "auc_pr": 0.05493375145486009,
+    "vus_roc": 0.5726560406953032,
+    "vus_pr": 0.06341619459145177,
+    "best_f1": 0.08939232845342275,
+    "standard_f1": 0.038604305864884926,
+    "event_f1": 0.19483763530391318,
+    "range_f1": 0.16085043197150298,
+    "affiliation_f1": 0.7113051197032377,
+    "mean_detection_delay": 7.1,
+    "threshold": 0.923463724380537,
+    "n_predicted_anomalies": 238.0,
+    "diag_test_input_absmax": 102.54062530578048,
+    "diag_vus_window": 100.0,
+    "fc_mase": 0.735627179989618,
+    "fc_mae": 0.18329147305220977,
+    "fc_wql": 0.22737684176468792,
+    "fc_crps": 0.14362574722953103
+  },
+  "runtime_s": 3840.6694,
+  "runtime_fit_s": 4.879,
+  "runtime_score_s": 3835.7904,
+  "peak_mem_mb": 1988.05,
+  "commit_hash": "725bbd687a24",
+  "git_dirty": true,
+  "config_hash": "e936ab4e4b19",
+  "config": {
+    "model": "timesfm3",
+    "model_alias": null,
+    "model_params": {
+      "context": 512,
+      "horizon": 32,
+      "batch_size": 8
+    },
+    "data": "smd",
+    "data_params": {
+      "machine": "machine-3-2"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-22T01:56:33+00:00"
+}

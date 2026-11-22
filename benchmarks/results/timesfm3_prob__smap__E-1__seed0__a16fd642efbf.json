@@ -1,0 +1,77 @@
+{
+  "run_id": "timesfm3_prob__smap__E-1__seed0__a16fd642efbf",
+  "model": "timesfm3_prob",
+  "generation": "gen5",
+  "dataset": "smap",
+  "channel": "E-1",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.3547080380249672,
+    "auc_pr": 0.04407894516456989,
+    "vus_roc": 0.42317006908704274,
+    "vus_pr": 0.05348494809042286,
+    "best_f1": 0.11312771406302194,
+    "standard_f1": 0.003367003367003367,
+    "event_f1": 0.022727272727272683,
+    "range_f1": 0.02274877033673855,
+    "affiliation_f1": 0.7361848721280455,
+    "mean_detection_delay": 17.0,
+    "threshold": 1.1088131860320563,
+    "n_predicted_anomalies": 86.0,
+    "diag_test_input_absmax": 37.93415347678289,
+    "diag_vus_window": 100.0,
+    "fc_mase": 0.5421173390150831,
+    "fc_mae": 0.07473179526170834,
+    "fc_wql": 0.38631436926812784,
+    "fc_crps": 0.06830829268934653
+  },
+  "runtime_s": 352.5183,
+  "runtime_fit_s": 1.7328,
+  "runtime_score_s": 350.7855,
+  "peak_mem_mb": 2636.94,
+  "commit_hash": "725bbd687a24",
+  "git_dirty": true,
+  "config_hash": "a16fd642efbf",
+  "config": {
+    "model": "timesfm3_prob",
+    "model_alias": null,
+    "model_params": {
+      "context": 512,
+      "horizon": 32,
+      "batch_size": 8
+    },
+    "data": "smap",
+    "data_params": {
+      "channel": "E-1"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-22T05:47:00+00:00"
+}

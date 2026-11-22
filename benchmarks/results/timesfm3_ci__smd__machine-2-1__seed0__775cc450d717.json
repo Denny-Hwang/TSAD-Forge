@@ -1,0 +1,77 @@
+{
+  "run_id": "timesfm3_ci__smd__machine-2-1__seed0__775cc450d717",
+  "model": "timesfm3_ci",
+  "generation": "gen5",
+  "dataset": "smd",
+  "channel": "machine-2-1",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.67714168514648,
+    "auc_pr": 0.15039250691208755,
+    "vus_roc": 0.7713224278592501,
+    "vus_pr": 0.1790311480311569,
+    "best_f1": 0.20162381596752368,
+    "standard_f1": 0.13219616204690832,
+    "event_f1": 0.5636363636363632,
+    "range_f1": 0.2726758923910064,
+    "affiliation_f1": 0.8231610505536454,
+    "mean_detection_delay": 11.461538461538462,
+    "threshold": 1.0229283643196714,
+    "n_predicted_anomalies": 237.0,
+    "diag_test_input_absmax": 733.4346056045242,
+    "diag_vus_window": 100.0,
+    "fc_mase": 1.0061889817546819,
+    "fc_mae": 0.29746488616436384,
+    "fc_wql": 0.4287659757455903,
+    "fc_crps": 0.24249565576133716
+  },
+  "runtime_s": 1977.4054,
+  "runtime_fit_s": 1.0064,
+  "runtime_score_s": 1976.399,
+  "peak_mem_mb": 2358.8,
+  "commit_hash": "725bbd687a24",
+  "git_dirty": true,
+  "config_hash": "775cc450d717",
+  "config": {
+    "model": "timesfm3_ci",
+    "model_alias": null,
+    "model_params": {
+      "context": 512,
+      "horizon": 32,
+      "batch_size": 8
+    },
+    "data": "smd",
+    "data_params": {
+      "machine": "machine-2-1"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-22T03:27:29+00:00"
+}

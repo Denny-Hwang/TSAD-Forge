@@ -1,0 +1,78 @@
+{
+  "run_id": "timesfm3__synthetic__all__seed0__a74e03a0638a",
+  "model": "timesfm3",
+  "generation": "gen5",
+  "dataset": "synthetic",
+  "channel": "all",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.8402561149237735,
+    "auc_pr": 0.29821890863921385,
+    "vus_roc": 0.92012453461596,
+    "vus_pr": 0.4164930659745601,
+    "best_f1": 0.44041450777202074,
+    "standard_f1": 0.05194805194805195,
+    "event_f1": 0.16666666666666619,
+    "range_f1": 0.06528189910979229,
+    "affiliation_f1": 0.22635052031889064,
+    "mean_detection_delay": 14.285714285714286,
+    "threshold": 1.4318423748681388,
+    "n_predicted_anomalies": 20.0,
+    "diag_test_input_absmax": 8.506162210468686,
+    "diag_vus_window": 100.0,
+    "fc_mase": 1.3568119625725572,
+    "fc_mae": 0.21091903788091404,
+    "fc_wql": 0.19566264006185957,
+    "fc_crps": 0.17716030952240888
+  },
+  "runtime_s": 34.5782,
+  "runtime_fit_s": 3.0086,
+  "runtime_score_s": 31.5696,
+  "peak_mem_mb": 2392.6,
+  "commit_hash": "725bbd687a24",
+  "git_dirty": true,
+  "config_hash": "a74e03a0638a",
+  "config": {
+    "model": "timesfm3",
+    "model_alias": null,
+    "model_params": {
+      "context": 512,
+      "horizon": 32,
+      "batch_size": 8
+    },
+    "data": "synthetic",
+    "data_params": {
+      "n_dims": 5,
+      "n_events": 8
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-22T00:52:27+00:00"
+}

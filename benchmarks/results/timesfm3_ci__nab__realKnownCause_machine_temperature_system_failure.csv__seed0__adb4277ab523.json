@@ -1,0 +1,77 @@
+{
+  "run_id": "timesfm3_ci__nab__realKnownCause_machine_temperature_system_failure.csv__seed0__adb4277ab523",
+  "model": "timesfm3_ci",
+  "generation": "gen5",
+  "dataset": "nab",
+  "channel": "realKnownCause_machine_temperature_system_failure.csv",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.5695134353968287,
+    "auc_pr": 0.14733000014900713,
+    "vus_roc": 0.5991024798946766,
+    "vus_pr": 0.1461282847569067,
+    "best_f1": 0.19990525817148272,
+    "standard_f1": 0.057022175290390706,
+    "event_f1": 0.4372469635627526,
+    "range_f1": 0.2538921598287217,
+    "affiliation_f1": 0.7023063639701673,
+    "mean_detection_delay": 201.66666666666666,
+    "threshold": 1.5091264303878489,
+    "n_predicted_anomalies": 193.0,
+    "diag_test_input_absmax": 6.177753584385521,
+    "diag_vus_window": 100.0,
+    "fc_mase": 3.1057927600282027,
+    "fc_mae": 0.19469400903481196,
+    "fc_wql": 0.19166656410979782,
+    "fc_crps": 0.15938606279425904
+  },
+  "runtime_s": 38.0948,
+  "runtime_fit_s": 0.9771,
+  "runtime_score_s": 37.1177,
+  "peak_mem_mb": 2340.68,
+  "commit_hash": "725bbd687a24",
+  "git_dirty": true,
+  "config_hash": "adb4277ab523",
+  "config": {
+    "model": "timesfm3_ci",
+    "model_alias": null,
+    "model_params": {
+      "context": 512,
+      "horizon": 32,
+      "batch_size": 8
+    },
+    "data": "nab",
+    "data_params": {
+      "rel_path": "realKnownCause/machine_temperature_system_failure.csv"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-22T04:12:13+00:00"
+}
