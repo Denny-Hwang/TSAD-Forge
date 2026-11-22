@@ -6,7 +6,7 @@
 - **구성**: 58개 단변량 시계열(AWS 지표, 온도 센서, 광고 클릭 등) + 이상 윈도우 라벨
 - **라이선스**: **코드는 AGPL-3.0 — 절대 복사하지 않는다** (CLAUDE.md §10-2).
   데이터 파일은 자유 이용. 본 저장소는 데이터 csv와 라벨 json만 받는다.
-- **다운로드**: `tsad-forge download nab` (lite 부분집합 5개; 전체는 NAB 저장소 clone 권장)
+- **다운로드**: `tsad-forge download nab` (lite 부분집합 5개) 또는 `tsad-forge download nab --subset all` (전체 58개). 고정된 업스트림 커밋(`ea702d7`)에서 받고 고정 sha256으로 검증합니다.
 - **로더**: `load_nab(rel_path="realAWSCloudwatch/ec2_cpu_utilization_24ae8d.csv")`
 
 ## 알려진 결함

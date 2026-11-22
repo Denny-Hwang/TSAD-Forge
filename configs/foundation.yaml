@@ -3,6 +3,14 @@
 # 실행: python benchmarks/run_all.py --profile configs/foundation.yaml
 # 준비: pip install "tsad-forge[foundation]" timesfm[torch] chronos-forecasting momentfm
 #       + HuggingFace 접근 (가중치 다운로드). CI에서는 실행하지 않는다 (CLAUDE.md §9).
+# MOMENT 주의: momentfm 0.1.4는 numpy==1.25.2 / transformers==4.33.3을 고정하므로
+#       본 패키지(numpy>=1.26)·timesfm 3.x와 같은 환경에 설치할 수 없다. 별도 venv에서
+#       --models moment 로 따로 실행한다 (numpy 고정만 완화, transformers는 유지):
+#   uv venv .venv-moment --python 3.11
+#   echo "numpy>=1.26.4,<2" > ov.txt
+#   printf "pandas<3\npyarrow<21\nscipy<1.16\nscikit-learn<1.8\n" > c.txt
+#   uv pip install --python .venv-moment/bin/python -e ".[dl]" momentfm --override ov.txt -c c.txt
+#   .venv-moment/bin/python benchmarks/run_all.py --profile configs/foundation.yaml --models moment
 #
 # 라이선스 주의: `timesfm3`/`timesfm3_ci`가 쓰는 google/timesfm-3.0-pytorch 가중치는
 # timesfm-non-commercial-license-v1.0(비상업·비프로덕션)이다. 상업/프로덕션 비교가
@@ -39,13 +47,33 @@ models:
   - moment
 
 datasets:
-  # 합성 (항상 가능 — 데이터 다운로드 없이 스모크 확인용)
+  # lite 프로파일과 같은 21개 엔티티 -> Gen0-4 결과와 같은 공유 엔티티 집합에서 직접 비교.
+  # SMD D=38 > 32: timesfm3는 변량 청크로 분할. UCR 단변량: timesfm3 == timesfm3_ci 여야 함.
+  # 합성 (항상 가능)
   - synthetic
   - { data: synthetic, data_params: { n_dims: 5, n_events: 8 } }
-  # lite 프로파일과 같은 엔티티 -> Gen1-4 결과와 직접 비교 가능
-  - { data: smd, data_params: { machine: machine-1-1 } } # D=38 > 32: 변량 청크 분할
+  # SMD 3개 머신
+  - { data: smd, data_params: { machine: machine-1-1 } }
   - { data: smd, data_params: { machine: machine-2-1 } }
+  - { data: smd, data_params: { machine: machine-3-2 } }
+  # MambaTSAD 논문(SPL 2024) 엔티티 커버리지 확장
+  - { data: smd, data_params: { machine: machine-3-7 } }
+  - { data: smd, data_params: { machine: machine-1-6 } }
+  # SMAP 3채널 (데이터 없으면 skip)
   - { data: smap, data_params: { channel: P-1 } }
-  - { data: msl, data_params: { channel: C-2 } }
-  - { data: ucr, data_params: { series: 1 } } # 단변량: timesfm3 == timesfm3_ci 여야 함
+  - { data: smap, data_params: { channel: E-1 } }
+  - { data: smap, data_params: { channel: T-1 } }
+  - { data: smap, data_params: { channel: A-4 } }   # MambaTSAD 논문 엔티티
+  - { data: msl, data_params: { channel: C-2 } }    # MambaTSAD 논문 엔티티
+  # UCR 일부 (데이터 없으면 skip)
+  - { data: ucr, data_params: { series: 1 } }
+  - { data: ucr, data_params: { series: 135 } }
+  # NAB / PSM / SKAB
+  - { data: nab, data_params: { rel_path: realAWSCloudwatch/ec2_cpu_utilization_24ae8d.csv } }
+  - { data: nab, data_params: { rel_path: realKnownCause/machine_temperature_system_failure.csv } }
+  - { data: psm }
   - { data: skab, data_params: { experiment: valve1/0 } }
+  # MGAB (CC0) / MBA (BSD-3 repo; PhysioNet ODC-BY)
+  - { data: mgab, data_params: { series: 1 } }
+  - { data: mgab, data_params: { series: 2 } }
+  - { data: mba }

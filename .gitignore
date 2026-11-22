@@ -20,6 +20,7 @@ dist/
 
 # 환경
 .venv/
+.venv-*/
 venv/
 .env
 
@@ -40,3 +41,4 @@ site/
 
 # Jupyter
 .ipynb_checkpoints/
+logs/

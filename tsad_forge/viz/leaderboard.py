@@ -286,6 +286,23 @@ _DL_BUDGET_NOTE = [
 ]
 
 
+_FOUNDATION_NOTE = [
+    '!!! note "Gen5 foundation rows are zero-shot"',
+    "    `moment`, `chronos`, `timesfm` and `timesfm3*` come from `configs/foundation.yaml`:"
+    " pretrained weights, no training or fine-tuning on the target entity, CPU inference."
+    " Inference is deterministic, so each cell is one run (no seed spread). The `timesfm3*`"
+    " rows use TimesFM 3.0 weights, which are licensed for **non-commercial use only**;"
+    " `timesfm` (2.5) is the Apache-2.0 alternative (see [models](../models.md)).",
+    "",
+]
+
+_FOUNDATION_MODELS = ("moment", "chronos", "timesfm")
+
+
+def _has_foundation_rows(summary: pd.DataFrame) -> bool:
+    return any(str(m).startswith(_FOUNDATION_MODELS) for _, m in summary.index)
+
+
 def _has_dl_rows(summary: pd.DataFrame) -> bool:
     gens = {str(g) for g, _ in summary.index}
     return bool(gens & {"gen3", "gen4", "gen5"})
@@ -320,6 +337,7 @@ def leaderboard_markdown(results_dir: str | Path, metric: str = PRIMARY_METRIC) 
         " those qualifiers.",
         "",
         *(_DL_BUDGET_NOTE if _has_dl_rows(summary) else []),
+        *(_FOUNDATION_NOTE if _has_foundation_rows(summary) else []),
         "Primary metric: **VUS-PR** (Paparrizos et al., VLDB 2022). Values are seed"
         " averages; cell shading follows the metric value, row tint and badge follow"
         " the generation. PA-F1 is intentionally not shown (CLAUDE.md §4).",

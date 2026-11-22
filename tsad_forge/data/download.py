@@ -30,6 +30,68 @@ NAB_LITE_FILES = [
     "artificialWithAnomaly/art_daily_jumpsup.csv",
 ]
 
+# NAB 전체 58개 데이터 파일 (numenta/NAB @ ea702d7 기준 data/ 하위, subset="all")
+NAB_ALL_FILES = [
+    "artificialNoAnomaly/art_daily_no_noise.csv",
+    "artificialNoAnomaly/art_daily_perfect_square_wave.csv",
+    "artificialNoAnomaly/art_daily_small_noise.csv",
+    "artificialNoAnomaly/art_flatline.csv",
+    "artificialNoAnomaly/art_noisy.csv",
+    "artificialWithAnomaly/art_daily_flatmiddle.csv",
+    "artificialWithAnomaly/art_daily_jumpsdown.csv",
+    "artificialWithAnomaly/art_daily_jumpsup.csv",
+    "artificialWithAnomaly/art_daily_nojump.csv",
+    "artificialWithAnomaly/art_increase_spike_density.csv",
+    "artificialWithAnomaly/art_load_balancer_spikes.csv",
+    "realAWSCloudwatch/ec2_cpu_utilization_24ae8d.csv",
+    "realAWSCloudwatch/ec2_cpu_utilization_53ea38.csv",
+    "realAWSCloudwatch/ec2_cpu_utilization_5f5533.csv",
+    "realAWSCloudwatch/ec2_cpu_utilization_77c1ca.csv",
+    "realAWSCloudwatch/ec2_cpu_utilization_825cc2.csv",
+    "realAWSCloudwatch/ec2_cpu_utilization_ac20cd.csv",
+    "realAWSCloudwatch/ec2_cpu_utilization_c6585a.csv",
+    "realAWSCloudwatch/ec2_cpu_utilization_fe7f93.csv",
+    "realAWSCloudwatch/ec2_disk_write_bytes_1ef3de.csv",
+    "realAWSCloudwatch/ec2_disk_write_bytes_c0d644.csv",
+    "realAWSCloudwatch/ec2_network_in_257a54.csv",
+    "realAWSCloudwatch/ec2_network_in_5abac7.csv",
+    "realAWSCloudwatch/elb_request_count_8c0756.csv",
+    "realAWSCloudwatch/grok_asg_anomaly.csv",
+    "realAWSCloudwatch/iio_us-east-1_i-a2eb1cd9_NetworkIn.csv",
+    "realAWSCloudwatch/rds_cpu_utilization_cc0c53.csv",
+    "realAWSCloudwatch/rds_cpu_utilization_e47b3b.csv",
+    "realAdExchange/exchange-2_cpc_results.csv",
+    "realAdExchange/exchange-2_cpm_results.csv",
+    "realAdExchange/exchange-3_cpc_results.csv",
+    "realAdExchange/exchange-3_cpm_results.csv",
+    "realAdExchange/exchange-4_cpc_results.csv",
+    "realAdExchange/exchange-4_cpm_results.csv",
+    "realKnownCause/ambient_temperature_system_failure.csv",
+    "realKnownCause/cpu_utilization_asg_misconfiguration.csv",
+    "realKnownCause/ec2_request_latency_system_failure.csv",
+    "realKnownCause/machine_temperature_system_failure.csv",
+    "realKnownCause/nyc_taxi.csv",
+    "realKnownCause/rogue_agent_key_hold.csv",
+    "realKnownCause/rogue_agent_key_updown.csv",
+    "realTraffic/TravelTime_387.csv",
+    "realTraffic/TravelTime_451.csv",
+    "realTraffic/occupancy_6005.csv",
+    "realTraffic/occupancy_t4013.csv",
+    "realTraffic/speed_6005.csv",
+    "realTraffic/speed_7578.csv",
+    "realTraffic/speed_t4013.csv",
+    "realTweets/Twitter_volume_AAPL.csv",
+    "realTweets/Twitter_volume_AMZN.csv",
+    "realTweets/Twitter_volume_CRM.csv",
+    "realTweets/Twitter_volume_CVS.csv",
+    "realTweets/Twitter_volume_FB.csv",
+    "realTweets/Twitter_volume_GOOG.csv",
+    "realTweets/Twitter_volume_IBM.csv",
+    "realTweets/Twitter_volume_KO.csv",
+    "realTweets/Twitter_volume_PFE.csv",
+    "realTweets/Twitter_volume_UPS.csv",
+]
+
 # 그룹별 파일 번호 (업스트림 waico/SKAB 실제 목록: other는 1..14, 0.csv 없음)
 SKAB_GROUPS = {"valve1": range(16), "valve2": range(4), "other": range(1, 15)}
 
@@ -37,7 +99,7 @@ URLS = {
     "smd": "https://raw.githubusercontent.com/NetManAIOps/OmniAnomaly/master/ServerMachineDataset",
     "telemanom_labels": "https://raw.githubusercontent.com/khundman/telemanom/master/labeled_anomalies.csv",
     "telemanom_zip": "https://s3-us-west-2.amazonaws.com/telemanom/data.zip",
-    "nab": "https://raw.githubusercontent.com/numenta/NAB/master",
+    "nab": "https://raw.githubusercontent.com/numenta/NAB/ea702d75cc2258d9d7dd35ca8e5e2539d71f3140",
     "psm": "https://raw.githubusercontent.com/eBay/RANSynCoders/main/data",
     "skab": "https://raw.githubusercontent.com/waico/SKAB/master/data",
     "ucr_zip": (
@@ -66,6 +128,11 @@ def verify_checksum(path: str | Path, expected: str) -> None:
         )
 
 
+#: 일부 호스트(thedatum.org 등)는 urllib 기본 UA("Python-urllib/x.y")를 403으로 막는다.
+#: 개인 정보 없는 일반 클라이언트 이름만 보낸다.
+USER_AGENT = "tsad-forge-downloader"
+
+
 def _fetch(url: str, dest: Path, expected_sha256: str | None = None) -> Path:
     """URL을 dest로 내려받고 sha256을 기록(.sha256 sidecar). 이미 있으면 건너뜀."""
     dest.parent.mkdir(parents=True, exist_ok=True)
@@ -73,7 +140,8 @@ def _fetch(url: str, dest: Path, expected_sha256: str | None = None) -> Path:
         return dest
     tmp = dest.with_suffix(dest.suffix + ".part")
     try:
-        with urllib.request.urlopen(url, timeout=120) as r, open(tmp, "wb") as f:
+        req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+        with urllib.request.urlopen(req, timeout=120) as r, open(tmp, "wb") as f:
             shutil.copyfileobj(r, f)
     except Exception as e:
         tmp.unlink(missing_ok=True)
@@ -219,12 +287,11 @@ def download_tsb_ad(data_dir: Path, variant: str = "u", subset: list[str] | None
 
 def download_nab(data_dir: Path, subset: list[str] | None = None) -> None:
     root = data_dir / "nab"
-    files = NAB_LITE_FILES if subset is None else subset
+    # 데이터 파일만 받는다 (NAB 코드는 AGPL — 코드는 가져오지 않는다)
     if subset == ["all"]:
-        raise NotImplementedError(
-            "full NAB download는 저장소 clone을 권장: git clone https://github.com/numenta/NAB "
-            "(데이터 파일은 자유 이용; 코드는 AGPL이므로 코드 복사 금지)"
-        )
+        files = NAB_ALL_FILES
+    else:
+        files = NAB_LITE_FILES if subset is None else subset
     _fetch(f"{URLS['nab']}/labels/combined_windows.json", root / "labels" / "combined_windows.json")
     for rel in files:
         _fetch(f"{URLS['nab']}/data/{rel}", root / "data" / rel)

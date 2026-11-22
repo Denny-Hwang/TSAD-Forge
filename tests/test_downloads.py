@@ -112,3 +112,50 @@ def test_skab_requests_upstream_file_numbers(tmp_path, monkeypatch):
     assert other == list(range(1, 15))
     assert sum(u.startswith("valve1/") for u in requested) == 16
     assert sum(u.startswith("valve2/") for u in requested) == 4
+
+
+def test_fetch_sends_generic_user_agent(tmp_path, monkeypatch):
+    """thedatum.org는 urllib 기본 UA를 403으로 막는다 -> 일반 UA를 보내야 한다."""
+    import io
+    import urllib.request
+
+    from tsad_forge.data import download as dl
+
+    seen = {}
+
+    def fake_urlopen(req, timeout=None):
+        seen["ua"] = req.get_header("User-agent")
+        return io.BytesIO(b"payload")
+
+    monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
+    dest = dl._fetch("https://example.org/x.zip", tmp_path / "x.zip")
+    assert dest.read_bytes() == b"payload"
+    assert seen["ua"] == dl.USER_AGENT
+    assert "urllib" not in seen["ua"].lower()
+
+
+def test_nab_subset_all_fetches_every_data_file(tmp_path, monkeypatch):
+    """`--subset all`은 NAB 데이터 58개 전부 + 라벨을 받는다 (코드는 받지 않는다)."""
+    import json
+
+    from tsad_forge.data import download as dl
+
+    requested: list[str] = []
+
+    def fake_fetch(url, dest, expected_sha256=None):
+        requested.append(url.split("/NAB/", 1)[1].split("/", 1)[1])
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text("x")
+        return dest
+
+    monkeypatch.setattr(dl, "_fetch", fake_fetch)
+    monkeypatch.setattr(dl, "load_pinned_checksums", lambda name: None)
+    dl.download_nab(tmp_path, subset=["all"])
+    data = [u for u in requested if u.startswith("data/")]
+    assert len(data) == len(set(data)) == 58
+    assert "labels/combined_windows.json" in requested
+    assert all(u.endswith(".csv") for u in data)
+    # 모든 파일과 라벨이 고정 체크섬에 등록되어 있어야 한다
+    pinned = json.loads((dl.PINNED_CHECKSUMS_DIR / "nab.json").read_text())
+    assert set(requested) == set(pinned)
+    assert set(dl.NAB_LITE_FILES) <= set(dl.NAB_ALL_FILES)
