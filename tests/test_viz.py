@@ -97,3 +97,19 @@ def test_case_viewer_only_overlays_the_plotted_series(tmp_path):
     html = next(p for p in paths if p.stem == "case_viewer").read_text()
     assert ": zscore" in html
     assert ": lof" not in html
+
+
+def test_foundation_note_only_when_foundation_rows_present():
+    import pandas as pd
+
+    from tsad_forge.viz.leaderboard import _has_dl_rows, _has_foundation_rows
+
+    def summary(rows):
+        return pd.DataFrame({"x": range(len(rows))}, index=pd.MultiIndex.from_tuples(rows))
+
+    classic = summary([("gen1", "sub_pca"), ("gen2", "iforest")])
+    assert not _has_foundation_rows(classic)
+    found = summary([("gen1", "sub_pca"), ("gen5", "timesfm3_ci"), ("gen5", "moment")])
+    assert _has_foundation_rows(found)
+    assert _has_dl_rows(found)
+    assert not _has_foundation_rows(summary([("gen5", "mamba_tsad_faithful@mps")]))

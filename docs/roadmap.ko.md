@@ -31,8 +31,6 @@
 | **CATS** (Solenix 2023) | 5백만 포인트 우주선 제어계 시뮬레이션, 통제된 이상 200개, 무오염 train | **CC BY 4.0** (Zenodo) | 이 환경에서 Zenodo 접근 불가 — Yahoo처럼 수동 배치 가이드+로더로 선반영 가능 |
 | **GHL** (Kaspersky) | 가스오일 가열 루프 ICS 시뮬레이션 + 공격 | 무료지만 등록 필요 | 신청 안내 카드 + 로더만 |
 | **Genesis** (HU Berlin) | 픽앤플레이스 설비 PLC 신호 | CC BY-SA 4.0 | 데이터 사용엔 문제없음; 호스트 확인 필요 |
-| **NAB 전체** | 현재 58개 중 5개만 수록 | 데이터 자유 | `download nab --subset all`을 clone 안내로 확장 |
-| **UCR / TSB-AD 전체** | 이미 통합됨; 이 개발 환경의 egress 정책만이 장애물 | 자유 / Apache-2.0 | 사용자 머신에서 `tsad-forge download ucr / tsb_ad_u` 실행 — 로더·lite 항목은 이미 연결됨 |
 
 ## 다음 추가 권장 — 모델
 

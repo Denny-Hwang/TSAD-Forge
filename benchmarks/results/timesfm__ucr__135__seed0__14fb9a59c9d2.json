@@ -1,0 +1,76 @@
+{
+  "run_id": "timesfm__ucr__135__seed0__14fb9a59c9d2",
+  "model": "timesfm",
+  "generation": "gen5",
+  "dataset": "ucr",
+  "channel": "135",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.7935261303581914,
+    "auc_pr": 0.04811612461488334,
+    "vus_roc": 0.8901441610889214,
+    "vus_pr": 0.08716316131041882,
+    "best_f1": 0.05194805194805195,
+    "standard_f1": 0.05194805194805195,
+    "event_f1": 0.06060606060606054,
+    "range_f1": 0.1601255886970173,
+    "affiliation_f1": 0.7524845028093742,
+    "mean_detection_delay": 4.0,
+    "threshold": 0.4486305218794713,
+    "n_predicted_anomalies": 64.0,
+    "diag_test_input_absmax": 2.629316446392771,
+    "diag_vus_window": 100.0,
+    "fc_mase": 2.4832685252629387,
+    "fc_mae": 0.0843868795982191,
+    "fc_wql": 0.07873255692981294,
+    "fc_crps": 0.06621433381835498
+  },
+  "runtime_s": 55.4781,
+  "runtime_fit_s": 0.9755,
+  "runtime_score_s": 54.5026,
+  "peak_mem_mb": 1474.4,
+  "commit_hash": "725bbd687a24",
+  "git_dirty": true,
+  "config_hash": "14fb9a59c9d2",
+  "config": {
+    "model": "timesfm",
+    "model_alias": null,
+    "model_params": {
+      "context": 512,
+      "horizon": 32
+    },
+    "data": "ucr",
+    "data_params": {
+      "series": 135
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-22T06:55:55+00:00"
+}

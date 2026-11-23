@@ -8,8 +8,9 @@
 - **License**: **the NAB code is AGPL-3.0 — never copied** (CLAUDE.md §10-2).
   The data files are free to use; this repository fetches only the data CSVs and the
   label JSON.
-- **Download**: `tsad-forge download nab` (a 5-file lite subset; clone the NAB repo
-  for the full set)
+- **Download**: `tsad-forge download nab` (a 5-file lite subset) or
+  `tsad-forge download nab --subset all` (all 58 streams). Files are fetched from a pinned
+  upstream commit (`ea702d7`) and verified against pinned sha256 values.
 - **Loader**: `load_nab(rel_path="realAWSCloudwatch/ec2_cpu_utilization_24ae8d.csv")`
 
 ## Known flaws

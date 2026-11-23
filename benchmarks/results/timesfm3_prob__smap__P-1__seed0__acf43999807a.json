@@ -1,0 +1,77 @@
+{
+  "run_id": "timesfm3_prob__smap__P-1__seed0__acf43999807a",
+  "model": "timesfm3_prob",
+  "generation": "gen5",
+  "dataset": "smap",
+  "channel": "P-1",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.4351527513654737,
+    "auc_pr": 0.08412441743224083,
+    "vus_roc": 0.48584328132904814,
+    "vus_pr": 0.09476470276648272,
+    "best_f1": 0.16227312013828868,
+    "standard_f1": 0.026284348864994027,
+    "event_f1": 0.22680412371133998,
+    "range_f1": 0.15502273195978344,
+    "affiliation_f1": 0.702644593498777,
+    "mean_detection_delay": 44.333333333333336,
+    "threshold": 1.1816480043040305,
+    "n_predicted_anomalies": 86.0,
+    "diag_test_input_absmax": 37.88139384975098,
+    "diag_vus_window": 100.0,
+    "fc_mase": 0.8539331778297594,
+    "fc_mae": 0.12245405991195611,
+    "fc_wql": 0.5430109138000438,
+    "fc_crps": 0.11073361484716839
+  },
+  "runtime_s": 351.8248,
+  "runtime_fit_s": 2.6427,
+  "runtime_score_s": 349.1821,
+  "peak_mem_mb": 2656.06,
+  "commit_hash": "725bbd687a24",
+  "git_dirty": true,
+  "config_hash": "acf43999807a",
+  "config": {
+    "model": "timesfm3_prob",
+    "model_alias": null,
+    "model_params": {
+      "context": 512,
+      "horizon": 32,
+      "batch_size": 8
+    },
+    "data": "smap",
+    "data_params": {
+      "channel": "P-1"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-22T05:41:06+00:00"
+}

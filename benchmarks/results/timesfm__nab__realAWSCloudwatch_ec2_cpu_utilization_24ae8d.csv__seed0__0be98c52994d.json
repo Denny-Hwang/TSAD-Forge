@@ -1,0 +1,76 @@
+{
+  "run_id": "timesfm__nab__realAWSCloudwatch_ec2_cpu_utilization_24ae8d.csv__seed0__0be98c52994d",
+  "model": "timesfm",
+  "generation": "gen5",
+  "dataset": "nab",
+  "channel": "realAWSCloudwatch_ec2_cpu_utilization_24ae8d.csv",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.5328619624942045,
+    "auc_pr": 0.1319878033875497,
+    "vus_roc": 0.5891574034334923,
+    "vus_pr": 0.15195181403819433,
+    "best_f1": 0.22167729279058362,
+    "standard_f1": 0.036613272311212815,
+    "event_f1": 0.37209302325581356,
+    "range_f1": 0.20542773701830616,
+    "affiliation_f1": 0.7913830478781296,
+    "mean_detection_delay": 93.5,
+    "threshold": 0.8405017729767388,
+    "n_predicted_anomalies": 35.0,
+    "diag_test_input_absmax": 26.14417660407832,
+    "diag_vus_window": 100.0,
+    "fc_mase": 0.5748252427549394,
+    "fc_mae": 0.2918426879234895,
+    "fc_wql": 0.8128838355240321,
+    "fc_crps": 0.2762664702265325
+  },
+  "runtime_s": 29.8717,
+  "runtime_fit_s": 0.912,
+  "runtime_score_s": 28.9597,
+  "peak_mem_mb": 1402.29,
+  "commit_hash": "725bbd687a24",
+  "git_dirty": true,
+  "config_hash": "0be98c52994d",
+  "config": {
+    "model": "timesfm",
+    "model_alias": null,
+    "model_params": {
+      "context": 512,
+      "horizon": 32
+    },
+    "data": "nab",
+    "data_params": {
+      "rel_path": "realAWSCloudwatch/ec2_cpu_utilization_24ae8d.csv"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-22T06:56:28+00:00"
+}

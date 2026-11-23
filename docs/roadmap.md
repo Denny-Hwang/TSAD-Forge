@@ -32,8 +32,6 @@ claim. Check the leaderboard to see how many generations actually clear it.
 | **CATS** (Solenix 2023) | 5M-point simulated spacecraft control system, 200 controlled anomalies, contamination-free train | **CC BY 4.0** (Zenodo) | Zenodo host was unreachable from this environment; loader can ship with a manual-placement guide like Yahoo |
 | **GHL** (Kaspersky) | gasoil heating loop ICS simulation with attacks | free but registration-gated | application-guide card, loader only |
 | **Genesis** (HU Berlin) | pick-and-place demonstrator, port to industrial PLC signals | CC BY-SA 4.0 | share-alike is fine for data use; needs Kaggle/host check |
-| **NAB full set** | we ship 5 of 58 streams | data free | extend `download nab --subset all` via repo clone guidance |
-| **UCR / TSB-AD full** | already integrated; blocked only by this dev environment's egress policy | free / Apache-2.0 | run `tsad-forge download ucr / tsb_ad_u` on your machine — loaders and lite-profile entries are already wired |
 
 ## Recommended next — models
 

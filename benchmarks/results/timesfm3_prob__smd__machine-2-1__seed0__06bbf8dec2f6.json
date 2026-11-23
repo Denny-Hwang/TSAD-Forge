@@ -1,0 +1,77 @@
+{
+  "run_id": "timesfm3_prob__smd__machine-2-1__seed0__06bbf8dec2f6",
+  "model": "timesfm3_prob",
+  "generation": "gen5",
+  "dataset": "smd",
+  "channel": "machine-2-1",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.6830939685228443,
+    "auc_pr": 0.1477293534311043,
+    "vus_roc": 0.7720125512338433,
+    "vus_pr": 0.17467191905758683,
+    "best_f1": 0.1959816707789919,
+    "standard_f1": 0.13646055437100213,
+    "event_f1": 0.5765765765765761,
+    "range_f1": 0.2687103666368623,
+    "affiliation_f1": 0.8227413852690186,
+    "mean_detection_delay": 10.692307692307692,
+    "threshold": 0.8793195716511032,
+    "n_predicted_anomalies": 237.0,
+    "diag_test_input_absmax": 733.4346056045242,
+    "diag_vus_window": 100.0,
+    "fc_mase": 0.9930884250323766,
+    "fc_mae": 0.29359190038857597,
+    "fc_wql": 0.42368450692290854,
+    "fc_crps": 0.23962174741950984
+  },
+  "runtime_s": 2116.2607,
+  "runtime_fit_s": 1.0235,
+  "runtime_score_s": 2115.2372,
+  "peak_mem_mb": 2633.97,
+  "commit_hash": "725bbd687a24",
+  "git_dirty": true,
+  "config_hash": "06bbf8dec2f6",
+  "config": {
+    "model": "timesfm3_prob",
+    "model_alias": null,
+    "model_params": {
+      "context": 512,
+      "horizon": 32,
+      "batch_size": 8
+    },
+    "data": "smd",
+    "data_params": {
+      "machine": "machine-2-1"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-22T04:50:26+00:00"
+}

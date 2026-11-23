@@ -1,0 +1,77 @@
+{
+  "run_id": "timesfm3_ci__smd__machine-1-1__seed0__b3d0cbb4b6c4",
+  "model": "timesfm3_ci",
+  "generation": "gen5",
+  "dataset": "smd",
+  "channel": "machine-1-1",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.8068586113914689,
+    "auc_pr": 0.386902916999796,
+    "vus_roc": 0.8408310541877932,
+    "vus_pr": 0.43694013971597806,
+    "best_f1": 0.4127825409197194,
+    "standard_f1": 0.15172876804296745,
+    "event_f1": 0.8845401174168293,
+    "range_f1": 0.5150051103976995,
+    "affiliation_f1": 0.9665003703044271,
+    "mean_detection_delay": 3.375,
+    "threshold": 2.7969543099455976,
+    "n_predicted_anomalies": 285.0,
+    "diag_test_input_absmax": 68130.8541893324,
+    "diag_vus_window": 100.0,
+    "fc_mase": 6.0967205131554,
+    "fc_mae": 1.3249928822748909,
+    "fc_wql": 0.46494886864982893,
+    "fc_crps": 1.1199740253293216
+  },
+  "runtime_s": 2337.8876,
+  "runtime_fit_s": 0.9893,
+  "runtime_score_s": 2336.8983,
+  "peak_mem_mb": 2646.69,
+  "commit_hash": "725bbd687a24",
+  "git_dirty": true,
+  "config_hash": "b3d0cbb4b6c4",
+  "config": {
+    "model": "timesfm3_ci",
+    "model_alias": null,
+    "model_params": {
+      "context": 512,
+      "horizon": 32,
+      "batch_size": 8
+    },
+    "data": "smd",
+    "data_params": {
+      "machine": "machine-1-1"
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-22T03:33:13+00:00"
+}

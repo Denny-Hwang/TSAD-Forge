@@ -1,0 +1,78 @@
+{
+  "run_id": "timesfm3_prob__synthetic__all__seed0__2f3bf3a329fd",
+  "model": "timesfm3_prob",
+  "generation": "gen5",
+  "dataset": "synthetic",
+  "channel": "all",
+  "seed": 0,
+  "metrics": {
+    "auc_roc": 0.8627561549167347,
+    "auc_pr": 0.3317662489412685,
+    "vus_roc": 0.9357030770301794,
+    "vus_pr": 0.4550786527456759,
+    "best_f1": 0.45077720207253885,
+    "standard_f1": 0.03896103896103896,
+    "event_f1": 0.14634146341463364,
+    "range_f1": 0.06349206349206349,
+    "affiliation_f1": 0.22714818328252512,
+    "mean_detection_delay": 15.857142857142858,
+    "threshold": 1.3976485930603455,
+    "n_predicted_anomalies": 20.0,
+    "diag_test_input_absmax": 8.506162210468686,
+    "diag_vus_window": 100.0,
+    "fc_mase": 1.3568119625725572,
+    "fc_mae": 0.21091903788091404,
+    "fc_wql": 0.19566264006185957,
+    "fc_crps": 0.17716030952240888
+  },
+  "runtime_s": 14.0722,
+  "runtime_fit_s": 0.9651,
+  "runtime_score_s": 13.1071,
+  "peak_mem_mb": 2495.1,
+  "commit_hash": "725bbd687a24",
+  "git_dirty": true,
+  "config_hash": "2f3bf3a329fd",
+  "config": {
+    "model": "timesfm3_prob",
+    "model_alias": null,
+    "model_params": {
+      "context": 512,
+      "horizon": 32,
+      "batch_size": 8
+    },
+    "data": "synthetic",
+    "data_params": {
+      "n_dims": 5,
+      "n_events": 8
+    },
+    "seed": 0,
+    "normalize": "zscore",
+    "normalize_params": {},
+    "threshold": {
+      "method": "quantile",
+      "q": 0.99
+    },
+    "sliding_window": 100,
+    "device": "cpu",
+    "legacy_pa": false,
+    "results_dir": "benchmarks/results",
+    "save_raw_scores": true,
+    "model_version": 1
+  },
+  "environment": {
+    "device": "cpu",
+    "python": "3.11.15",
+    "platform": "Darwin-arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "stumpy": "1.14.1",
+      "torch": "2.15.0"
+    },
+    "torch_cuda": null
+  },
+  "timestamp": "2026-11-22T04:15:03+00:00"
+}
