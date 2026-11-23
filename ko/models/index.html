@@ -1,0 +1,1826 @@
+
+<!doctype html>
+<html lang="ko" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A Reproducible Benchmarking and Learning Ecosystem for Time-Series Anomaly Detection">
+      
+      
+      
+      
+        <link rel="prev" href="../methodology/">
+      
+      
+        <link rel="next" href="../archive/">
+      
+      
+        
+          <link rel="alternate" href="../../models/" hreflang="en">
+        
+          <link rel="alternate" href="./" hreflang="ko">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
+    
+    
+      
+        <title>모델 카탈로그 - TSAD-Forge</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#model-catalog" class="md-skip">
+          콘텐츠로 이동
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="상단/헤더">
+    <a href="../" title="TSAD-Forge" class="md-header__button md-logo" aria-label="TSAD-Forge" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TSAD-Forge
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              모델 카탈로그
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="언어설정">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../models/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="ko" class="md-select__link">
+              한국어
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="검색" placeholder="검색" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="검색">
+        
+        <button type="reset" class="md-search__icon md-icon" title="지우기" aria-label="지우기" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            검색 초기화
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Denny-Hwang/TSAD-Forge" title="저장소로 이동" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="네비게이션" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../" title="TSAD-Forge" class="md-nav__button md-logo" aria-label="TSAD-Forge" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    TSAD-Forge
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Denny-Hwang/TSAD-Forge" title="저장소로 이동" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    홈
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    학습 트랙
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    학습 트랙
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../learn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    개요
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../learn/ch01_problem/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ch01 문제 정의
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../learn/ch02_gen1_statistical/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ch02 Gen1 통계
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../learn/ch03_gen2_classical_ml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ch03 Gen2 고전 ML
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../learn/ch04_gen3_dl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ch04 Gen3 딥러닝
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../learn/ch05_gen4_graph_transformer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ch05 Gen4 Graph/Transformer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../learn/ch06_gen5_ssm_foundation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ch06 Gen5 SSM/Foundation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../learn/ch07_evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ch07 평가 방법론
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../learn/ch08_thresholding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ch08 임계값
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../learn/ch09_industrial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ch09 산업 적용
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../learn/ch10_reading_benchmarks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ch10 벤치마크 읽는 법
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    로드맵
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    방법론
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    모델 카탈로그
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    연구 아카이브
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../benchmarks/forecasting-benchmarks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    예측 벤치마크
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    리더보드
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    리더보드
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../leaderboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    차트
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../leaderboard/lite/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    lite 테이블
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    데이터셋
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    데이터셋
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../datasets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    개요
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../datasets/smap_msl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SMAP/MSL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../datasets/smd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SMD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../datasets/ucr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UCR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../datasets/tsb_ad/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TSB-AD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../datasets/nab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NAB
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../datasets/psm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PSM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../datasets/skab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SKAB
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../datasets/mgab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MGAB
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../datasets/mba/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MBA (심전도)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../datasets/yahoo_s5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Yahoo S5 (신청)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../datasets/swat_wadi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SWaT/WADI (신청)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../datasets/secom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SECOM (참고)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="model-catalog">Model catalog</h1>
+<p>Auto-generated from <code>tsad_forge/models/cards.yaml</code> by <code>tsad-forge viz</code>.
+Fidelity says how close each implementation is to the cited method:</p>
+<ul>
+<li><strong>library</strong> — maintained library / official package</li>
+<li><strong>reference</strong> — classical algorithm implemented from its definition</li>
+<li><strong>upstream_verified</strong> — behavior checked against the official code</li>
+<li><strong>paper</strong> — follows the paper (protocol-level omissions only)</li>
+<li><strong>simplified</strong> — paper-based reimplementation with documented simplifications</li>
+<li><strong>baseline</strong> — sanity / proposed baseline of this repository</li>
+</ul>
+<p>Rows marked <strong>simplified</strong> measure <em>this repository's</em> simplified reimplementation, not the original method — read their leaderboard numbers accordingly.</p>
+<table>
+<thead>
+<tr>
+<th>model</th>
+<th>gen</th>
+<th>method</th>
+<th>citation</th>
+<th>fidelity</th>
+<th>upstream (license)</th>
+<th>deviations</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dummy</code></td>
+<td>gen0</td>
+<td>Uniform random score (uninformative floor)</td>
+<td>TSAD-Forge</td>
+<td>baseline</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ensemble_simple</code></td>
+<td>gen0</td>
+<td>ForgeEnsemble — rank consensus of cheap diverse detectors</td>
+<td>TSAD-Forge (proposed baseline)</td>
+<td>baseline</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>cusum</code></td>
+<td>gen1</td>
+<td>Two-sided CUSUM control chart</td>
+<td>Page, Biometrika 1954</td>
+<td>reference</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ewma</code></td>
+<td>gen1</td>
+<td>EWMA control chart</td>
+<td>Roberts, Technometrics 1959</td>
+<td>reference</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>hotelling_t2</code></td>
+<td>gen1</td>
+<td>Hotelling T²</td>
+<td>Hotelling, 1947</td>
+<td>reference</td>
+<td>—</td>
+<td>ridge-regularized train covariance</td>
+</tr>
+<tr>
+<td><code>online_cusum</code></td>
+<td>gen1</td>
+<td>Online CUSUM (prequential, Welford statistics)</td>
+<td>Page, Biometrika 1954</td>
+<td>reference</td>
+<td>—</td>
+<td>streaming protocol (score then update); experimental track</td>
+</tr>
+<tr>
+<td><code>online_ewma</code></td>
+<td>gen1</td>
+<td>Online EWMA (prequential)</td>
+<td>Roberts, Technometrics 1959</td>
+<td>reference</td>
+<td>—</td>
+<td>streaming protocol (score then update); experimental track</td>
+</tr>
+<tr>
+<td><code>pca_t2spe</code></td>
+<td>gen1</td>
+<td>PCA T² + SPE (Q statistic)</td>
+<td>Jackson &amp; Mudholkar, Technometrics 1979</td>
+<td>reference</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>poly</code></td>
+<td>gen1</td>
+<td>Local polynomial one-step residual</td>
+<td>TSB-UAD POLY baseline (Paparrizos et al., VLDB 2022)</td>
+<td>simplified</td>
+<td>—</td>
+<td>simplified sliding-window polynomial fit</td>
+</tr>
+<tr>
+<td><code>sesd</code></td>
+<td>gen1</td>
+<td>S-H-ESD-style seasonal hybrid ESD</td>
+<td>Hochenbaum, Vallis &amp; Kejariwal, 2017 (<a href="https://arxiv.org/abs/1704.07706">arXiv</a>)</td>
+<td>paper</td>
+<td><a href="https://github.com/twitter/AnomalyDetection">repo</a> (GPL-3.0 — not used)</td>
+<td>the continuous robust statistic</td>
+</tr>
+<tr>
+<td><code>stl_residual</code></td>
+<td>gen1</td>
+<td>STL decomposition residual</td>
+<td>Cleveland et al., J. Official Statistics 1990</td>
+<td>library</td>
+<td><a href="https://github.com/statsmodels/statsmodels">repo</a> (BSD-3-Clause)</td>
+<td>period estimated automatically; channel-wise</td>
+</tr>
+<tr>
+<td><code>sub_pca</code></td>
+<td>gen1</td>
+<td>Subsequence PCA reconstruction</td>
+<td>TSB-AD baseline (Liu &amp; Paparrizos, NeurIPS 2024)</td>
+<td>reference</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>zscore</code></td>
+<td>gen1</td>
+<td>Per-channel</td>
+<td>z</td>
+<td>maximum</td>
+<td>TSAD-Forge</td>
+<td>baseline</td>
+</tr>
+<tr>
+<td><code>hbos</code></td>
+<td>gen2</td>
+<td>Histogram-Based Outlier Score</td>
+<td>Goldstein &amp; Dengel, KI 2012</td>
+<td>reference</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>iforest</code></td>
+<td>gen2</td>
+<td>Isolation Forest</td>
+<td>Liu et al., ICDM 2008</td>
+<td>library</td>
+<td><a href="https://github.com/scikit-learn/scikit-learn">repo</a> (BSD-3-Clause)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>knn</code></td>
+<td>gen2</td>
+<td>k-NN distance</td>
+<td>Ramaswamy et al., SIGMOD 2000</td>
+<td>library</td>
+<td><a href="https://github.com/scikit-learn/scikit-learn">repo</a> (BSD-3-Clause)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>lof</code></td>
+<td>gen2</td>
+<td>Local Outlier Factor (novelty mode)</td>
+<td>Breunig et al., SIGMOD 2000</td>
+<td>library</td>
+<td><a href="https://github.com/scikit-learn/scikit-learn">repo</a> (BSD-3-Clause)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>matrix_profile</code></td>
+<td>gen2</td>
+<td>Matrix Profile discord</td>
+<td>Yeh et al., ICDM 2016</td>
+<td>library</td>
+<td><a href="https://github.com/TDAmeritrade/stumpy">repo</a> (BSD-3-Clause)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ocsvm</code></td>
+<td>gen2</td>
+<td>One-Class SVM (RBF)</td>
+<td>Schölkopf et al., Neural Computation 2001</td>
+<td>library</td>
+<td><a href="https://github.com/scikit-learn/scikit-learn">repo</a> (BSD-3-Clause)</td>
+<td>training windows capped at 5000 (O(n²) kernel)</td>
+</tr>
+<tr>
+<td><code>spectral_residual</code></td>
+<td>gen2</td>
+<td>Spectral Residual (Azure Anomaly Detector)</td>
+<td>Ren et al., KDD 2019 (<a href="https://arxiv.org/abs/1906.03821">arXiv</a>)</td>
+<td>paper</td>
+<td>—</td>
+<td>estimated end points and the SR-CNN learned threshold omitted; channels max-aggregated</td>
+</tr>
+<tr>
+<td><code>sub_knn</code></td>
+<td>gen2</td>
+<td>Subsequence k-NN</td>
+<td>TSB-AD baseline (Liu &amp; Paparrizos, NeurIPS 2024)</td>
+<td>reference</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ae</code></td>
+<td>gen3</td>
+<td>Dense autoencoder (window reconstruction)</td>
+<td>Sakurada &amp; Yairi, MLSDA workshop 2014</td>
+<td>reference</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>dagmm</code></td>
+<td>gen3</td>
+<td>Deep Autoencoding Gaussian Mixture Model</td>
+<td>Zong et al., ICLR 2018</td>
+<td>simplified</td>
+<td>— (no official implementation)</td>
+<td>flattened windows instead of point-wise inputs<br>covariance regularization simplified to a diagonal clamp</td>
+</tr>
+<tr>
+<td><code>lstm_ad</code></td>
+<td>gen3</td>
+<td>Stacked-LSTM multi-step forecaster</td>
+<td>Malhotra et al., ESANN 2015</td>
+<td>simplified</td>
+<td>— (no official implementation)</td>
+<td>squared-error score instead of the multivariate Gaussian likelihood of errors (needs a validation set)</td>
+</tr>
+<tr>
+<td><code>lstm_p</code></td>
+<td>gen3</td>
+<td>Telemanom-style LSTM predictor + EWMA error smoothing</td>
+<td>Hundman et al., KDD 2018 (<a href="https://arxiv.org/abs/1802.04431">arXiv</a>)</td>
+<td>paper</td>
+<td><a href="https://github.com/khundman/telemanom">repo</a> (custom (NASA) — not used)</td>
+<td>nonparametric dynamic thresholding is delegated to the thresholding module</td>
+</tr>
+<tr>
+<td><code>omni_anomaly</code></td>
+<td>gen3</td>
+<td>OmniAnomaly</td>
+<td>Su et al., KDD 2019</td>
+<td>simplified</td>
+<td><a href="https://github.com/NetManAIOps/OmniAnomaly">repo</a> (MIT)</td>
+<td>no planar normalizing flow (diagonal Gaussian posterior)<br>standard-normal prior instead of the linear Gaussian state-space prior</td>
+</tr>
+<tr>
+<td><code>usad</code></td>
+<td>gen3</td>
+<td>USAD</td>
+<td>Audibert et al., KDD 2020</td>
+<td>simplified</td>
+<td>— (no official public implementation)</td>
+<td>alternating losses within an epoch instead of separate per-decoder optimizers</td>
+</tr>
+<tr>
+<td><code>vae_donut</code></td>
+<td>gen3</td>
+<td>Donut-style window VAE</td>
+<td>Xu et al., WWW 2018 (<a href="https://arxiv.org/abs/1802.03903">arXiv</a>)</td>
+<td>simplified</td>
+<td><a href="https://github.com/NetManAIOps/donut">repo</a> (none (no LICENSE file) — code not used)</td>
+<td>no modified ELBO (missing-data injection) and no MCMC imputation<br>generalized from univariate to flattened multivariate windows</td>
+</tr>
+<tr>
+<td><code>anomaly_transformer</code></td>
+<td>gen4</td>
+<td>Anomaly Transformer</td>
+<td>Xu et al., ICLR 2022 (<a href="https://arxiv.org/abs/2110.02642">arXiv</a>)</td>
+<td>simplified</td>
+<td><a href="https://github.com/thuml/Anomaly-Transformer">repo</a> (MIT)</td>
+<td>single loss (reconstruction + association-discrepancy regularizer) instead of the minimax two-phase training<br>one layer, small hidden size</td>
+</tr>
+<tr>
+<td><code>dcdetector</code></td>
+<td>gen4</td>
+<td>DCdetector (dual-attention contrastive)</td>
+<td>Yang et al., KDD 2023 (<a href="https://arxiv.org/abs/2306.10347">arXiv</a>)</td>
+<td>simplified</td>
+<td><a href="https://github.com/DAMO-DI-ML/KDD2023-DCdetector">repo</a> (unclear)</td>
+<td>single patch size instead of multiple<br>channel-averaged representation instead of channel independence<br>simplified stop-gradient</td>
+</tr>
+<tr>
+<td><code>gdn</code></td>
+<td>gen4</td>
+<td>Graph Deviation Network</td>
+<td>Deng &amp; Hooi, AAAI 2021 (<a href="https://arxiv.org/abs/2106.06947">arXiv</a>)</td>
+<td>simplified</td>
+<td><a href="https://github.com/d-ailin/GDN">repo</a> (MIT)</td>
+<td>graph recomputed from embeddings at every forward pass<br>univariate input falls back to a temporal MLP forecaster</td>
+</tr>
+<tr>
+<td><code>mtad_gat</code></td>
+<td>gen4</td>
+<td>MTAD-GAT</td>
+<td>Zhao et al., ICDM 2020 (<a href="https://arxiv.org/abs/2009.02040">arXiv</a>)</td>
+<td>simplified</td>
+<td>— (no official implementation)</td>
+<td>deterministic decoder instead of the VAE reconstruction path<br>gamma-weighted score combination (default 0.5)<br>1D-conv preprocessing omitted</td>
+</tr>
+<tr>
+<td><code>timesnet</code></td>
+<td>gen4</td>
+<td>TimesNet (anomaly detection task)</td>
+<td>Wu et al., ICLR 2023 (<a href="https://arxiv.org/abs/2210.02186">arXiv</a>)</td>
+<td>simplified</td>
+<td><a href="https://github.com/thuml/Time-Series-Library">repo</a> (MIT)</td>
+<td>one TimesBlock, top-1 period only<br>two 3×3 conv layers instead of the inception block<br>small embedding</td>
+</tr>
+<tr>
+<td><code>tranad</code></td>
+<td>gen4</td>
+<td>TranAD</td>
+<td>Tuli et al., VLDB 2022 (<a href="https://arxiv.org/abs/2201.07284">arXiv</a>)</td>
+<td>simplified</td>
+<td><a href="https://github.com/imperial-qore/TranAD">repo</a> (BSD-3-Clause)</td>
+<td>the two-decoder min-max game simplified to an epoch-weighted combined loss</td>
+</tr>
+<tr>
+<td><code>chronos</code></td>
+<td>gen5</td>
+<td>Chronos-Bolt forecast-residual adapter</td>
+<td>Ansari et al., TMLR 2024 (<a href="https://arxiv.org/abs/2403.07815">arXiv</a>)</td>
+<td>library</td>
+<td><a href="https://github.com/amazon-science/chronos-forecasting">repo</a> (Apache-2.0)</td>
+<td>anomaly score is the forecast residual — a TSAD use of a forecasting model, not a method from the paper</td>
+</tr>
+<tr>
+<td><code>mamba_tsad_faithful</code></td>
+<td>gen5</td>
+<td>MambaTSAD — official behavior (issues a, c, d reproduced)</td>
+<td>Chen et al., IEEE SPL 2024 (<a href="https://arxiv.org/abs/2405.19823">arXiv</a>)</td>
+<td>upstream_verified</td>
+<td><a href="https://github.com/aaaceo890/mamba_tsad">repo</a> (none (no LICENSE file) — code not copied)</td>
+<td>pure-PyTorch parallel scan instead of the official pscan (same recurrence)<br>device-invariant (the official training loop cannot run on CPU)</td>
+</tr>
+<tr>
+<td><code>mamba_tsad_fixed</code></td>
+<td>gen5</td>
+<td>MambaTSAD — issues a, c, d fixed</td>
+<td>Chen et al., IEEE SPL 2024 (<a href="https://arxiv.org/abs/2405.19823">arXiv</a>)</td>
+<td>upstream_verified</td>
+<td><a href="https://github.com/aaaceo890/mamba_tsad">repo</a> (none (no LICENSE file) — code not copied)</td>
+<td>last-step state carry, standard HP objective, per-window AMA period (see mamba_tsad.py)</td>
+</tr>
+<tr>
+<td><code>moment</code></td>
+<td>gen5</td>
+<td>MOMENT zero-shot reconstruction adapter</td>
+<td>Goswami et al., ICML 2024 (<a href="https://arxiv.org/abs/2402.03885">arXiv</a>)</td>
+<td>library</td>
+<td><a href="https://github.com/moment-timeseries-foundation-model/moment">repo</a> (MIT)</td>
+<td>zero-shot (no fine-tuning); fixed 512-step context with half-overlapping segments</td>
+</tr>
+<tr>
+<td><code>timesfm</code></td>
+<td>gen5</td>
+<td>TimesFM 2.5 forecast-residual adapter</td>
+<td>Das et al., ICML 2024 (<a href="https://arxiv.org/abs/2310.10688">arXiv</a>)</td>
+<td>library</td>
+<td><a href="https://github.com/google-research/timesfm">repo</a> (Apache-2.0 (code and 2.5 weights))</td>
+<td>forecast residual as anomaly score; channel-independent</td>
+</tr>
+<tr>
+<td><code>timesfm3</code></td>
+<td>gen5</td>
+<td>TimesFM 3.0 multivariate forecast-residual adapter</td>
+<td>Das et al., ICML 2024; TimesFM 3.0 (2026)</td>
+<td>library</td>
+<td><a href="https://github.com/google-research/timesfm">repo</a> (code Apache-2.0; 3.0 weights NON-COMMERCIAL)</td>
+<td>forecast residual as anomaly score; joint multivariate forecasting</td>
+</tr>
+<tr>
+<td><code>timesfm3_ci</code></td>
+<td>gen5</td>
+<td>TimesFM 3.0 channel-independent control</td>
+<td>Das et al., ICML 2024; TimesFM 3.0 (2026)</td>
+<td>library</td>
+<td><a href="https://github.com/google-research/timesfm">repo</a> (code Apache-2.0; 3.0 weights NON-COMMERCIAL)</td>
+<td>forecast residual as anomaly score; channels forecast independently</td>
+</tr>
+<tr>
+<td><code>timesfm3_prob</code></td>
+<td>gen5</td>
+<td>TimesFM 3.0 probabilistic (quantile) score</td>
+<td>Das et al., ICML 2024; TimesFM 3.0 (2026)</td>
+<td>library</td>
+<td><a href="https://github.com/google-research/timesfm">repo</a> (code Apache-2.0; 3.0 weights NON-COMMERCIAL)</td>
+<td>quantile-forecast-based score (crps/interval modes)</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "content.code.copy"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "\ud074\ub9bd\ubcf4\ub4dc\uc5d0 \ubcf5\uc0ac\ub428", "clipboard.copy": "\ud074\ub9bd\ubcf4\ub4dc\ub85c \ubcf5\uc0ac", "search.result.more.one": "\uc774 \ubb38\uc11c\uc5d0\uc11c 1\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.more.other": "\uc774 \ubb38\uc11c\uc5d0\uc11c #\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.none": "\uac80\uc0c9\uc5b4\uc640 \uc77c\uce58\ud558\ub294 \ubb38\uc11c\uac00 \uc5c6\uc2b5\ub2c8\ub2e4", "search.result.one": "1\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.other": "#\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.placeholder": "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uc138\uc694", "search.result.term.missing": "\ud3ec\ud568\ub418\uc9c0 \uc54a\uc740 \uac80\uc0c9\uc5b4", "select.version": "\ubc84\uc804 \uc120\ud0dd"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
