@@ -62,6 +62,11 @@ tsad-forge results fetch --base-url https://github.com/Denny-Hwang/TSAD-Forge/re
 tsad-forge viz --results-dir benchmarks/results_full
 ```
 
+With `--with-scores`, the raw scores are split into parts named `scores-000.zip`, `scores-001.zip`, and so on.
+GitHub Release assets must be under 2 GiB, so each part is at most 1800 MiB
+(change it with `--part-size-mb`). `gh release upload` uploads every part, and `fetch` downloads them all,
+checks each against the manifest, then unpacks them into one `scores/` directory.
+
 ## Bibliography (complete)
 
 - Wu & Keogh, *Current Time Series Anomaly Detection Benchmarks are Flawed...*, TKDE 2021 (arXiv:2009.13807)

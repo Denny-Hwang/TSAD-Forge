@@ -57,6 +57,11 @@ tsad-forge results fetch --base-url https://github.com/Denny-Hwang/TSAD-Forge/re
 tsad-forge viz --results-dir benchmarks/results_full
 ```
 
+`--with-scores`를 주면 원본 스코어를 `scores-000.zip`, `scores-001.zip`, … 으로 나눠 담는다.
+GitHub Release 자산은 파일당 2 GiB 미만이어야 해서 한 조각을 최대 1800 MiB로 둔다
+(`--part-size-mb`로 바꿀 수 있다). `gh release upload`는 조각을 모두 올리고, `fetch`는 조각을 모두 받아
+매니페스트와 대조해 검증한 뒤 하나의 `scores/` 디렉터리로 푼다.
+
 ## 참고문헌 (전체)
 
 - Wu & Keogh, *Current Time Series Anomaly Detection Benchmarks are Flawed...*, TKDE 2021 (arXiv:2009.13807)

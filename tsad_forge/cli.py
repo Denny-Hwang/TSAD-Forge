@@ -11,6 +11,7 @@ tsad-forge archive validate|render|scan # 연구 아카이브 원장
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
@@ -85,6 +86,12 @@ def build_parser() -> argparse.ArgumentParser:
     pk.add_argument("--name", required=True, help="snapshot name, e.g. full-v0.3.0")
     pk.add_argument("--out", default="dist/snapshots")
     pk.add_argument("--with-scores", action="store_true", help="include raw score npz files")
+    pk.add_argument(
+        "--part-size-mb",
+        type=int,
+        default=1800,
+        help="max size of each scores-NNN.zip in MiB (GitHub Release assets must be < 2 GiB)",
+    )
     vf = rsub.add_parser("verify", help="check a snapshot against its MANIFEST sha256")
     vf.add_argument("snapshot")
     ft = rsub.add_parser("fetch", help="download + verify + unpack a published snapshot")
@@ -159,8 +166,17 @@ def main(argv: list[str] | None = None) -> int:
         from tsad_forge.runner import snapshot as snap
 
         if args.action == "pack":
-            path = snap.pack_snapshot(args.results_dir, args.out, args.name, args.with_scores)
+            path = snap.pack_snapshot(
+                args.results_dir,
+                args.out,
+                args.name,
+                args.with_scores,
+                part_bytes=args.part_size_mb * 2**20,
+            )
             print(f"snapshot: {path}")
+            parts = json.loads((path / snap.MANIFEST).read_text())["score_parts"]
+            if parts:
+                print(f"scores:   {len(parts)} part(s), {parts[0]} … {parts[-1]}")
             print(f"publish:  gh release upload <tag> {path}/*")
             return 0
         if args.action == "verify":
